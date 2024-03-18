@@ -1,14 +1,16 @@
+
 spring:
   datasource:
     username: postgres
-    password: Ahmed@2252300
+    password: Ab01015422609
     url: jdbc:postgresql://localhost:5432/medica
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true

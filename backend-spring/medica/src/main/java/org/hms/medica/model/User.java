@@ -1,9 +1,9 @@
 package org.hms.medica.model;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.hms.medica.constants.Gender;
@@ -16,65 +16,66 @@ import java.util.Collection;
 @Getter
 @Setter
 @Entity
-public class User implements UserDetails {
+@Table(name = "`User`")
+public class User extends BaseEntity implements UserDetails {
 
-    @Id
-    private Long id;
+  @Id private Long id;
 
-    private String firstname;
+  private String firstName;
 
-    private String lastname;
+  private String lastName;
 
-    private Gender gender;
+  private Gender gender;
 
-    @Column(name = "date_of_birth")
-    private Instant dob;
+  @Column(name = "date_of_birth")
+  private Instant dob;
 
-    private String address;
+  private String address;
 
-    private String phone;
+  private String phoneNumber;
 
-    private String email;
+  private String email;
 
-    private String password;
+  private String password;
 
-    private Instant create_at;
+  private String imageUrl;
 
-    private Boolean is_enabled;
+  private Instant createdAt;
 
+  private Boolean isEnabled;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return null;
+  }
 
-    @Override
-    public String getPassword() {
-        return null;
-    }
+  @Override
+  public String getPassword() {
+    return null;
+  }
 
-    @Override
-    public String getUsername() {
-        return null;
-    }
+  @Override
+  public String getUsername() {
+    return null;
+  }
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
+  @Override
+  public boolean isAccountNonExpired() {
+    return false;
+  }
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
+  @Override
+  public boolean isAccountNonLocked() {
+    return false;
+  }
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return false;
+  }
 
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
+  @Override
+  public boolean isEnabled() {
+    return false;
+  }
 }
