@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: postgres
-    password: Ahmed@2252300
+    password: your password
     url: jdbc:postgresql://localhost:5432/medica
     driver-class-name: org.postgresql.Driver
 
