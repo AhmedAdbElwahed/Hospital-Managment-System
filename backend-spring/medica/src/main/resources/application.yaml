@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: postgres
-    password: your password
+    password: postgres
     url: jdbc:postgresql://localhost:5432/medica
     driver-class-name: org.postgresql.Driver
 
@@ -19,3 +19,15 @@ jwt:
     expiration-time: 900000 # 15 minutes
     refresh-token:
       expiration-time: 86400000 # 1 day
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: your email #go to the email service class to add your email
+    password: your password
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
