@@ -95,4 +95,22 @@ public class AuthController {
         }
     }
 
+    @PostMapping("/password/reset/request")
+    public ResponseEntity<String> requestPasswordReset(@RequestParam(name = "email") String email) {
+        authService.requestPasswordReset(email);
+        return ResponseEntity.ok("Password reset email sent successfully");
+    }
+
+    @PostMapping("/password/reset/verify")
+    public ResponseEntity<String> verifyPasswordReset(@RequestParam(name = "email") String email,
+            @RequestParam(name = "otp") String otp,
+            @RequestParam(name = "newPassword") String newPassword) {
+        if (authService.verifyPasswordResetOTP(email, otp)) {
+            authService.resetPassword(email, newPassword);
+            return ResponseEntity.ok("Password reset successful");
+        } else {
+            return ResponseEntity.badRequest().body("Invalid or expired OTP");
+        }
+    }
+
 }

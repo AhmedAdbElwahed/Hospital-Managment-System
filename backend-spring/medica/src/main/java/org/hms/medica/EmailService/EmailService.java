@@ -39,7 +39,7 @@ public class EmailService {
 
     public void sendEmail(String toEmail, String subject, String body) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("mohamedabdraboh015@gmail.com");
+        message.setFrom("os.omarsalah@gmail.com");
         message.setTo(toEmail);
         message.setText(body);
         message.setSubject(subject);

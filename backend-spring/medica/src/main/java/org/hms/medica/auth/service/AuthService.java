@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
@@ -100,6 +101,54 @@ public class AuthService {
                 .accessToken(jwtToken)
                 .refreshToken(jwtRefreshToken)
                 .build();
+    }
+
+    public void requestPasswordReset(String email) {
+        // Generate OTP
+        String otp = generateOTP();
+
+        // Store OTP in database
+        OTP otpEntity = new OTP();
+        otpEntity.setEmail(email);
+        otpEntity.setOtp(otp);
+        otpEntity.setCreatedAt(LocalDateTime.now()); // Set current timestamp
+        otpRepository.save(otpEntity);
+
+        // Send OTP via email
+        sendOTPEmail(email, otp);
+    }
+
+    public boolean verifyPasswordResetOTP(String email, String otp) {
+        Optional<OTP> otpEntityOptional = otpRepository.findByOtp(otp);
+        if (otpEntityOptional.isPresent()) {
+            OTP otpEntity = otpEntityOptional.get();
+
+            // Check if OTP is expired
+            LocalDateTime expirationTime = otpEntity.getCreatedAt().plusMinutes(10); // Assuming OTP expires after 10
+                                                                                     // minutes
+            LocalDateTime currentTime = LocalDateTime.now();
+            if (currentTime.isAfter(expirationTime)) {
+                // OTP is expired
+                return false;
+            } else {
+                // OTP is valid
+                return true;
+            }
+        }
+        return false; // OTP not found
+    }
+
+    // Add this method to AuthService
+    public void resetPassword(String email, String newPassword) {
+        Optional<User> userOptional = userRepository.findUserByEmail(email);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            // Update user's password
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+        } else {
+            throw new UsernameNotFoundException("User not found");
+        }
     }
 
     private void saveUserToken(User user, String jwtToken) {
