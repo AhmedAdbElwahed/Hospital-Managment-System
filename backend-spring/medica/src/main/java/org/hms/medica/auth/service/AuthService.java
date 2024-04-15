@@ -10,18 +10,18 @@ import org.hms.medica.EmailService.EmailService;
 import org.hms.medica.auth.dto.AuthenticationRequest;
 import org.hms.medica.auth.dto.AuthenticationResponse;
 import org.hms.medica.auth.dto.RegisterRequest;
-import org.hms.medica.auth.model.Role;
+import org.hms.medica.auth.dto.ResetPassword;
 import org.hms.medica.auth.model.Token;
 import org.hms.medica.auth.reop.RoleRepository;
 import org.hms.medica.auth.reop.TokenRepository;
 import org.hms.medica.config.JwtService;
 import org.hms.medica.constants.TokenType;
-import org.hms.medica.otp.OTP;
-import org.hms.medica.otp.otpRepository;
+import org.hms.medica.otp.model.OTP;
+import org.hms.medica.otp.model.OTPRepository;
+import org.hms.medica.otp.service.OTPService;
 import org.hms.medica.user.impl.UserDetailsImpl;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,9 +35,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.Optional;
-import java.util.Random;
 import java.util.Set;
 
 @Service
@@ -51,19 +49,9 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     private TokenRepository tokenRepository;
     private RoleRepository roleRepository;
-    private EmailService emailService;
-    private otpRepository otpRepository;
+    private OTPService otpService;
 
-    public AuthenticationResponse register(RegisterRequest registerRequest) {
-        // Generate OTP
-        String otp = generateOTP();
-
-        // Store OTP in database
-        OTP otpEntity = new OTP();
-        otpEntity.setEmail(registerRequest.getEmail());
-        otpEntity.setOtp(otp);
-        otpEntity.setCreatedAt(LocalDateTime.now()); // Set current timestamp
-        otpRepository.save(otpEntity);
+    public void register(RegisterRequest registerRequest) {
 
         // Create user object
         User user = User.builder()
@@ -83,72 +71,34 @@ public class AuthService {
         // Save user
         userRepository.save(user);
 
-        // Generate JWT Tokens
-        var jwtToken = jwtService.generateJwtToken(createUserDetails(user));
-        var jwtRefreshToken = jwtService.generateJwtRefreshToken(createUserDetails(user));
-
-        // Revoke previous tokens
-        revokeAllUserTokens(user);
-
-        // Save user token
-        saveUserToken(user, jwtToken);
+        // Store OTP in database
+        OTP otpEntity = otpService.crateOTP(user);
 
         // Generate and send OTP
-        sendOTPEmail(user.getEmail(), otp);
-
-        // Return AuthenticationResponse
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .refreshToken(jwtRefreshToken)
-                .build();
+        otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
     }
 
     public void requestPasswordReset(String email) {
-        // Generate OTP
-        String otp = generateOTP();
-
-        // Store OTP in database
-        OTP otpEntity = new OTP();
-        otpEntity.setEmail(email);
-        otpEntity.setOtp(otp);
-        otpEntity.setCreatedAt(LocalDateTime.now()); // Set current timestamp
-        otpRepository.save(otpEntity);
-
+        User user = userRepository.findUserByEmail(email).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("user with email: %s not found!", email)));
+        OTP otpEntity = otpService.crateOTP(user);
         // Send OTP via email
-        sendOTPEmail(email, otp);
+        otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
     }
 
-    public boolean verifyPasswordResetOTP(String email, String otp) {
-        Optional<OTP> otpEntityOptional = otpRepository.findByOtp(otp);
-        if (otpEntityOptional.isPresent()) {
-            OTP otpEntity = otpEntityOptional.get();
-
-            // Check if OTP is expired
-            LocalDateTime expirationTime = otpEntity.getCreatedAt().plusMinutes(10); // Assuming OTP expires after 10
-                                                                                     // minutes
-            LocalDateTime currentTime = LocalDateTime.now();
-            if (currentTime.isAfter(expirationTime)) {
-                // OTP is expired
-                return false;
-            } else {
-                // OTP is valid
-                return true;
-            }
-        }
-        return false; // OTP not found
-    }
 
     // Add this method to AuthService
-    public void resetPassword(String email, String newPassword) {
-        Optional<User> userOptional = userRepository.findUserByEmail(email);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
+    public boolean resetPassword(ResetPassword resetPassword) {
+        if (otpService.verifyOTP(resetPassword.getOtp())){
+            User user = userRepository.findUserByEmail(resetPassword.getEmail()).orElseThrow(() ->
+                    new UsernameNotFoundException("User not found!"));
+
             // Update user's password
-            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setPassword(passwordEncoder.encode(resetPassword.getNewPassword()));
             userRepository.save(user);
-        } else {
-            throw new UsernameNotFoundException("User not found");
+            return true;
         }
+        return false;
     }
 
     private void saveUserToken(User user, String jwtToken) {
@@ -162,26 +112,23 @@ public class AuthService {
         tokenRepository.save(token);
     }
 
-    public String generateOTP() {
-        String numbers = "0123456789";
-        String upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        String combinedChars = numbers + upperCaseLetters;
-        SecureRandom secureRandom = new SecureRandom();
 
-        StringBuilder otp = new StringBuilder(6);
-        for (int i = 0; i < 6; i++) {
-            int index = secureRandom.nextInt(combinedChars.length());
-            otp.append(combinedChars.charAt(index));
+
+    public boolean activateAccount(String otp) {
+        if (otpService.verifyOTP(otp)) {
+            User user = otpService.getOTP(otp).getUser();
+
+            user.setIs_enabled(true); // Mark user account as verified
+            userRepository.save(user); // Save the updated user
+
+            // Delete the OTP from the database (optional, depending on your requirements)
+            otpService.deleteAllUserOPT(user);
+            return true;
         }
-        return otp.toString();
+        return false;
     }
 
-    private void sendOTPEmail(String email, String otp) {
-        // Construct email message
-        String subject = "Verify your email address";
-        String message = "Your OTP for email verification is: " + otp;
-        emailService.sendEmail(email, subject, message);
-    }
+
 
     private void revokeAllUserTokens(User user) {
         var validUserTokens = tokenRepository.findAllValidTokensByUser(user.getId());
