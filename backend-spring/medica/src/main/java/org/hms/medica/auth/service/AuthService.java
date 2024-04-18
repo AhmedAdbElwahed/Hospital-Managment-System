@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-import org.hms.medica.EmailService.EmailService;
 import org.hms.medica.auth.dto.AuthenticationRequest;
 import org.hms.medica.auth.dto.AuthenticationResponse;
 import org.hms.medica.auth.dto.RegisterRequest;
@@ -17,7 +16,6 @@ import org.hms.medica.auth.reop.TokenRepository;
 import org.hms.medica.config.JwtService;
 import org.hms.medica.constants.TokenType;
 import org.hms.medica.otp.model.OTP;
-import org.hms.medica.otp.model.OTPRepository;
 import org.hms.medica.otp.service.OTPService;
 import org.hms.medica.user.impl.UserDetailsImpl;
 import org.hms.medica.user.model.User;
@@ -31,11 +29,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
-import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -193,4 +190,23 @@ public class AuthService {
             }
         }
     }
+
+    @Transactional
+    public boolean updateUser(User userUpdate) {
+        User user = userRepository.findUserByEmail(userUpdate.getEmail()).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("User %s not found!", userUpdate.getEmail())));
+        if (user != null) {
+                user.setFirstname(userUpdate.getFirstname());
+                user.setLastname(userUpdate.getLastname());
+                user.setDob(userUpdate.getDob());
+                user.setAddress(userUpdate.getAddress());
+                user.setGender(userUpdate.getGender());
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+//    @Transactional
+//    public boolean deleteUser(String email) {}
 }

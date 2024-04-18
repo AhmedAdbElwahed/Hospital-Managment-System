@@ -1,0 +1,35 @@
+package org.hms.medica.doctor.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hms.medica.appointment.model.Appointment;
+import org.hms.medica.user.model.User;
+import org.hms.medica.ward.model.Ward;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Doctor extends User {
+
+    private String phoneNumber;
+    private String education;
+    private String certifications;
+    private String experience;
+    private boolean activeStatus;
+    private String specialty;
+    private String licenseNumber;
+
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY)
+    private Set<Appointment> appointment = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "ward_id")
+    private Ward ward;
+}

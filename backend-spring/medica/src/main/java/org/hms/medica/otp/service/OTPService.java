@@ -1,7 +1,7 @@
 package org.hms.medica.otp.service;
 
 import lombok.AllArgsConstructor;
-import org.hms.medica.EmailService.EmailService;
+import org.hms.medica.email.service.EmailService;
 import org.hms.medica.otp.model.OTP;
 import org.hms.medica.otp.model.OTPRepository;
 import org.hms.medica.user.model.User;
@@ -44,18 +44,14 @@ public class OTPService {
     }
 
     public boolean verifyOTP(String otp) {
-        Optional<OTP> otpEntityOptional = otpRepository.findByOtp(otp);
-        if (otpEntityOptional.isPresent()) {
-            OTP otpEntity = otpEntityOptional.get();
+        OTP otpEntity = getOTP(otp);
 
-            // Check if OTP is expired
-            LocalDateTime expirationTime = otpEntity.getCreatedAt().plusMinutes(10); // Assuming OTP expires after 10
-            // minutes
-            LocalDateTime currentTime = LocalDateTime.now();
+        // Check if OTP is expired
+        LocalDateTime expirationTime = otpEntity.getCreatedAt().plusMinutes(10); // Assuming OTP expires after 10
+        // minutes
+        LocalDateTime currentTime = LocalDateTime.now();
 
-            return !currentTime.isAfter(expirationTime);
-        }
-        return false; // OTP not found
+        return !currentTime.isAfter(expirationTime);
     }
 
     public void sendOTPEmail(String email, String otp) {

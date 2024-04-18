@@ -4,7 +4,6 @@ package org.hms.medica.user.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Null;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hms.medica.auth.model.Role;
@@ -43,13 +42,9 @@ public class User {
     @Column(name = "date_of_birth")
     private LocalDate dob;
 
-//    @NotEmpty(message = "Address cannot be Empty")
-//    @NotNull(message = "Address cannot be Null")
     @Column(nullable = true)
     private String address;
 
-//    @NotEmpty(message = "Phone cannot be Empty")
-//    @NotNull(message = "Phone cannot be Null")
     private String phone;
 
     @NotEmpty(message = "Email cannot be Empty")
