@@ -9,18 +9,14 @@ import org.hms.medica.auth.dto.AuthenticationResponse;
 import org.hms.medica.auth.dto.RegisterRequest;
 import org.hms.medica.auth.dto.ResetPassword;
 import org.hms.medica.auth.service.AuthService;
-import org.hms.medica.otp.model.OTP;
-import org.hms.medica.otp.model.OTPRepository;
 import org.hms.medica.otp.service.OTPService;
-import org.hms.medica.user.model.User;
-import org.hms.medica.user.repo.UserRepository;
+import org.hms.medica.user.dto.UserRequestDto;
+import org.hms.medica.user.dto.UserResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.Optional;
 
 @RestController
 @AllArgsConstructor
@@ -73,6 +69,12 @@ public class AuthController {
         boolean isReset = authService.resetPassword(resetPassword);
         return ResponseEntity.status(isReset ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
                 .body(isReset ? "Password Reset Successfully": "Invalid Otp");
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto userDto) {
+        log.info(userDto.toString());
+        return ResponseEntity.status(HttpStatus.OK).body(authService.updateUser(userDto));
     }
 
 }

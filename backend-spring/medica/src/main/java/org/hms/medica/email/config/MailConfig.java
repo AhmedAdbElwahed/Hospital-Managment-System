@@ -1,4 +1,4 @@
-package org.hms.medica.auth.service;
+package org.hms.medica.email.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

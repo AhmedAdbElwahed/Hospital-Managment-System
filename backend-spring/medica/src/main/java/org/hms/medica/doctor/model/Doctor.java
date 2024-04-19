@@ -16,9 +16,12 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Doctor extends User {
+public class Doctor {
 
-    private String phoneNumber;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     private String education;
     private String certifications;
     private String experience;
@@ -32,4 +35,8 @@ public class Doctor extends User {
     @ManyToOne
     @JoinColumn(name = "ward_id")
     private Ward ward;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

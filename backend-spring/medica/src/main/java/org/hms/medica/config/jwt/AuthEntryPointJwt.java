@@ -1,4 +1,4 @@
-package org.hms.medica.config;
+package org.hms.medica.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;

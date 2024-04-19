@@ -13,11 +13,18 @@ import org.hms.medica.auth.dto.ResetPassword;
 import org.hms.medica.auth.model.Token;
 import org.hms.medica.auth.reop.RoleRepository;
 import org.hms.medica.auth.reop.TokenRepository;
-import org.hms.medica.config.JwtService;
+import org.hms.medica.config.jwt.JwtService;
 import org.hms.medica.constants.TokenType;
+import org.hms.medica.doctor.model.Doctor;
+import org.hms.medica.doctor.repo.DoctorRepository;
 import org.hms.medica.otp.model.OTP;
 import org.hms.medica.otp.service.OTPService;
+import org.hms.medica.patient.model.Patient;
+import org.hms.medica.patient.repo.PatientRepository;
+import org.hms.medica.user.dto.UserRequestDto;
+import org.hms.medica.user.dto.UserResponseDto;
 import org.hms.medica.user.impl.UserDetailsImpl;
+import org.hms.medica.user.mapper.UserMapper;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.repo.UserRepository;
 import org.springframework.http.HttpHeaders;
@@ -46,7 +53,10 @@ public class AuthService {
     private AuthenticationManager authenticationManager;
     private TokenRepository tokenRepository;
     private RoleRepository roleRepository;
+    private DoctorRepository doctorRepository;
+    private PatientRepository patientRepository;
     private OTPService otpService;
+    private UserMapper userMapper;
 
     public void register(RegisterRequest registerRequest) {
 
@@ -67,6 +77,22 @@ public class AuthService {
 
         // Save user
         userRepository.save(user);
+
+        // I am not so sure about this implementation
+        switch (role.getName()) {
+            case "ROLE_DOCTOR" -> {
+                Doctor doctor = new Doctor();
+                doctor.setUser(user);
+                doctorRepository.save(doctor);
+                log.info("Doctor has been created");
+            }
+            case "ROLE_PATIENT" -> {
+                Patient patient = new Patient();
+                patient.setUser(user);
+                patientRepository.save(patient);
+                log.info("Doctor has been created");
+            }
+        }
 
         // Store OTP in database
         OTP otpEntity = otpService.crateOTP(user);
@@ -189,19 +215,16 @@ public class AuthService {
     }
 
     @Transactional
-    public boolean updateUser(User userUpdate) {
+    public UserResponseDto updateUser(UserRequestDto userUpdate) {
         User user = userRepository.findUserByEmail(userUpdate.getEmail()).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("User %s not found!", userUpdate.getEmail())));
-        if (user != null) {
             user.setFirstname(userUpdate.getFirstname());
             user.setLastname(userUpdate.getLastname());
             user.setDob(userUpdate.getDob());
             user.setAddress(userUpdate.getAddress());
             user.setGender(userUpdate.getGender());
             userRepository.save(user);
-            return true;
-        }
-        return false;
+            return userMapper.userMap(user);
     }
 
     @Transactional

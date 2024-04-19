@@ -1,4 +1,4 @@
-package org.hms.medica.config;
+package org.hms.medica.config.jwt;
 
 
 import jakarta.servlet.FilterChain;
