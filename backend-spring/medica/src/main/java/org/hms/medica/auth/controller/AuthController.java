@@ -11,6 +11,7 @@ import org.hms.medica.auth.dto.ResetPassword;
 import org.hms.medica.auth.service.AuthService;
 import org.hms.medica.otp.model.OTP;
 import org.hms.medica.otp.model.OTPRepository;
+import org.hms.medica.otp.service.OTPService;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.repo.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import java.util.Optional;
 public class AuthController {
 
     private AuthService authService;
+    private OTPService otpService;
 
     @PostMapping("/register")
     public ResponseEntity<Void> register(@RequestBody RegisterRequest registerRequest) {
@@ -51,6 +53,13 @@ public class AuthController {
        boolean isActivated =  authService.activateAccount(otp);
         return ResponseEntity.status(isActivated ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
                 .body(isActivated ? "Account Activated Successfully": "Invalid Otp");
+    }
+
+    @GetMapping("/verify-otp/{otp}")
+    public ResponseEntity<String> verifyOtp(@PathVariable(name = "otp") String otp) {
+        boolean isValid = otpService.verifyOTP(otp);
+        return ResponseEntity.status(isValid ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                .body(isValid ? "Valid Otp": "Invalid Otp");
     }
 
     @PostMapping("/password/reset/request")

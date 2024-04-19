@@ -86,10 +86,9 @@ public class AuthService {
 
     // Add this method to AuthService
     public boolean resetPassword(ResetPassword resetPassword) {
-        if (otpService.verifyOTP(resetPassword.getOtp())){
-            User user = userRepository.findUserByEmail(resetPassword.getEmail()).orElseThrow(() ->
-                    new UsernameNotFoundException("User not found!"));
-
+        User user = userRepository.findUserByEmail(resetPassword.getEmail()).orElseThrow(() ->
+                new UsernameNotFoundException("User not found!"));
+        if (user != null) {
             // Update user's password
             user.setPassword(passwordEncoder.encode(resetPassword.getNewPassword()));
             userRepository.save(user);
@@ -110,7 +109,6 @@ public class AuthService {
     }
 
 
-
     public boolean activateAccount(String otp) {
         if (otpService.verifyOTP(otp)) {
             User user = otpService.getOTP(otp).getUser();
@@ -124,7 +122,6 @@ public class AuthService {
         }
         return false;
     }
-
 
 
     private void revokeAllUserTokens(User user) {
@@ -196,17 +193,25 @@ public class AuthService {
         User user = userRepository.findUserByEmail(userUpdate.getEmail()).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("User %s not found!", userUpdate.getEmail())));
         if (user != null) {
-                user.setFirstname(userUpdate.getFirstname());
-                user.setLastname(userUpdate.getLastname());
-                user.setDob(userUpdate.getDob());
-                user.setAddress(userUpdate.getAddress());
-                user.setGender(userUpdate.getGender());
+            user.setFirstname(userUpdate.getFirstname());
+            user.setLastname(userUpdate.getLastname());
+            user.setDob(userUpdate.getDob());
+            user.setAddress(userUpdate.getAddress());
+            user.setGender(userUpdate.getGender());
             userRepository.save(user);
             return true;
         }
         return false;
     }
 
-//    @Transactional
-//    public boolean deleteUser(String email) {}
+    @Transactional
+    public boolean deleteUser(String email) {
+        User user = userRepository.findUserByEmail(email).orElseThrow(() ->
+                new UsernameNotFoundException("User Not Found!"));
+        if (user != null) {
+            userRepository.delete(user);
+            return true;
+        }
+        return false;
+    }
 }
