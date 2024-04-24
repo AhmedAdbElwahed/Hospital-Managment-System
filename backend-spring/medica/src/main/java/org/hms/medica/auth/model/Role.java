@@ -1,5 +1,6 @@
 package org.hms.medica.auth.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +25,11 @@ public class Role {
 
     private String name;
 
+    @JsonIgnoreProperties("roles")
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;
 
+    @JsonIgnoreProperties("privileges")
     @ManyToMany
     @JoinTable(
             name = "roles_privileges",

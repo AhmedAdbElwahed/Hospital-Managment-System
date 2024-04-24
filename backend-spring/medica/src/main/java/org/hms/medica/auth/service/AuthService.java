@@ -38,8 +38,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.print.Doc;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -60,46 +62,46 @@ public class AuthService {
 
     public void register(RegisterRequest registerRequest) {
 
-        // Create user object
-        User user = User.builder()
-                .firstname(registerRequest.getFirstname())
-                .lastname(registerRequest.getLastname())
-                .password(passwordEncoder.encode(registerRequest.getPassword()))
-                .email(registerRequest.getEmail())
-                .is_enabled(false) // Set user as not enabled until email is verified
-                .create_at(LocalDateTime.now())
-                .build();
-
         // Assign role
         var role = roleRepository.getRoleByName(registerRequest.getRole())
                 .orElseThrow(() -> new RuntimeException(String.format("Role %s not found", registerRequest.getRole())));
-        user.setRoles(Set.of(role));
+//        User user = null;
 
-        // Save user
-        userRepository.save(user);
-
-        // I am not so sure about this implementation
         switch (role.getName()) {
             case "ROLE_DOCTOR" -> {
-                Doctor doctor = new Doctor();
-                doctor.setUser(user);
-                doctorRepository.save(doctor);
-                log.info("Doctor has been created");
+                Doctor user = new Doctor();
+                user.setFirstname(registerRequest.getFirstname());
+                user.setLastname(registerRequest.getLastname());
+                user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+                user.setEmail(registerRequest.getEmail());
+                user.setIs_enabled(false); // Set user as not enabled until email is verified
+                user.setCreate_at(LocalDateTime.now());
+                user.setRoles(Set.of(role));
+                userRepository.save(user);
+                OTP otpEntity = otpService.crateOTP(user);
+
+                // Generate and send OTP
+                otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
+
             }
             case "ROLE_PATIENT" -> {
-                Patient patient = new Patient();
-                patient.setUser(user);
-                patientRepository.save(patient);
-                log.info("Doctor has been created");
+                Patient user = new Patient();
+                user.setFirstname(registerRequest.getFirstname());
+                user.setLastname(registerRequest.getLastname());
+                user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+                user.setEmail(registerRequest.getEmail());
+                user.setIs_enabled(false); // Set user as not enabled until email is verified
+                user.setCreate_at(LocalDateTime.now());
+                user.setRoles(Set.of(role));
+                userRepository.save(user);
+                OTP otpEntity = otpService.crateOTP(user);
+
+                // Generate and send OTP
+                otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
             }
         }
-
-        // Store OTP in database
-        OTP otpEntity = otpService.crateOTP(user);
-
-        // Generate and send OTP
-        otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
     }
+
 
     public void requestPasswordReset(String email) {
         User user = userRepository.findUserByEmail(email).orElseThrow(() ->
@@ -214,27 +216,31 @@ public class AuthService {
         }
     }
 
-    @Transactional
-    public UserResponseDto updateUser(UserRequestDto userUpdate) {
-        User user = userRepository.findUserByEmail(userUpdate.getEmail()).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("User %s not found!", userUpdate.getEmail())));
-            user.setFirstname(userUpdate.getFirstname());
-            user.setLastname(userUpdate.getLastname());
-            user.setDob(userUpdate.getDob());
-            user.setAddress(userUpdate.getAddress());
-            user.setGender(userUpdate.getGender());
-            userRepository.save(user);
-            return userMapper.userMap(user);
-    }
+//    @Transactional
+//    public UserResponseDto updateUser(UserRequestDto userUpdate) {
+//        User user = userRepository.findUserByEmail(userUpdate.getEmail()).orElseThrow(() ->
+//                new UsernameNotFoundException(String.format("User %s not found!", userUpdate.getEmail())));
+//            user.setFirstname(userUpdate.getFirstname());
+//            user.setLastname(userUpdate.getLastname());
+//            user.setDob(userUpdate.getDob());
+//            user.setAddress(userUpdate.getAddress());
+//            user.setGender(userUpdate.getGender());
+//            userRepository.save(user);
+//            return userMapper.userMapToDto(user);
+//    }
 
     @Transactional
-    public boolean deleteUser(String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() ->
+    public boolean deleteUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(() ->
                 new UsernameNotFoundException("User Not Found!"));
         if (user != null) {
             userRepository.delete(user);
             return true;
         }
         return false;
+    }
+
+    public List<UserResponseDto> getAllUsers() {
+        return userRepository.findAll().stream().map(userMapper::userMapToDto).toList();
     }
 }

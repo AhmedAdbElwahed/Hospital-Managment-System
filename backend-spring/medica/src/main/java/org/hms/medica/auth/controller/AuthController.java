@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -58,6 +59,12 @@ public class AuthController {
                 .body(isValid ? "Valid Otp": "Invalid Otp");
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponseDto>> retrieveAllUsers() {
+        return ResponseEntity.status(HttpStatus.valueOf(200)).body(authService.getAllUsers());
+    }
+
+
     @PostMapping("/password/reset/request")
     public ResponseEntity<String> requestPasswordReset(@RequestParam(name = "email") String email) {
         authService.requestPasswordReset(email);
@@ -71,10 +78,17 @@ public class AuthController {
                 .body(isReset ? "Password Reset Successfully": "Invalid Otp");
     }
 
-    @PatchMapping("/update")
-    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto userDto) {
-        log.info(userDto.toString());
-        return ResponseEntity.status(HttpStatus.OK).body(authService.updateUser(userDto));
+//    @PatchMapping("user/update")
+//    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto userDto) {
+//        log.info(userDto.toString());
+//        return ResponseEntity.status(HttpStatus.OK).body(authService.updateUser(userDto));
+//    }
+
+    @DeleteMapping("/user/delete/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id) {
+        boolean isDeleted = authService.deleteUser(id);
+        return ResponseEntity.status(isDeleted ? HttpStatus.OK: HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(isDeleted ? "User is Deleted Successfully!": "An Error Occurred!!");
     }
 
 }

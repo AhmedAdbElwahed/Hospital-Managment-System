@@ -1,6 +1,7 @@
 package org.hms.medica.user.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -22,10 +23,11 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "`user`")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotEmpty(message = "Firstname cannot be Empty")
@@ -62,6 +64,7 @@ public class User {
     @Column(columnDefinition = "boolean default false")
     private Boolean is_enabled;
 
+    @JsonIgnoreProperties("roles")
     @ManyToMany
     @JoinTable(
             name = "users_roles",
