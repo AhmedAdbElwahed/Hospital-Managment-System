@@ -20,6 +20,6 @@ public class Privilege {
     private String name;
 
     @JsonIgnoreProperties("privileges")
-    @ManyToMany(mappedBy = "privileges")
+    @ManyToMany(mappedBy = "privileges", fetch = FetchType.LAZY)
     private Collection<Role> roles;
 }

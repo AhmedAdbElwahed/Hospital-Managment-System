@@ -1,6 +1,7 @@
 package org.hms.medica.user.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -65,7 +66,8 @@ public class User {
     private Boolean is_enabled;
 
     @JsonIgnoreProperties("roles")
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(
