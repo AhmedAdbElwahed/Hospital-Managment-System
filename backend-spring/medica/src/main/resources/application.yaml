@@ -1,23 +1,23 @@
 spring:
   datasource:
     username: postgres
-    password: Ahmed@2252300
+    password: Ab01015422609
     url: jdbc:postgresql://localhost:5432/medica
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
     show-sql: true
 
   mail:
-    host: sandbox.smtp.mailtrap.io
+    host: "sandbox.smtp.mailtrap.io"
     port: 587
-    username: 2959fded7d01f6
-    password: 42824902bffe5e
+    username: e4c14b465e17c9
+    password: 20a5e21194e391
     protocol: smtp
     properties:
       mail:

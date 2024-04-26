@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hms.medica.baseEntity.BaseEntity;
+import org.hms.medica.baseEntity.AuditedEntity;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.patient.model.Patient;
 
@@ -14,7 +14,7 @@ import org.hms.medica.patient.model.Patient;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Diagnosis extends BaseEntity {
+public class Diagnosis extends AuditedEntity {
 
     private String details;
 
