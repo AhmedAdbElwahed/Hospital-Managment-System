@@ -25,19 +25,70 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (alreadySetup) return;
-        Privilege readPrivilege
-                = createPrivilegeIfNotFound("READ");
-        Privilege writePrivilege
-                = createPrivilegeIfNotFound("WRITE");
-        Privilege updatePrivilege
-                = createPrivilegeIfNotFound("UPDATE");
-        Privilege deletePrivilege
-                = createPrivilegeIfNotFound("DELETE");
-        List<Privilege> privileges = Arrays.asList(readPrivilege, writePrivilege, updatePrivilege, deletePrivilege);
-        createRoleIfNotFound("ROLE_ADMIN", privileges);
-        createRoleIfNotFound("ROLE_DOCTOR", privileges);
-        createRoleIfNotFound("ROLE_PATIENT", privileges);
-        createRoleIfNotFound("ROLE_USER", privileges);
+        Privilege readAppointentPrivilege
+                = createPrivilegeIfNotFound("READ_APPOINTMENT");
+        Privilege writeAppointentPrivilege
+                = createPrivilegeIfNotFound("WRITE_APPOINTMENT");
+        Privilege updateAppointentPrivilege
+                = createPrivilegeIfNotFound("UPDATE_APPOINTMENT");
+        Privilege deleteAppointentPrivilege
+                = createPrivilegeIfNotFound("DELETE_APPOINTMENT");
+
+
+        Privilege readDoctorPrivilege
+                = createPrivilegeIfNotFound("READ_DOCTOR");
+        Privilege writeDoctorPrivilege
+                = createPrivilegeIfNotFound("WRITE_DOCTOR");
+        Privilege updateDoctorPrivilege
+                = createPrivilegeIfNotFound("UPDATE_DOCTOR");
+        Privilege deleteDoctorPrivilege
+                = createPrivilegeIfNotFound("DELETE_DOCTOR");
+
+        Privilege readPatientPrivilege
+                = createPrivilegeIfNotFound("READ_DOCTOR");
+        Privilege writePatientPrivilege
+                = createPrivilegeIfNotFound("WRITE_DOCTOR");
+        Privilege updatePatientPrivilege
+                = createPrivilegeIfNotFound("UPDATE_DOCTOR");
+        Privilege deletePatientPrivilege
+                = createPrivilegeIfNotFound("DELETE_DOCTOR");
+        List<Privilege> AdminPrivileges = Arrays.asList(
+                writePatientPrivilege,
+                writeDoctorPrivilege,
+                writeAppointentPrivilege,
+                readDoctorPrivilege,
+                readPatientPrivilege,
+                readAppointentPrivilege,
+                updateDoctorPrivilege,
+                updatePatientPrivilege,
+                updateAppointentPrivilege,
+                deleteDoctorPrivilege,
+                deletePatientPrivilege,
+                deleteAppointentPrivilege
+                );
+
+
+        List<Privilege> doctorPrivileges = Arrays.asList(
+                readAppointentPrivilege,
+                readDoctorPrivilege,
+                updateDoctorPrivilege,
+                readPatientPrivilege,
+                updateAppointentPrivilege,
+                writeAppointentPrivilege,
+                deleteAppointentPrivilege
+                );
+
+        List<Privilege> patientPrivileges = Arrays.asList(
+                readPatientPrivilege,
+                updatePatientPrivilege,
+                writePatientPrivilege,
+                readAppointentPrivilege,
+                writeAppointentPrivilege,
+                deleteAppointentPrivilege);
+        createRoleIfNotFound("ROLE_ADMIN", AdminPrivileges);
+        createRoleIfNotFound("ROLE_DOCTOR", doctorPrivileges);
+        createRoleIfNotFound("ROLE_PATIENT", patientPrivileges);
+//        createRoleIfNotFound("ROLE_USER", null);
 
         alreadySetup = true;
     }
