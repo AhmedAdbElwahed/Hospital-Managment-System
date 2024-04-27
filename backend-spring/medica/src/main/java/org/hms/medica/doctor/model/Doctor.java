@@ -15,14 +15,11 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Doctor extends User{
+public class Doctor extends User {
 
-<<<<<<< HEAD
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-=======
->>>>>>> 1e9b987a90de025dbc56f7ea5b4b488d3e2e9ca1
 
   private String education;
   private String certifications;
@@ -39,15 +36,4 @@ public class Doctor extends User{
   @ManyToOne
   @JoinColumn(name = "ward_id")
   private Ward ward;
-
-<<<<<<< HEAD
-  @OneToOne
-  @JoinColumn(name = "user_id")
-  private User user;
 }
-=======
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-}
->>>>>>> 1e9b987a90de025dbc56f7ea5b4b488d3e2e9ca1

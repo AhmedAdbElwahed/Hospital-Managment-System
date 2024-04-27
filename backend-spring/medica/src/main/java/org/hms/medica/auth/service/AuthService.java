@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +24,6 @@ import org.hms.medica.otp.model.OTP;
 import org.hms.medica.otp.service.OTPService;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.repo.PatientRepository;
-import org.hms.medica.user.dto.UserRequestDto;
 import org.hms.medica.user.dto.UserResponseDto;
 import org.hms.medica.user.impl.UserDetailsImpl;
 import org.hms.medica.user.mapper.UserMapper;
@@ -39,15 +40,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-<<<<<<< HEAD
-=======
-import javax.print.Doc;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-
->>>>>>> 1e9b987a90de025dbc56f7ea5b4b488d3e2e9ca1
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -66,17 +58,6 @@ public class AuthService {
 
   public void register(RegisterRequest registerRequest) {
 
-<<<<<<< HEAD
-    // Create user object
-    User user =
-        User.builder()
-            .firstname(registerRequest.getFirstname())
-            .lastname(registerRequest.getLastname())
-            .password(passwordEncoder.encode(registerRequest.getPassword()))
-            .email(registerRequest.getEmail())
-            .is_enabled(false) // Set user as not enabled until email is verified
-            .build();
-
     // Assign role
     var role =
         roleRepository
@@ -85,32 +66,40 @@ public class AuthService {
                 () ->
                     new RuntimeException(
                         String.format("Role %s not found", registerRequest.getRole())));
-    user.setRoles(Set.of(role));
+    //        User user = null;
 
-    // Save user
-    userRepository.save(user);
-
-    // I am not so sure about this implementation
     switch (role.getName()) {
       case "ROLE_DOCTOR" -> {
-        Doctor doctor = new Doctor();
-        doctor.setUser(user);
-        doctorRepository.save(doctor);
-        log.info("Doctor has been created");
+        Doctor user = new Doctor();
+        user.setFirstname(registerRequest.getFirstname());
+        user.setLastname(registerRequest.getLastname());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setEmail(registerRequest.getEmail());
+        user.setIs_enabled(false); // Set user as not enabled until email is verified
+        user.setCreate_at(LocalDateTime.now());
+        user.setRoles(Set.of(role));
+        userRepository.save(user);
+        OTP otpEntity = otpService.crateOTP(user);
+
+        // Generate and send OTP
+        otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
       }
       case "ROLE_PATIENT" -> {
-        Patient patient = new Patient();
-        patient.setUser(user);
-        patientRepository.save(patient);
-        log.info("Doctor has been created");
+        Patient user = new Patient();
+        user.setFirstname(registerRequest.getFirstname());
+        user.setLastname(registerRequest.getLastname());
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+        user.setEmail(registerRequest.getEmail());
+        user.setIs_enabled(false); // Set user as not enabled until email is verified
+        user.setCreate_at(LocalDateTime.now());
+        user.setRoles(Set.of(role));
+        userRepository.save(user);
+        OTP otpEntity = otpService.crateOTP(user);
+
+        // Generate and send OTP
+        otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
       }
     }
-
-    // Store OTP in database
-    OTP otpEntity = otpService.crateOTP(user);
-
-    // Generate and send OTP
-    otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
   }
 
   public void requestPasswordReset(String email) {
@@ -137,55 +126,6 @@ public class AuthService {
       user.setPassword(passwordEncoder.encode(resetPassword.getNewPassword()));
       userRepository.save(user);
       return true;
-=======
-        // Assign role
-        var role = roleRepository.getRoleByName(registerRequest.getRole())
-                .orElseThrow(() -> new RuntimeException(String.format("Role %s not found", registerRequest.getRole())));
-//        User user = null;
-
-        switch (role.getName()) {
-            case "ROLE_DOCTOR" -> {
-                Doctor user = new Doctor();
-                user.setFirstname(registerRequest.getFirstname());
-                user.setLastname(registerRequest.getLastname());
-                user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-                user.setEmail(registerRequest.getEmail());
-                user.setIs_enabled(false); // Set user as not enabled until email is verified
-                user.setCreate_at(LocalDateTime.now());
-                user.setRoles(Set.of(role));
-                userRepository.save(user);
-                OTP otpEntity = otpService.crateOTP(user);
-
-                // Generate and send OTP
-                otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
-
-            }
-            case "ROLE_PATIENT" -> {
-                Patient user = new Patient();
-                user.setFirstname(registerRequest.getFirstname());
-                user.setLastname(registerRequest.getLastname());
-                user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-                user.setEmail(registerRequest.getEmail());
-                user.setIs_enabled(false); // Set user as not enabled until email is verified
-                user.setCreate_at(LocalDateTime.now());
-                user.setRoles(Set.of(role));
-                userRepository.save(user);
-                OTP otpEntity = otpService.crateOTP(user);
-
-                // Generate and send OTP
-                otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
-            }
-        }
-    }
-
-
-    public void requestPasswordReset(String email) {
-        User user = userRepository.findUserByEmail(email).orElseThrow(() ->
-                new UsernameNotFoundException(String.format("user with email: %s not found!", email)));
-        OTP otpEntity = otpService.crateOTP(user);
-        // Send OTP via email
-        otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
->>>>>>> 1e9b987a90de025dbc56f7ea5b4b488d3e2e9ca1
     }
     return false;
   }
@@ -293,30 +233,25 @@ public class AuthService {
     }
   }
 
-  @Transactional
-  public UserResponseDto updateUser(UserRequestDto userUpdate) {
-    User user =
-        userRepository
-            .findUserByEmail(userUpdate.getEmail())
-            .orElseThrow(
-                () ->
-                    new UsernameNotFoundException(
-                        String.format("User %s not found!", userUpdate.getEmail())));
-    user.setFirstname(userUpdate.getFirstname());
-    user.setLastname(userUpdate.getLastname());
-    user.setDob(userUpdate.getDob());
-    user.setAddress(userUpdate.getAddress());
-    user.setGender(userUpdate.getGender());
-    userRepository.save(user);
-    return userMapper.userMap(user);
-  }
+  //    @Transactional
+  //    public UserResponseDto updateUser(UserRequestDto userUpdate) {
+  //        User user = userRepository.findUserByEmail(userUpdate.getEmail()).orElseThrow(() ->
+  //                new UsernameNotFoundException(String.format("User %s not found!",
+  // userUpdate.getEmail())));
+  //            user.setFirstname(userUpdate.getFirstname());
+  //            user.setLastname(userUpdate.getLastname());
+  //            user.setDob(userUpdate.getDob());
+  //            user.setAddress(userUpdate.getAddress());
+  //            user.setGender(userUpdate.getGender());
+  //            userRepository.save(user);
+  //            return userMapper.userMapToDto(user);
+  //    }
 
-<<<<<<< HEAD
   @Transactional
-  public boolean deleteUser(String email) {
+  public boolean deleteUser(Long id) {
     User user =
         userRepository
-            .findUserByEmail(email)
+            .findById(id)
             .orElseThrow(() -> new UsernameNotFoundException("User Not Found!"));
     if (user != null) {
       userRepository.delete(user);
@@ -324,61 +259,8 @@ public class AuthService {
     }
     return false;
   }
-=======
-    public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String jwtRefreshToken;
-        final String userEmail;
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            return;
-        }
-        jwtRefreshToken = authHeader.substring(7);
-        userEmail = jwtService.extractUsername(jwtRefreshToken);
-        if (userEmail != null) {
-            var user = this.userRepository.findUserByEmail(userEmail).orElseThrow(
-                    () -> new UsernameNotFoundException(String.format("user with this email %s not found", userEmail)));
-            // var isTokenValid = tokenRepository.findByToken(jwtRefreshToken)
-            // .map((token) -> !token.getExpired() && !token.getRevoked())
-            // .orElse(false);
-            if (jwtService.validateJwtToken(jwtRefreshToken, createUserDetails(user))) {
-                var jwtAccessToken = jwtService.generateJwtToken(createUserDetails(user));
-                revokeAllUserTokens(user);
-                saveUserToken(user, jwtAccessToken);
-                var authResponse = AuthenticationResponse.builder()
-                        .accessToken(jwtAccessToken)
-                        .refreshToken(jwtRefreshToken)
-                        .build();
-                new ObjectMapper().writeValue(response.getOutputStream(), authResponse);
-            }
-        }
-    }
 
-//    @Transactional
-//    public UserResponseDto updateUser(UserRequestDto userUpdate) {
-//        User user = userRepository.findUserByEmail(userUpdate.getEmail()).orElseThrow(() ->
-//                new UsernameNotFoundException(String.format("User %s not found!", userUpdate.getEmail())));
-//            user.setFirstname(userUpdate.getFirstname());
-//            user.setLastname(userUpdate.getLastname());
-//            user.setDob(userUpdate.getDob());
-//            user.setAddress(userUpdate.getAddress());
-//            user.setGender(userUpdate.getGender());
-//            userRepository.save(user);
-//            return userMapper.userMapToDto(user);
-//    }
-
-    @Transactional
-    public boolean deleteUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() ->
-                new UsernameNotFoundException("User Not Found!"));
-        if (user != null) {
-            userRepository.delete(user);
-            return true;
-        }
-        return false;
-    }
-
-    public List<UserResponseDto> getAllUsers() {
-        return userRepository.findAll().stream().map(userMapper::userMapToDto).toList();
-    }
->>>>>>> 1e9b987a90de025dbc56f7ea5b4b488d3e2e9ca1
+  public List<UserResponseDto> getAllUsers() {
+    return userRepository.findAll().stream().map(userMapper::userMapToDto).toList();
+  }
 }
