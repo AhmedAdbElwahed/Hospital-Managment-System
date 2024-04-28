@@ -1,5 +1,6 @@
 package org.hms.medica.appointment.service;
 
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 import org.hms.medica.appointment.exception.AppointmentAlreadyScheduledException;
 import org.hms.medica.appointment.exception.InvalidAppointmentTimeSlot;
@@ -10,8 +11,6 @@ import org.hms.medica.user.model.User;
 import org.hms.medica.user.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalTime;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,10 @@ public class AppointmentValidator {
 
     appointmentRepository
         .findByPatientIdAndStartDateTime(user.getId(), appointment.getStartDateTime())
-        .orElseThrow(() -> new AppointmentAlreadyScheduledException(appointment));
+        .ifPresent(
+            appointment1 -> {
+              throw new AppointmentAlreadyScheduledException(appointment1);
+            });
   }
 
   private void validateAppointmentDateTime(Appointment appointment) {
@@ -41,8 +43,8 @@ public class AppointmentValidator {
     LocalTime appointmentStartTime = appointment.getStartDateTime().toLocalTime();
     boolean validMinute =
         appointmentStartTime.getMinute() == 0 || appointmentStartTime.getMinute() == 30;
-    if (startTime.isAfter(appointmentStartTime.minusMinutes(30))
-        || endTime.isBefore(appointmentStartTime.plusMinutes(30))
+    if (startTime.isAfter(appointmentStartTime.minusMinutes(20))
+        || endTime.isBefore(appointmentStartTime.plusMinutes(20))
         || !validMinute) {
       throw new InvalidAppointmentTimeSlot(appointment);
     }

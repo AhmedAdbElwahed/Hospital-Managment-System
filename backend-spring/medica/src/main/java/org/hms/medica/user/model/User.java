@@ -6,10 +6,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Collection;
 import lombok.*;
 import org.hms.medica.auth.model.Role;
+import org.hms.medica.baseEntity.AuditedEntity;
 import org.hms.medica.constants.Gender;
 
 @Getter
@@ -20,7 +20,7 @@ import org.hms.medica.constants.Gender;
 @NoArgsConstructor
 @Table(name = "`user`")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+public class User extends AuditedEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,9 +55,6 @@ public class User {
 
   @Column(columnDefinition = "boolean default false")
   private Boolean is_enabled;
-
-  @Column(columnDefinition = "timestamp default current_timestamp")
-  private LocalDateTime create_at;
 
   @JsonIgnoreProperties("roles")
   @JsonIgnore

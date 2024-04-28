@@ -76,9 +76,8 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEmail(registerRequest.getEmail());
         user.setIs_enabled(false); // Set user as not enabled until email is verified
-        user.setCreate_at(LocalDateTime.now());
         user.setRoles(Set.of(role));
-        userRepository.save(user);
+        doctorRepository.save(user);
         OTP otpEntity = otpService.crateOTP(user);
 
         // Generate and send OTP
@@ -91,9 +90,8 @@ public class AuthService {
         user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
         user.setEmail(registerRequest.getEmail());
         user.setIs_enabled(false); // Set user as not enabled until email is verified
-        user.setCreate_at(LocalDateTime.now());
         user.setRoles(Set.of(role));
-        userRepository.save(user);
+        patientRepository.save(user);
         OTP otpEntity = otpService.crateOTP(user);
 
         // Generate and send OTP
