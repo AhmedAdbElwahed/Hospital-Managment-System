@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    username: postgres
+    password: Ahmed@2252300
+    url: jdbc:postgresql://localhost:5432/medica
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: 2959fded7d01f6
+    password: 42824902bffe5e
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+jwt:
+  secret:
+    key: gzQz0ZfvxCSk5erqGERapQmQJ43mmka5Ub1kyijKYenPyBy18tZrMeUOh/DAjtNC
+    expiration-time: 900000 # 15 minutes
+    refresh-token:
+      expiration-time: 86400000 # 1 day
+
+
+
+
