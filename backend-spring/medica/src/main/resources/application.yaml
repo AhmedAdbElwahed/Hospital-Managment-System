@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: postgres
-    password: Ahmed@2252300
+    password: postgres
     url: jdbc:postgresql://localhost:5432/medica
     driver-class-name: org.postgresql.Driver
 
@@ -14,11 +14,10 @@ spring:
     show-sql: true
 
   mail:
-    host: sandbox.smtp.mailtrap.io
+    host: smtp.gmail.com
+    username: os.omarsalah@gmail.com
     port: 587
-    username: 2959fded7d01f6
-    password: 42824902bffe5e
-    protocol: smtp
+    password: urzmokjzfhbyxzrl
     properties:
       mail:
         smtp:
@@ -26,13 +25,10 @@ spring:
           starttls:
             enable: true
 
+
 jwt:
   secret:
     key: gzQz0ZfvxCSk5erqGERapQmQJ43mmka5Ub1kyijKYenPyBy18tZrMeUOh/DAjtNC
     expiration-time: 86400000 # 1 day
     refresh-token:
       expiration-time: 604800000 # 1 week
-
-
-
-
