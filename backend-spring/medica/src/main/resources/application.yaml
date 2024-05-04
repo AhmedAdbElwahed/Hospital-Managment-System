@@ -29,9 +29,9 @@ spring:
 jwt:
   secret:
     key: gzQz0ZfvxCSk5erqGERapQmQJ43mmka5Ub1kyijKYenPyBy18tZrMeUOh/DAjtNC
-    expiration-time: 900000 # 15 minutes
+    expiration-time: 86400000 # 1 day
     refresh-token:
-      expiration-time: 86400000 # 1 day
+      expiration-time: 604800000 # 1 week
 
 
 
