@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hms.medica.baseEntity.BaseEntity;
+import org.hms.medica.baseEntity.AuditedEntity;
 import org.hms.medica.constants.AdmissionType;
 import org.hms.medica.diagnoses.model.Diagnosis;
 import org.hms.medica.patient.model.Patient;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Admission extends BaseEntity {
+public class Admission extends AuditedEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

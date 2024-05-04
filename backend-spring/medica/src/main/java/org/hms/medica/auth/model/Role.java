@@ -1,5 +1,7 @@
 package org.hms.medica.auth.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,10 +26,13 @@ public class Role {
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @JsonIgnoreProperties("roles")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Collection<User> users;
 
-    @ManyToMany
+    @JsonIgnoreProperties("privileges")
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "roles_privileges",
             joinColumns = @JoinColumn(
