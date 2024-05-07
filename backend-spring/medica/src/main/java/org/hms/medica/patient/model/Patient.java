@@ -22,40 +22,38 @@ import java.util.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Patient extends User{
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-    private String insurancePolicyNumber;
-    private BloodType bloodType;
-    private MaritalStatus maritalStatus;
-    private String nationality;
+public class Patient extends User {
 
-    @OneToOne
-    @JoinColumn(name = "patient_history_id")
-    private PatientHistory patientHistory;
+  private String insurancePolicyNumber;
+  private BloodType bloodType;
+  private MaritalStatus maritalStatus;
+  private String nationality;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "patient_medications",
-            joinColumns = @JoinColumn(name = "patient_id"),
-            inverseJoinColumns = @JoinColumn(name = "medication_id"))
-    private Set<Medication> medications = new LinkedHashSet<>();
+  @OneToOne
+  @JoinColumn(name = "patient_history_id")
+  private PatientHistory patientHistory;
 
-    @OneToMany(mappedBy = "patient")
-    private Set<Diagnosis> diagnoses;
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(
+      name = "patient_medications",
+      joinColumns = @JoinColumn(name = "patient_id"),
+      inverseJoinColumns = @JoinColumn(name = "medication_id"))
+  private Set<Medication> medications = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
-    private Set<Admission> admissions = new HashSet<>();
+  @OneToMany(mappedBy = "patient")
+  private Set<Diagnosis> diagnoses;
 
-    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
-    private Set<Appointment> appointment = new HashSet<>();
+  @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+  private Set<Admission> admissions = new HashSet<>();
 
-    @ManyToOne
-    @JoinColumn(name = "ward_id")
-    private Ward ward;
+  @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
+  private Set<Appointment> appointment = new HashSet<>();
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
+  @ManyToOne
+  @JoinColumn(name = "ward_id")
+  private Ward ward;
+
+  //    @OneToOne
+  //    @JoinColumn(name = "user_id")
+  //    private User user;
 }
