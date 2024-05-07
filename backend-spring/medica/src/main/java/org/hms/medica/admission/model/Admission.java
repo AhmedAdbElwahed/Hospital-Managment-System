@@ -1,20 +1,19 @@
-package org.hms.medica.admissions.model;
+package org.hms.medica.admission.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hms.medica.baseEntity.AuditedEntity;
 import org.hms.medica.constants.AdmissionType;
 import org.hms.medica.diagnoses.model.Diagnosis;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.ward.model.Ward;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Admission extends AuditedEntity {
@@ -22,9 +21,6 @@ public class Admission extends AuditedEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime admissionDate;
-
-    // i made the diagnosis String for now
     @OneToOne
     @JoinColumn(name = "diagnosis_out_id")
     private Diagnosis diagnosisOut;

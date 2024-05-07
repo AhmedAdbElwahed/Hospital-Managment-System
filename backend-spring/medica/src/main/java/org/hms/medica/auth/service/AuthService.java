@@ -3,10 +3,6 @@ package org.hms.medica.auth.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hms.medica.auth.dto.AuthenticationRequest;
@@ -14,8 +10,8 @@ import org.hms.medica.auth.dto.AuthenticationResponse;
 import org.hms.medica.auth.dto.RegisterRequest;
 import org.hms.medica.auth.dto.ResetPassword;
 import org.hms.medica.auth.model.Token;
-import org.hms.medica.auth.reop.RoleRepository;
-import org.hms.medica.auth.reop.TokenRepository;
+import org.hms.medica.auth.repo.RoleRepository;
+import org.hms.medica.auth.repo.TokenRepository;
 import org.hms.medica.config.jwt.JwtService;
 import org.hms.medica.constants.TokenType;
 import org.hms.medica.doctor.model.Doctor;
@@ -39,6 +35,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
