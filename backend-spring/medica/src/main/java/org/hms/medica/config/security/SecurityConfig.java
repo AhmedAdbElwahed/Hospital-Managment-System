@@ -45,7 +45,18 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((request) ->
-                        request.requestMatchers(new AntPathRequestMatcher("/hms/v1/auth/**"))
+                        request.requestMatchers(new AntPathRequestMatcher("/hms/v1/auth/**"),
+                                        new AntPathRequestMatcher("/v2/api-docs"),
+                                        new AntPathRequestMatcher("/v3/api-docs"),
+                                        new AntPathRequestMatcher("/v2/api-docs/**"),
+                                        new AntPathRequestMatcher("/swagger-resources"),
+                                        new AntPathRequestMatcher("//swagger-resources/**"),
+                                        new AntPathRequestMatcher("/configuration/ui"),
+                                        new AntPathRequestMatcher("/configuration/security"),
+                                        new AntPathRequestMatcher("/swagger-ui/**"),
+                                        new AntPathRequestMatcher("/swagger-ui.html"),
+                                        new AntPathRequestMatcher("/webjars/**")
+                                        )
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated());

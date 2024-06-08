@@ -56,51 +56,44 @@ public class AuthService {
   private OTPService otpService;
   private UserMapper userMapper;
 
-  public void register(RegisterRequest registerRequest) {
-
-    // Assign role
-    var role =
-        roleRepository
-            .getRoleByName(registerRequest.getRole())
-            .orElseThrow(
-                () ->
+  public void registerDoctor(RegisterRequest registerRequest) {
+    var role = roleRepository.getRoleByName("ROLE_DOCTOR").orElseThrow(
+            () ->
                     new RuntimeException(
-                        String.format("Role %s not found", registerRequest.getRole())));
-    //        User user = null;
+                            String.format("Role %s not found", "ROLE_DOCTOR")));
 
-    switch (role.getName()) {
-      case "ROLE_DOCTOR" -> {
-        Doctor user = new Doctor();
-        user.setFirstname(registerRequest.getFirstname());
-        user.setLastname(registerRequest.getLastname());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setEmail(registerRequest.getEmail());
-        user.setIs_enabled(false); // Set user as not enabled until email is verified
-        user.setCreate_at(LocalDateTime.now());
-        user.setRoles(Set.of(role));
-        userRepository.save(user);
-        OTP otpEntity = otpService.crateOTP(user);
-
-        // Generate and send OTP
-        otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
-      }
-      case "ROLE_PATIENT" -> {
-        Patient user = new Patient();
-        user.setFirstname(registerRequest.getFirstname());
-        user.setLastname(registerRequest.getLastname());
-        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        user.setEmail(registerRequest.getEmail());
-        user.setIs_enabled(false); // Set user as not enabled until email is verified
-        user.setCreate_at(LocalDateTime.now());
-        user.setRoles(Set.of(role));
-        userRepository.save(user);
-        OTP otpEntity = otpService.crateOTP(user);
-
-        // Generate and send OTP
-        otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
-      }
-    }
+    Doctor user = new Doctor();
+    user.setFirstname(registerRequest.getFirstname());
+    user.setLastname(registerRequest.getLastname());
+    user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+    user.setEmail(registerRequest.getEmail());
+    user.setIs_enabled(true); // Set user as not enabled until email is verified
+    user.setCreate_at(LocalDateTime.now());
+    user.setRoles(Set.of(role));
+    userRepository.save(user);
   }
+
+  public void registerPatient(RegisterRequest registerRequest) {
+    var role = roleRepository.getRoleByName("ROLE_PATIENT").orElseThrow(
+            () ->
+                    new RuntimeException(
+                            String.format("Role %s not found", "ROLE_PATIENT")));
+    Patient user = new Patient();
+    user.setFirstname(registerRequest.getFirstname());
+    user.setLastname(registerRequest.getLastname());
+    user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+    user.setEmail(registerRequest.getEmail());
+    user.setIs_enabled(false); // Set user as not enabled until email is verified
+    user.setCreate_at(LocalDateTime.now());
+    user.setRoles(Set.of(role));
+    userRepository.save(user);
+    OTP otpEntity = otpService.crateOTP(user);
+
+    // Generate and send OTP
+    otpService.sendOTPEmail(user.getEmail(), otpEntity.getOtp());
+  }
+
+
 
   public void requestPasswordReset(String email) {
     User user =

@@ -2,12 +2,15 @@ package org.hms.medica.user.impl;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hms.medica.auth.model.Role;
 import org.hms.medica.user.model.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 @Getter
 @Setter
@@ -16,18 +19,19 @@ public class UserDetailsImpl implements UserDetails {
     private String username;
     private String password;
     private Boolean enabled;
-    private Collection<GrantedAuthority> authorities;
+    private Collection<Role> roles;
 
     public UserDetailsImpl(User user) {
         this.username = user.getEmail();
         this.password = user.getPassword();
         this.enabled = user.getIs_enabled();
-        this.authorities = new HashSet<>();
+        this.roles = user.getRoles();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+        return roles.stream().map((role -> new SimpleGrantedAuthority(role.getName())))
+                .toList();
     }
 
     @Override
