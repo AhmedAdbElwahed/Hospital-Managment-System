@@ -23,7 +23,7 @@ export default function Register() {
 
 
             <div className="w-full gap-2 pb-4  bg-[#0e82fd] flex  flex-col items-center justify-start p-2 md:h-[20vh] lg:h-[50vh] md:gap-4" >
-                <img className='w-[25%] md:w-[15%]' src="/logo.png" alt="" />
+                <img className='w-[25%] md:w-[15%]' src="/assets/logo.png" alt="" />
                 <h1 className='  w-full text-center text-4xl font-bold text-white '>
                     Welcome!
                 </h1>

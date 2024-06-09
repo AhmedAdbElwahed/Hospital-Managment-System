@@ -1,25 +1,32 @@
-import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { Login, Register } from '../Auth/index';
+import {  RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Login, Register } from '../auth/index';
 import App from '../App';
-import { useAuth } from '../context/AuthContext';
+import PrivateRoute from "./PrivateRoute";
+import DashboardContainer from "../components/DashboardContainer";
 
 
 export const Router = () => {
 
-    const {accessToken} = useAuth();
+
 
      const router = createBrowserRouter([
         {
             path: "/",
-            element: accessToken != null | undefined ? <App /> : <Navigate to="/auth/login" />
+            element:  <PrivateRoute><App /></PrivateRoute>,
+            children: [
+                {
+                    path: "",
+                    element: <DashboardContainer />
+                }
+            ]
         },
         {
             path: "auth/login",
-            element: accessToken == null | undefined ? <Login /> : <Navigate to="/" />,
+            element:  <Login />
         },
         {
             path: "auth/register",
-            element: accessToken == null | undefined ? <Register /> : <Navigate to="/" />
+            element:  <Register />
         }
     ]);
 
