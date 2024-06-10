@@ -17,16 +17,15 @@ export default function Login() {
     const [open, setOpen] = useState(false);
 
 
-
     useEffect(() => {
         if (userTokens) {
             navigate("/", {replace: true});
         }
-    }, [userTokens]);
+    }, [userTokens, navigate]);
 
     const handleOnSubmit = async (data) => {
         dispatch(loginUser(data));
-        if(error) {
+        if (error) {
             console.log(error);
             setOpen(true);
         } else {
@@ -116,16 +115,16 @@ export default function Login() {
                 <img className='w-[50%]' src="/assets/logo.png" alt=""/>
             </div>
 
-                <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
-                    <Alert
-                        onClose={handleClose}
-                        severity="error"
-                        variant="filled"
-                        sx={{width: '100%'}}
-                    >
-                        <span>{error}</span>
-                    </Alert>
-                </Snackbar>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    severity="error"
+                    variant="filled"
+                    sx={{width: '100%'}}
+                >
+                    <span>{error}</span>
+                </Alert>
+            </Snackbar>
 
         </main>
     )

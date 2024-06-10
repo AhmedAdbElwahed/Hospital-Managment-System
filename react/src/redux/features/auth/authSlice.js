@@ -1,16 +1,16 @@
+// authSlice.js
 import {createSlice} from "@reduxjs/toolkit";
-import {loginUser} from "./authActions";
-
+import {loginUser, logoutUser, refreshTokenRequest} from "./authActions";
 
 const userTokens = localStorage.getItem('userTokens') ?
-    localStorage.getItem('userTokens') : null;
+    JSON.parse(localStorage.getItem('userTokens')) : null;
 
 const initialState = {
     loading: false,
     userTokens,
     error: null,
     success: false
-}
+};
 
 const authSlice = createSlice({
     name: 'auth',
@@ -21,23 +21,26 @@ const authSlice = createSlice({
             .addCase(loginUser.pending, (state, action) => {
                 state.loading = true;
                 state.error = null;
-                console.log("action_type: ", action.type);
             })
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.loading = false;
                 state.success = true;
                 state.userTokens = action.payload;
-                console.log(action.payload);
-                console.log("action_type: ", action.type);
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload;
-                console.log("action_type: ", action.type)
             })
+            .addCase(refreshTokenRequest.fulfilled, (state, action) => {
+                state.userTokens = action.payload;
+            })
+            .addCase(logoutUser.fulfilled, (state) => {
+                state.userTokens = null;
+            })
+            .addCase(logoutUser.rejected, (state, action) => {
+                state.error = action.payload;
+            });
     }
 });
 
 export default authSlice.reducer;
-
-export const selectCurrentToken = (state) => state.auth.accessToken;

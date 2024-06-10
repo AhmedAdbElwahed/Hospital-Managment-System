@@ -1,5 +1,7 @@
 import {configureStore} from "@reduxjs/toolkit";
 import authReducer from '../redux/features/auth/authSlice'
+import {setupAxiosInterceptors} from "../util/axiosApi";
+import {refreshTokenRequest} from "./features/auth/authActions";
 
 const store = configureStore({
     reducer: {
@@ -7,5 +9,5 @@ const store = configureStore({
     },
     devTools: true
 });
-
+setupAxiosInterceptors(store, refreshTokenRequest)
 export default store;

@@ -1,10 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {Itemsasside, Itemsassides} from './as'
-import {Link} from 'react-router-dom'
+import React, {useState} from 'react';
+import {Itemsasside} from './as'
+import {Link, useNavigate} from 'react-router-dom'
+import {useDispatch, useSelector} from "react-redux";
+import {logoutUser} from "../../redux/features/auth/authActions";
+import {Alert, Snackbar} from "@mui/material";
 
 
 export default function Asside({pages, control}) {
     const [items, setItems] = useState(Itemsasside);
+    const dispatch = useDispatch();
+    const {userTokens, error} = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+    const [open, setOpen] = useState(false);
     const [id, setId] = useState(0);
     const updatedItems = (id) => {
         const updatedList = items.map((item) => ({...item, selection: item.id === id,}));
@@ -14,14 +21,29 @@ export default function Asside({pages, control}) {
         return updatedList;
 
     };
+
+    const handleLogout = () => {
+        dispatch(logoutUser({
+            accessToken: userTokens.access_token}));
+        if (error) {
+            setOpen(true);
+        }
+    }
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpen(false);
+    };
     return (
         <div
             className=' z-20 flex left-0  w-[70%] h-full flex-col gap-8 pt-2  bg-white    items-center border border-black fixed md:w-[40%]  lg:left-0 lg:w-[20%]  '>
             <section className='flex text-xl gap-5'>
                 <img className='md:hiden' onClick={control} src="/assets/menue.svg" alt=""/>
                 <div className=' flex gap-1 items-center justify-center'>
-                    <h1 className='text-[#4880FF] font-sans text-2xl font-bold '>Doctor</h1>
-                    <h1 className='text-black font-sans text-2xl font-bold '>Dash</h1>
+                    <h1 className='text-[#4880FF] font-sans text-2xl font-bold '>MED</h1>
+                    <h1 className='text-black font-sans text-2xl font-bold '>ICA</h1>
                     {/*<img className='w-[100px] ' src="logo.png" alt=""*/}
                     {/*     style={{filter: 'invert(37%) sepia(98%) saturate(805%) hue-rotate(198deg) brightness(104%) contrast(101%)'}}/>*/}
 
@@ -67,7 +89,7 @@ export default function Asside({pages, control}) {
                     </div>
                 </div>
 
-                <Link to={'/'} className='w-full  flex'>
+                <button onClick={handleLogout} className='w-full  flex'>
                     <div
                         className={` bg-[#fff]  px-4 py-4 w-full mx-5 cursor-pointer flex items-center gap-5 text-black rounded-lg`}>
                         <svg width="18" height="17" viewBox="0 0 18 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -77,8 +99,19 @@ export default function Asside({pages, control}) {
                         </svg>
                         <p className='text-sm'>Logout</p>
                     </div>
-                </Link>
+                </button>
             </section>
+
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert
+                    onClose={handleClose}
+                    severity="error"
+                    variant="filled"
+                    sx={{width: '100%'}}
+                >
+                    <span>Can not logout, please try again later!!</span>
+                </Alert>
+            </Snackbar>
 
         </div>
     )
