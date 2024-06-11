@@ -7,6 +7,7 @@ import Dashboard from "./dashboard/Dashboard";
 import Appointments from "./appointments/Appointments";
 import Payment from "./payment/Payment";
 import Setting from "./setting/Setting";
+import DoctorView from "./doctor/DoctorView";
 
 
 
@@ -45,6 +46,8 @@ export default function DashboardContainer() {
         {pages === 1 &&
           <Appointments pages={changePages} />
         }
+        {pages === 2 &&
+        <DoctorView pages={changePages}/>}
         {pages === 3 &&
           <Payment pages={changePages} />
         }

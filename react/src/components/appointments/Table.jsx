@@ -3,8 +3,8 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function Table() {
-    const [startdate, setstartdate] = useState(null);
-    const [enddate, setenddate] = useState(null);
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
     return (
         <section className='w-full justify-center flex flex-col gap-5'>
 
@@ -17,8 +17,8 @@ export default function Table() {
                     <div
                         className="max-w-md mx-auto items-center relative border border-gray-300 rounded-lg  cursor-pointer flex">
                         <DatePicker
-                            selected={startdate}
-                            onChange={date => setstartdate(date)}
+                            selected={startDate}
+                            onChange={date => setStartDate(date)}
                             dateFormat="dd/MM/yyyy"
                             showPopperArrow={true}
                             className="block  px-5 py-2   w-full mt-1 outline-none cursor-pointer rounded-lg focus:ring-blue-500 focus:border-blue-500"
@@ -40,8 +40,8 @@ export default function Table() {
                     <div
                         className="max-w-md mx-auto border items-center  relative border-gray-300 rounded-lg  cursor-pointer flex">
                         <DatePicker
-                            selected={enddate}
-                            onChange={date => setenddate(date)}
+                            selected={endDate}
+                            onChange={date => setEndDate(date)}
                             dateFormat="dd/MM/yyyy"
                             showPopperArrow={true}
                             className="block  px-5 py-2  w-full mt-1 outline-none cursor-pointer rounded-lg focus:ring-blue-500 focus:border-blue-500"

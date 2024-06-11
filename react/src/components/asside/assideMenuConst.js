@@ -3,25 +3,25 @@ export const Itemsasside = [
   {
     id: 0,
     name: "Dashboard",
-    icon:"/dashboard.svg",
+    icon:"/assets/dashboard.svg",
     selection: true,
   },
   {
     id: 1,
     name: "Appointments",
-    icon: "Appointments.svg",
+    icon: "/assets/Appointments.svg",
     selection: false,
   },
   {
     id: 2,
-    name: "Inbox",
-    icon: `Inbox.svg`,
+    name: "Doctors",
+    icon: `/assets/doctor icon.svg`,
     selection: false,
   },
   {
     id: 3,
     name: "Payment",
-    icon: `Payment.svg`,
+    icon: `/assets/Payment.svg`,
     selection: false,
   },
 ];

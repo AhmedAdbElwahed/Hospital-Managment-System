@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Itemsasside} from './as'
+import {Itemsasside} from './assideMenuConst'
 import {Link, useNavigate} from 'react-router-dom'
 import {useDispatch, useSelector} from "react-redux";
 import {logoutUser} from "../../redux/features/auth/authActions";
@@ -57,7 +57,7 @@ export default function Asside({pages, control}) {
                             className={`w-[5px] h-full flex rounded-r-sm ${item.selection ? 'bg-[#4880FF]' : 'bg-[transpreants]'} `}></span>
                         <div
                             className={`${item.selection ? 'bg-[#4880FF] ' : 'bg-[#fff] '} px-4 py-4 w-full mx-5 cursor-pointer flex items-center gap-5 text-white rounded-lg`}>
-                            <img src={item.icon} alt=""
+                            <img src={item.icon} alt="" className="w-[24px] h-[24px]"
                                  style={{filter: item.selection ? 'invert(100%)' : 'invert(0%)'}}/>
                             <p className={`text-sm font-[400] ${item.selection ? ' text-white' : ' text-black'}  `}>{item.name}</p>
                         </div>
