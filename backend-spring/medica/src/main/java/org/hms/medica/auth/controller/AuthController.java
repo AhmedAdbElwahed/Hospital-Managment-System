@@ -28,12 +28,6 @@ public class AuthController {
     private AuthService authService;
     private OTPService otpService;
 
-    @PostMapping("/register-doctor")
-    public ResponseEntity<Void> registerDoctor(@RequestBody RegisterRequest registerRequest) {
-        authService.registerDoctor(registerRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
     @PostMapping("/register-patient")
     public ResponseEntity<Void> registerPatient(@RequestBody RegisterRequest registerRequest) {
         authService.registerPatient(registerRequest);

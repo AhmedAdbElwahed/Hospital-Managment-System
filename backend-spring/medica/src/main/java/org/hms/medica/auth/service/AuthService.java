@@ -56,22 +56,6 @@ public class AuthService {
   private OTPService otpService;
   private UserMapper userMapper;
 
-  public void registerDoctor(RegisterRequest registerRequest) {
-    var role = roleRepository.getRoleByName("ROLE_DOCTOR").orElseThrow(
-            () ->
-                    new RuntimeException(
-                            String.format("Role %s not found", "ROLE_DOCTOR")));
-
-    Doctor user = new Doctor();
-    user.setFirstname(registerRequest.getFirstname());
-    user.setLastname(registerRequest.getLastname());
-    user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-    user.setEmail(registerRequest.getEmail());
-    user.setIs_enabled(true); // Set user as not enabled until email is verified
-    user.setCreate_at(LocalDateTime.now());
-    user.setRoles(Set.of(role));
-    userRepository.save(user);
-  }
 
   public void registerPatient(RegisterRequest registerRequest) {
     var role = roleRepository.getRoleByName("ROLE_PATIENT").orElseThrow(
@@ -187,7 +171,7 @@ public class AuthService {
         .build();
   }
 
-  private UserDetails createUserDetails(User user) {
+  private UserDetailsImpl createUserDetails(User user) {
     return new UserDetailsImpl(user);
   }
 

@@ -17,6 +17,8 @@ import java.util.List;
 public class UserDetailsImpl implements UserDetails {
 
     private String username;
+    private String firstname;
+    private String lastname;
     private String password;
     private Boolean enabled;
     private Collection<Role> roles;
@@ -25,6 +27,8 @@ public class UserDetailsImpl implements UserDetails {
         this.username = user.getEmail();
         this.password = user.getPassword();
         this.enabled = user.getIs_enabled();
+        this.lastname = user.getLastname();
+        this.firstname = user.getFirstname();
         this.roles = user.getRoles();
     }
 
@@ -62,5 +66,9 @@ public class UserDetailsImpl implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public String getFullName() {
+        return String.format("%s %s", this.firstname, this.lastname);
     }
 }

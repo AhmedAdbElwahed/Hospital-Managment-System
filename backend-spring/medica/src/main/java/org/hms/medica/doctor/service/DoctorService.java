@@ -1,6 +1,8 @@
 package org.hms.medica.doctor.service;
 
 import org.hms.medica.appointment.dto.DoctorAppointmentDto;
+import org.hms.medica.doctor.dto.AdditionalInfoDto;
+import org.hms.medica.doctor.dto.RegisterDoctor;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.user.model.User;
 import org.springframework.stereotype.Service;
@@ -18,4 +20,8 @@ public interface DoctorService {
   List<DoctorAppointmentDto> getAppointments();
 
   List<? extends User> getAllDoctors();
+
+  void registerDoctor(RegisterDoctor registerDoctor);
+
+  void addAdditionalInfo(AdditionalInfoDto additionalInfoDto);
 }

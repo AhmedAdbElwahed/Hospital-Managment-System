@@ -19,6 +19,7 @@ import java.time.LocalDateTime;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {AccessDeniedException.class})
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestErrorMessage handleAccessDeniedException(
             Exception ex, WebRequest request) {
         return RestErrorMessage.builder()
@@ -32,6 +33,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 
     @ExceptionHandler(value
             = {RuntimeException.class})
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestErrorMessage handleConflict(
             RuntimeException ex, WebRequest request) {
         return RestErrorMessage.builder()
@@ -44,7 +46,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(Exception.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestErrorMessage handleGenericException(final Exception ex, final WebRequest request) {
         System.out.println("handleGenericException ....");
         return RestErrorMessage.builder()
@@ -57,7 +59,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(ExpiredJwtException.class)
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestErrorMessage handleExpiredJwtException(final ExpiredJwtException ex, final WebRequest request) {
         System.out.println("handleExpiredJwtException ....");
         return RestErrorMessage.builder()
@@ -70,6 +72,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler({AuthenticationException.class})
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestErrorMessage handleAuthenticationException(Exception ex, WebRequest request) {
         return RestErrorMessage.builder()
                 .timestamp(LocalDateTime.now().toString())
@@ -81,6 +84,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     }
 
     @ExceptionHandler(value = {IllegalArgumentException.class})
+    @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     public RestErrorMessage handleIllegalArgumentException(
             IllegalArgumentException ex, WebRequest request) {
         return RestErrorMessage.builder()
