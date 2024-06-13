@@ -18,15 +18,15 @@ export const setupAxiosInterceptors = (store, refreshTokenRequest) => {
         async (config) => {
             const userTokens = store.getState().auth.userTokens;
             let currentDate = new Date();
-            if (userTokens.accessToken) {
-                const decodedToken = jwtDecode(userTokens.accessToken);
+            if (userTokens.access_token) {
+                const decodedToken = jwtDecode(userTokens.access_token);
                 if (decodedToken.exp * 1000 < currentDate.getTime()) {
                     await store.dispatch(refreshTokenRequest(userTokens.refresh_token));
-                    if (config.headers) {
-                        config.headers["authorization"] = `Bearer ${
-                            store.getState().auth.userTokens.accessToken
-                        }`;
-                    }
+                }
+                if (config.headers) {
+                    config.headers["Authorization"] = `Bearer ${
+                        store.getState().auth.userTokens.access_token
+                    }`;
                 }
             }
             return config;

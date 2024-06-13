@@ -8,17 +8,13 @@ import {
     TrashIcon,
 } from '@heroicons/react/16/solid'
 import {useState} from "react";
-import CreateDoctorModal from "../doctor/CreateDoctorModal";
+import {Link} from "react-router-dom";
 
 const TableHeader = () => {
 
     const [enabled, setEnabled] = useState(true);
     const [enabled2, setEnabled2] = useState(true);
-    const [open, setOpen] = useState(false);
 
-    const handleCreateDoctorModal = () => {
-        setOpen(true);
-    }
     return (
             <div className="max-w-screen-xl w-full">
                 <div className="relative bg-white shadow-md sm:rounded-lg">
@@ -45,7 +41,7 @@ const TableHeader = () => {
                         </div>
                         <div
                             className="flex flex-col items-stretch justify-end flex-shrink-0 w-full space-y-2 md:w-auto md:flex-row md:space-y-0 md:items-center md:space-x-3">
-                            <button type="button" onClick={handleCreateDoctorModal}
+                            <Link to="/doctors/create-doctor"
                                     className="flex items-center justify-center px-4 py-2 text-sm font-medium text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 ">
                                 <svg className="h-3.5 w-3.5 mr-2" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -53,7 +49,7 @@ const TableHeader = () => {
                                           d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"/>
                                 </svg>
                                 Add Doctor
-                            </button>
+                            </Link>
                             <div className="flex items-center w-full space-x-3 md:w-auto">
                                 <Menu>
                                     <MenuButton
@@ -200,7 +196,6 @@ const TableHeader = () => {
                         </div>
                     </div>
                 </div>
-                <CreateDoctorModal open={open} setOpen={setOpen}/>
             </div>
     );
 }

@@ -2,14 +2,15 @@ import React, {useState} from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-export default function CreateAppointment({add}) {
+export default function CreateAppointment() {
     const [date, setdate] = useState();
 
 
     return (
 
         <section>
-            <div onClick={() => add(0)}
+            <div
+                 // TODO: Create A link to go back to appointmentPage
                  className='flex items-center cursor-pointer'>
                 <img src="/assets/back.svg" alt=""/>
                 <h1 className='font-nunito-sans text-2xl font-bold'>

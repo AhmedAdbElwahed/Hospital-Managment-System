@@ -2,7 +2,7 @@ import React from 'react'
 import CreateAppointment from './CreateAppointment'
 import { Link } from 'react-router-dom'
 
-export default function Search({ add }) {
+export default function Search() {
     return (
         <section className='w-full  flex flex-col  gap-3 md:flex-row '>
             <form className="flex items-center  mx-auto w-full bg-white border border-blue-300 rounded-lg gap-2 p-2.5">
@@ -15,7 +15,7 @@ export default function Search({ add }) {
             </form>
 
             <div
-                onClick={() => add(1)}
+                // TODO: add a link to createAppointment
                 className='bg-blue-700 rounded-lg flex items-center p-3 gap-2 cursor-pointer  justify-center'>
                 <svg width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M5.00696 9.5H13.7855" stroke="white" strokeWidth="1.46309" strokeLinecap="round" strokeLinejoin="round" />

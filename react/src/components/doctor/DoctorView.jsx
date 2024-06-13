@@ -1,5 +1,6 @@
 import TableHeader from "../shared/TableHeader";
 import DataTable from "../shared/DataTable";
+import {Outlet} from "react-router-dom";
 
 const DoctorView = () => {
     return (
