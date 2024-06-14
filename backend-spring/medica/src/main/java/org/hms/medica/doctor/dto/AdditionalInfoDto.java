@@ -14,7 +14,6 @@ import java.time.LocalTime;
 @ToString
 public class AdditionalInfoDto {
 
-    private Long doctorId;
     private String education;
     private String certifications;
     private String experience;

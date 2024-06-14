@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @SuperBuilder
 @ToString
-public class RegisterDoctor {
+public class RequiredInfoDto {
 
     private String firstname;
     private String lastname;
