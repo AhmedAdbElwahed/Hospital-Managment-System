@@ -15,21 +15,13 @@ import java.time.LocalDate;
 public class RegisterDoctor {
 
     private String firstname;
-
     private String lastname;
-
     private Gender gender;
-
     private LocalDate dob;
-
     private String address;
-
     private String phone;
-
     private String email;
-
     private String password;
-
     private Boolean is_enabled;
 
 }

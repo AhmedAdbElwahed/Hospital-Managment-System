@@ -12,12 +12,9 @@ import {
 import {LocalizationProvider, TimePicker} from '@mui/x-date-pickers';
 import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs'
 import {DatePicker} from '@mui/x-date-pickers'
-import {useDispatch, useSelector} from "react-redux";
-import {useNavigate} from "react-router-dom";
-import {registerDoctor} from "../../redux/features/doctor/doctorActions";
 import {TabGroup, TabList, TabPanel, TabPanels, Tab} from "@headlessui/react";
-import {sleep} from "../../util/additionalFunc";
 import moment from "moment";
+import { useRegisterDoctorMutation } from '../../redux/features/doctor/doctorApiSlice';
 
 
 const classNames = (...classes) => {
@@ -31,46 +28,53 @@ const CreateDoctor = () => {
         formState: {errors}
     } = useForm();
 
-    const dispatch = useDispatch();
-    const {loading, error} = useSelector(state => state.doctor);
-    const [value, setValue] = React.useState(0);
-    const navigate = useNavigate();
+    const [registerDoctor, response] = useRegisterDoctorMutation();
     const [open, setOpen] = useState(false);
-
+    const [error, setError] = useState(null);
 
     const onSubmit = async (data) => {
         const doctorData = {
-            firstname: data.firstname,
-            lastname: data.lastname,
-            gender: data.gender,
-            dob: data.dob,
-            address: data.address,
-            phone: data.phone,
-            email: data.email,
-            password: data.password,
-            is_enabled: data.is_enabled,
-            education: data.education,
-            certifications: data.certifications,
-            experience: data.experience,
-            activeStatus: data.activeStatus,
-            specialty: data.specialty,
-            licenseNumber: data.licenseNumber,
+            "requiredInfoDto": {
+                firstname: data.firstname,
+                lastname: data.lastname,
+                gender: data.gender,
+                dob: data.dob,
+                address: data.address,
+                phone: data.phone,
+                email: data.email,
+                password: data.password,
+                is_enabled: data.is_enabled,
+            },
+            "additionalInfoDto": {
+                education: data.education,
+                certifications: data.certifications,
+                experience: data.experience,
+                activeStatus: data.activeStatus,
+                specialty: data.specialty,
+                licenseNumber: data.licenseNumber,
+            }
         }
         if (data.workStartTime) {
-            doctorData['workStartTime'] = moment(data.workStartTime.toString()).format("HH:mm:ss");
+            doctorData.additionalInfoDto['workStartTime'] = moment(data.workStartTime.toString()).format("HH:mm:ss");
         } else {
-            doctorData['workStartTime'] = null;
+            doctorData.additionalInfoDto['workStartTime'] = null;
         }
         if (data.workEndTime) {
-            doctorData['workEndTime'] = moment(data.workEndTime.toString()).format("HH:mm:ss");
+            doctorData.additionalInfoDto['workEndTime'] = moment(data.workEndTime.toString()).format("HH:mm:ss");
         } else {
-            doctorData['workEndTime'] = null;
+            doctorData.additionalInfoDto['workEndTime'] = null;
         }
 
-        dispatch(registerDoctor(doctorData));
-        await sleep(2000);
+        // dispatch(registerDoctor(doctorData));
+        try {
+            await registerDoctor(doctorData).unwrap();
+        } catch (error) {
+            console.error('Registration error:', error);
+            setError(error);
+        }
+        // await sleep(2000);
         setOpen(true);
-        console.log(error);
+        // console.log(error);
     };
 
     const handleClose = (event, reason) => {
@@ -447,17 +451,17 @@ const CreateDoctor = () => {
 
 
                 <Button type="submit" variant="contained" color="primary" className="w-full">
-                    {loading ? <CircularProgress color='inherit'/> : "Submit"}
+                    {response.isLoading ? <CircularProgress color='inherit'/> : "Submit"}
                 </Button>
             </form>
             <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
                 <Alert
                     onClose={handleClose}
-                    severity={error ? "error" : "success"}
+                    severity={response.isError ? "error" : "success"}
                     variant="filled"
                     sx={{width: '100%'}}
                 >
-                    <span>{error ? error : "New Doctor Added Successfully"}</span>
+                    <span>{response.isError ? response.error.data.message : response.data}</span>
                 </Alert>
             </Snackbar>
         </section>

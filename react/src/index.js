@@ -12,11 +12,11 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <React.StrictMode>
         <Provider store={store}>
-            <DevSupport ComponentPreviews={ComponentPreviews}
-                        useInitialHook={useInitial}
-            >
-                <Router/>
-            </DevSupport>
+                <DevSupport ComponentPreviews={ComponentPreviews}
+                            useInitialHook={useInitial}
+                >
+                    <Router/>
+                </DevSupport>
         </Provider>
     </React.StrictMode>
 );

@@ -2,7 +2,7 @@ import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 
 
-const baseUrl = process.env.BACKEND_BASE_URL;
+const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
 export const axiosPublic = axios.create({
     baseURL: baseUrl,
