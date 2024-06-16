@@ -24,6 +24,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  elasticsearch:
+    uris: http://localhost:9200
+
 
 
 jwt:

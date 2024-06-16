@@ -8,10 +8,21 @@ import Setting from "../../components/setting/Setting";
 export const doctorRoute = {
     path: "doctors/",
     element: <DoctorView/>,
+    children: [
+        {
+            path: "doctors/create-doctor/:id",
+            element: <CreateDoctor/>
+        },
+    ]
 }
 
 export const createDoctorRoute = {
     path: "doctors/create-doctor/",
+    element: <CreateDoctor/>
+}
+
+export const updateDoctorRoute = {
+    path: "doctors/update-doctor/:id",
     element: <CreateDoctor/>
 }
 

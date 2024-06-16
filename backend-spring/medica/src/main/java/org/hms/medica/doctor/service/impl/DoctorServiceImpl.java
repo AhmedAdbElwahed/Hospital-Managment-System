@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+
 import lombok.AllArgsConstructor;
+import com.querydsl.core.types.Predicate;
 import org.hms.medica.appointment.dto.DoctorAppointmentDto;
 import org.hms.medica.appointment.mapper.DoctorAppointmentMapper;
 import org.hms.medica.appointment.service.UserAppointmentService;
@@ -19,9 +21,12 @@ import org.hms.medica.doctor.service.DoctorService;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.repo.UserRepository;
 import org.hms.medica.user.service.UserService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 
 @Service
 @AllArgsConstructor
@@ -43,32 +48,75 @@ public class DoctorServiceImpl implements DoctorService {
                                 String.format("Role %s not found", "ROLE_DOCTOR")));
 
         Doctor user = new Doctor();
-        user.setFirstname(doctorDto.getRequiredInfoDto().getFirstname());
-        user.setLastname(doctorDto.getRequiredInfoDto().getLastname());
         user.setPassword(passwordEncoder.encode(doctorDto.getRequiredInfoDto().getPassword()));
-        user.setAddress(doctorDto.getRequiredInfoDto().getAddress());
-        user.setEmail(doctorDto.getRequiredInfoDto().getEmail());
-        user.setGender(doctorDto.getRequiredInfoDto().getGender());
-        user.setDob(doctorDto.getRequiredInfoDto().getDob());
-        user.setPhone(doctorDto.getRequiredInfoDto().getPhone());
-        user.setIs_enabled(doctorDto.getRequiredInfoDto().getIs_enabled());
-        user.setCreate_at(LocalDateTime.now());
         user.setRoles(Set.of(role));
-        user.setActiveStatus(doctorDto.getAdditionalInfoDto().isActiveStatus());
-        user.setEducation(doctorDto.getAdditionalInfoDto().getEducation());
-        user.setSpecialty(doctorDto.getAdditionalInfoDto().getSpecialty());
-        user.setExperience(doctorDto.getAdditionalInfoDto().getExperience());
-        user.setCertifications(doctorDto.getAdditionalInfoDto().getCertifications());
-        user.setWorkStartTime(doctorDto.getAdditionalInfoDto().getWorkStartTime());
-        user.setWorkEndTime(doctorDto.getAdditionalInfoDto().getWorkEndTime());
-        user.setLicenseNumber(doctorDto.getAdditionalInfoDto().getLicenseNumber());
+        createDoctorObj(doctorDto, user);
         userRepository.save(user);
+    }
+
+    @Override
+    public List<DoctorResponseDto> searchDoctors(String keyword) {
+        return doctorRepository
+                .findByFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrSpecialtyContainingIgnoreCase(
+                        keyword,
+                        keyword,
+                        keyword)
+                .stream()
+                .map(doctorMapper::mapDoctorToDoctorResponseDto)
+                .toList();
+    }
+
+    @Override
+    public void deleteDoctorById(Long id) {
+        var doctor = doctorRepository.findById(id).orElseThrow(() ->
+                new UsernameNotFoundException("Doctor Not Found With Id + " + id));
+        doctorRepository.delete(doctor);
+    }
+
+    @Transactional
+    @Override
+    public DoctorResponseDto updateDoctor(Long id, DoctorDto doctorDto) {
+        var doctor = doctorRepository.findById(id).orElseThrow(() ->
+                new UsernameNotFoundException("Doctor Not Found With Id + " + id));
+        if (doctorDto.getRequiredInfoDto().getPassword() != null)
+            doctor.setPassword(passwordEncoder.encode(doctorDto.getRequiredInfoDto().getPassword()));
+        createDoctorObj(doctorDto, doctor);
+        doctorRepository.save(doctor);
+        return doctorMapper.mapDoctorToDoctorResponseDto(doctor);
+    }
+
+    private void createDoctorObj(DoctorDto doctorDto, Doctor doctor) {
+        doctor.setFirstname(doctorDto.getRequiredInfoDto().getFirstname());
+        doctor.setLastname(doctorDto.getRequiredInfoDto().getLastname());
+        doctor.setAddress(doctorDto.getRequiredInfoDto().getAddress());
+        doctor.setEmail(doctorDto.getRequiredInfoDto().getEmail());
+        doctor.setGender(doctorDto.getRequiredInfoDto().getGender());
+        doctor.setDob(doctorDto.getRequiredInfoDto().getDob());
+        doctor.setPhone(doctorDto.getRequiredInfoDto().getPhone());
+        doctor.setIs_enabled(doctorDto.getRequiredInfoDto().getIs_enabled());
+        doctor.setCreate_at(LocalDateTime.now());
+        doctor.setActiveStatus(doctorDto.getAdditionalInfoDto().isActiveStatus());
+        doctor.setEducation(doctorDto.getAdditionalInfoDto().getEducation());
+        doctor.setSpecialty(doctorDto.getAdditionalInfoDto().getSpecialty());
+        doctor.setExperience(doctorDto.getAdditionalInfoDto().getExperience());
+        doctor.setCertifications(doctorDto.getAdditionalInfoDto().getCertifications());
+        doctor.setWorkStartTime(doctorDto.getAdditionalInfoDto().getWorkStartTime());
+        doctor.setWorkEndTime(doctorDto.getAdditionalInfoDto().getWorkEndTime());
+        doctor.setLicenseNumber(doctorDto.getAdditionalInfoDto().getLicenseNumber());
     }
 
     public User getDoctor(String name) {
         return doctorRepository
                 .getDoctorByFirstname(name)
                 .orElseThrow(() -> new RuntimeException("Could not find" + name));
+    }
+
+    public DoctorResponseDto getDoctorDtoById(Long id) {
+        var doctor = doctorRepository
+                .findById(id)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException(String.format("User with id %d Not found", id)));
+        return doctorMapper.mapDoctorToDoctorResponseDto(doctor);
     }
 
     public Doctor getDoctorById(Long id) {
@@ -97,8 +145,8 @@ public class DoctorServiceImpl implements DoctorService {
                 .collect(Collectors.toList());
     }
 
-    public List<DoctorResponseDto> getAllDoctors() {
-        return doctorRepository.findAll()
+    public List<DoctorResponseDto> getAllDoctors(Predicate predicate, Pageable pageable) {
+        return doctorRepository.findAll(predicate, pageable)
                 .stream()
                 .map(doctorMapper::mapDoctorToDoctorResponseDto)
                 .toList();

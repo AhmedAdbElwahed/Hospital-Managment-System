@@ -9,7 +9,7 @@ import {
     createDoctorRoute,
     dashboardRout,
     doctorRoute,
-    settingsRoute
+    settingsRoute, updateDoctorRoute
 } from "./pagesRoute";
 
 
@@ -30,6 +30,7 @@ export const Router = () => {
                         dashboardRout,
                         settingsRoute,
                         createDoctorRoute,
+                        updateDoctorRoute,
 
                     ]
                 }

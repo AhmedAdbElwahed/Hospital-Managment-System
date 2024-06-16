@@ -9,13 +9,14 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hms.medica.auth.model.Role;
 import org.hms.medica.constants.Gender;
 
 @Getter
 @Setter
 @Entity
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "`user`")

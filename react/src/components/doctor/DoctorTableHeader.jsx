@@ -10,7 +10,7 @@ import {
 import {useState} from "react";
 import {Link} from "react-router-dom";
 
-const TableHeader = () => {
+const DoctorTableHeader = ({rows}) => {
 
     const [enabled, setEnabled] = useState(true);
     const [enabled2, setEnabled2] = useState(true);
@@ -200,4 +200,4 @@ const TableHeader = () => {
     );
 }
 
-export default TableHeader;
+export default DoctorTableHeader;

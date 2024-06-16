@@ -1,5 +1,5 @@
 import {axiosPrivate} from "../../../util/axiosApi";
-import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {createApi} from "@reduxjs/toolkit/query/react";
 
 const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
@@ -32,7 +32,8 @@ export const doctorApi = createApi({
     }),
     endpoints: (builder) => ({
         getAllDoctors: builder.query({
-            query: () => ({url: '/api/v1/doctor', method: 'get'})
+            query: () => ({url: '/api/v1/doctor', method: 'get'}),
+            providesTags: ['DoctorList'],
         }),
         registerDoctor: builder.mutation({
             query: (data) => {
@@ -44,8 +45,38 @@ export const doctorApi = createApi({
                     data,
                 }
             },
+            invalidatesTags: ['DoctorList'],
         }),
+        getDoctorById: builder.query({
+            query: (id) => ({
+                url: `/api/v1/doctor/get-by-id/${id}`,
+                method: 'get'
+            }),
+            providesTags: ["Doctor"],
+        })
+        ,
+        deleteDoctor: builder.mutation({
+            query: (id) => ({
+                url: `/api/v1/doctor/delete-by-id/${id}`,
+                method: "delete"
+            }),
+            invalidatesTags: ['DoctorList'],
+        }),
+        updateDoctor: builder.mutation({
+            query: ({id, data}) => ({
+                url: `/api/v1/doctor/update-by-id/${id}`,
+                method: "put",
+                data,
+            }),
+            invalidatesTags: ["Doctor"],
+        })
     }),
 });
 
-export const {useRegisterDoctorMutation, useGetAllDoctorsQuery} = doctorApi;
+export const {
+    useRegisterDoctorMutation,
+    useDeleteDoctorMutation,
+    useUpdateDoctorMutation,
+    useGetAllDoctorsQuery,
+    useGetDoctorByIdQuery,
+} = doctorApi;

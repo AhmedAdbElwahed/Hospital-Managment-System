@@ -23,9 +23,7 @@ import java.util.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patient extends User{
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+
     private String insurancePolicyNumber;
     private BloodType bloodType;
     private MaritalStatus maritalStatus;
@@ -55,7 +53,4 @@ public class Patient extends User{
     @JoinColumn(name = "ward_id")
     private Ward ward;
 
-//    @OneToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
 }
