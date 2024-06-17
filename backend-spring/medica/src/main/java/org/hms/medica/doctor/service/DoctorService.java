@@ -8,6 +8,7 @@ import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.user.model.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,12 +26,15 @@ public interface DoctorService {
 
   List<DoctorResponseDto> getAllDoctors(Predicate predicate, Pageable pageable);
 
+  @Transactional
   void registerDoctor(DoctorDto doctorDto);
 
   List<DoctorResponseDto> searchDoctors(String keyword);
 
+  @Transactional
   void deleteDoctorById (Long id);
 
+  @Transactional
   DoctorResponseDto updateDoctor(Long id, DoctorDto doctorDto);
 
 }
