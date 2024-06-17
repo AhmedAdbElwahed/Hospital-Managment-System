@@ -14,6 +14,7 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -23,9 +24,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -33,6 +41,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @AllArgsConstructor
 public class SecurityConfig {
 
+    private AuthenticationEntryPoint authenticationEntryPoint;
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     private UserDetailServiceImpl userDetailService;
     private LogoutService logoutService;
@@ -40,12 +49,26 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
+                .cors(corsConfig -> corsConfig.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((request) ->
-                        request.requestMatchers(new AntPathRequestMatcher("/hms/v1/auth/**"))
+                        request.requestMatchers(new AntPathRequestMatcher("/hms/v1/auth/**"),
+                                        new AntPathRequestMatcher("/v2/api-docs"),
+                                        new AntPathRequestMatcher("/v3/api-docs"),
+                                        new AntPathRequestMatcher("/v2/api-docs/**"),
+                                        new AntPathRequestMatcher("/swagger-resources"),
+                                        new AntPathRequestMatcher("//swagger-resources/**"),
+                                        new AntPathRequestMatcher("/configuration/ui"),
+                                        new AntPathRequestMatcher("/configuration/security"),
+                                        new AntPathRequestMatcher("/swagger-ui/**"),
+                                        new AntPathRequestMatcher("/swagger-ui.html"),
+                                        new AntPathRequestMatcher("/webjars/**")
+                                        )
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated());
+        httpSecurity.httpBasic((basic) -> basic.authenticationEntryPoint(authenticationEntryPoint))
+                .exceptionHandling(Customizer.withDefaults());
         httpSecurity.authenticationProvider(authenticationProvider());
         httpSecurity.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.logout((logout) -> {
@@ -99,6 +122,17 @@ public class SecurityConfig {
         DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
         expressionHandler.setRoleHierarchy(roleHierarchy());
         return expressionHandler;
+    }
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 
 

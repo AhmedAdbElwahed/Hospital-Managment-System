@@ -30,17 +30,4 @@ public class Role {
     @JsonIgnore
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Collection<User> users;
-
-    @JsonIgnoreProperties("privileges")
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "roles_privileges",
-            joinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "id"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "privilege_id", referencedColumnName = "id"
-            )
-    )
-    private Collection<Privilege> privileges;
 }

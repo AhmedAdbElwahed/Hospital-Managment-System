@@ -30,6 +30,7 @@ public class Ward {
     private boolean isLock;
     private boolean isActive;
     // I am not sure what does this mean
+    // I think this is time the patient would stay at the ward <-- Omar
     private float duration;
 
     @OneToMany(mappedBy = "ward", fetch = FetchType.LAZY)

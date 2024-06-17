@@ -1,0 +1,160 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main {
+  width: 100%;
+  min-height: 100vh;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.left {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.form {
+  width: 70%;
+}
+
+@media (max-width: 761px) {
+  .main {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: start;
+    align-items: start;
+  }
+  .form {
+    width: 90%;
+  }
+
+  .left {
+    margin: 25px 0 0 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+  }
+}
+
+.form div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.form input {
+  padding: 0 20px 0 20px;
+  border: #e2e8f0 solid 1px;
+  border-radius: 15px;
+  width: 100%;
+  height: 50px;
+}
+
+::placeholder {
+  color: #a0aec0;
+}
+/* SwitchToggle.css */
+.switch {
+  position: relative;
+  display: inline-block;
+  display: flex;
+  width: 60px;
+  height: 28px;
+  margin: 10px 0;
+}
+
+.toggle-input {
+  display: none;
+}
+
+.toggle-label {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 34px;
+  transition: background-color 0.3s;
+}
+
+.toggle-label:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.toggle-input:checked + .toggle-label {
+  background-color: #2196f3;
+}
+
+.toggle-input:checked + .toggle-label:before {
+  transform: translateX(26px);
+}
+
+.remember {
+  text-wrap: nowrap;
+  position: absolute;
+  left: 70px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#login {
+  width: 100%;
+  height: 45px;
+  padding: 5px;
+  background-color: #0e82fd;
+  color: #fff;
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.sighup {
+  color: #777777;
+}
+
+.left h1 {
+  color: #0e82fd;
+}
+
+.left p {
+  margin: 0 0 20px 0;
+}
+
+.right {
+  background-color: #0e82fd;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.img {
+  width: 50%;
+}

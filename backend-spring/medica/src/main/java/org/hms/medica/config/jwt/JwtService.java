@@ -5,8 +5,11 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.hms.medica.user.impl.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.header.Header;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -33,11 +36,17 @@ public class JwtService {
         return buildToken(extraClaims, user, jwtExpirationTime);
     }
 
-    public String generateJwtToken(UserDetails user) {
-        return buildToken(new HashMap<>(), user, jwtExpirationTime);
+    public String generateJwtToken(UserDetailsImpl userDetails) {
+        Map<String, Object> extraClaim = new HashMap<>();
+        extraClaim.put("role", userDetails.getAuthorities().stream().findFirst().orElseThrow(
+                ()-> new RuntimeException("Role Not Found")
+        ).getAuthority());
+        extraClaim.put("username", userDetails.getFullName());
+        return buildToken(extraClaim, userDetails, jwtExpirationTime);
     }
 
     public String generateJwtRefreshToken(UserDetails userDetails) {
+
         return buildToken(new HashMap<>(), userDetails, jwtRefreshExpirationTime);
     }
 
@@ -64,6 +73,7 @@ public class JwtService {
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token: {}", e.getMessage());
         } catch (ExpiredJwtException e) {
+            System.out.println("hello from Expired Jwt");
             log.error("JWT token is expired: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
             log.error("JWT token is unsupported: {}", e.getMessage());
@@ -91,10 +101,26 @@ public class JwtService {
     }
 
     private Claims getAllClaims(String token){
-        return Jwts.parser()
-                .verifyWith(getPrivateKey())
-                .build().parseSignedClaims(token)
-                .getPayload();
+        Claims claims = null;
+        try {
+           claims  = Jwts.parser()
+                    .verifyWith(getPrivateKey())
+                    .build().parseSignedClaims(token)
+                    .getPayload();
+        }catch (MalformedJwtException e) {
+            log.error("Invalid JWT token: {}", e.getMessage());
+            throw new MalformedJwtException("Invalid JWT token: " + e.getMessage());
+        } catch (ExpiredJwtException e) {
+            log.error("JWT token is expired: {}", e.getMessage());
+            throw new ExpiredJwtException(null, claims, "JWT token is expired: " + e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            log.error("JWT token is unsupported: {}", e.getMessage());
+            throw new UnsupportedJwtException("JWT token is unsupported: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            log.error("JWT claims string is empty: {}", e.getMessage());
+            throw new IllegalArgumentException("JWT claims string is empty: " + e.getMessage());
+        }
+        return claims;
     }
 
     private SecretKey getPrivateKey() {

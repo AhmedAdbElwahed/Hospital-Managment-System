@@ -22,7 +22,7 @@ import java.util.*;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Patient extends User {
+public class Patient extends User{
 
   private String insurancePolicyNumber;
   private BloodType bloodType;
@@ -48,12 +48,8 @@ public class Patient extends User {
 
   @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY)
   private Set<Appointment> appointment = new HashSet<>();
-
   @ManyToOne
   @JoinColumn(name = "ward_id")
   private Ward ward;
-
-  //    @OneToOne
-  //    @JoinColumn(name = "user_id")
-  //    private User user;
 }
+

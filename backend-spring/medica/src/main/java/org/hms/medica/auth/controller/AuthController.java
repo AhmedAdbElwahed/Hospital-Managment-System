@@ -28,15 +28,15 @@ public class AuthController {
     private AuthService authService;
     private OTPService otpService;
 
-    @PostMapping("/register")
-    public ResponseEntity<Void> register(@RequestBody RegisterRequest registerRequest) {
-        authService.register(registerRequest);
+    @PostMapping("/register-patient")
+    public ResponseEntity<Void> registerPatient(@RequestBody RegisterRequest registerRequest) {
+        authService.registerPatient(registerRequest);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody AuthenticationRequest authenticationRequest) {
-        log.info("authen    ticationRequest: {}", authenticationRequest);
+        log.info("authenticationRequest: {}", authenticationRequest);
         return ResponseEntity.status(HttpStatus.OK).body(authService.login(authenticationRequest));
     }
 
