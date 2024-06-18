@@ -3,7 +3,7 @@ package org.hms.medica.user.service;
 import lombok.AllArgsConstructor;
 import org.hms.medica.user.impl.UserDetailsImpl;
 import org.hms.medica.auth.model.Role;
-import org.hms.medica.auth.reop.RoleRepository;
+import org.hms.medica.auth.repo.RoleRepository;
 import org.hms.medica.user.repo.UserRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

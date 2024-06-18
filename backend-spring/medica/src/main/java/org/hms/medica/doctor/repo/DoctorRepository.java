@@ -19,21 +19,23 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface DoctorRepository extends
-        JpaRepository<Doctor, Long>,
-        QuerydslPredicateExecutor<Doctor>, QuerydslBinderCustomizer<QDoctor> {
+public interface DoctorRepository
+    extends JpaRepository<Doctor, Long>,
+        QuerydslPredicateExecutor<Doctor>,
+        QuerydslBinderCustomizer<QDoctor> {
 
   Optional<User> getDoctorByFirstname(String name);
 
   Optional<Doctor> getDoctorByEmail(String email);
 
-  List<Doctor> findByFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrSpecialtyContainingIgnoreCase(
-          String firstName, String lastName, String specialty
-  );
+  List<Doctor>
+      findByFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrSpecialtyContainingIgnoreCase(
+          String firstName, String lastName, String specialty);
 
   @Override
   default void customize(QuerydslBindings bindings, QDoctor doctor) {
-    bindings.bind(String.class)
-            .first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
+    bindings
+        .bind(String.class)
+        .first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
   }
 }

@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-import org.hms.medica.admissions.model.Admission;
+import org.hms.medica.admission.model.Admission;
 import org.hms.medica.patient.model.Patient;
 
 import jakarta.persistence.*;

@@ -2,7 +2,7 @@ package org.hms.medica.config.startup;
 
 import lombok.RequiredArgsConstructor;
 import org.hms.medica.auth.model.Role;
-import org.hms.medica.auth.reop.RoleRepository;
+import org.hms.medica.auth.repo.RoleRepository;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.repo.UserRepository;
 import org.hms.medica.user.service.UserService;
