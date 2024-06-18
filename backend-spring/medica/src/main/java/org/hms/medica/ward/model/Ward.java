@@ -1,18 +1,20 @@
 package org.hms.medica.ward.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.patient.model.Patient;
+import org.hms.medica.ward.exception.WardIsFullException;
+
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ward {
@@ -20,6 +22,8 @@ public class Ward {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Unique
     private String name;
     private String phoneNumber;
     private String email;
@@ -38,4 +42,14 @@ public class Ward {
 
     @OneToMany(mappedBy = "ward", fetch = FetchType.LAZY)
     private Set<Doctor> doctors = new HashSet<>();
+
+    public void addPatient(Patient patient) {
+        if (patients.size() >= numOfBeds)
+            throw new WardIsFullException(getName());
+        patients.add(patient);
+    }
+
+    public void addDoctor(Doctor doctor) {
+        doctors.add(doctor);
+    }
 }
