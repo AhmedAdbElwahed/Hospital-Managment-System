@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hms.medica.admissions.model.Admission;
+import org.hms.medica.admission.model.Admission;
 import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.constants.BloodType;
 import org.hms.medica.constants.MaritalStatus;

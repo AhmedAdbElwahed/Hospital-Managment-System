@@ -22,7 +22,7 @@ public class DoctorController {
     private final DoctorService doctorService;
 
     @GetMapping("/appointments")
-    public ResponseEntity<?> getPatient() {
+    public ResponseEntity<?> getDoctorAppointments() {
         return ResponseEntity.ok(doctorService.getAppointments());
     }
 

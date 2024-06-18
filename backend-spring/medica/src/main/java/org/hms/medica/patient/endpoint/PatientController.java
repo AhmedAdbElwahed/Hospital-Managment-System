@@ -16,7 +16,7 @@ public class PatientController {
   private final PatientService patientService;
 
   @GetMapping("/appointments")
-  public ResponseEntity<?> getPatient() {
+  public ResponseEntity<?> getPatientAppointments() {
     return ResponseEntity.ok(patientService.getAppointments());
   }
 }
