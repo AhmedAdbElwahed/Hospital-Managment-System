@@ -4,7 +4,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.hms.medica.auth.reop.TokenRepository;
+import org.hms.medica.auth.repo.TokenRepository;
 import org.hms.medica.user.service.UserDetailServiceImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.NonNull;

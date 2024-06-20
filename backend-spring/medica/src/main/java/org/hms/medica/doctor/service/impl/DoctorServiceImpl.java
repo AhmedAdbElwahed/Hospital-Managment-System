@@ -11,7 +11,7 @@ import com.querydsl.core.types.Predicate;
 import org.hms.medica.appointment.dto.DoctorAppointmentDto;
 import org.hms.medica.appointment.mapper.DoctorAppointmentMapper;
 import org.hms.medica.appointment.service.UserAppointmentService;
-import org.hms.medica.auth.reop.RoleRepository;
+import org.hms.medica.auth.repo.RoleRepository;
 import org.hms.medica.doctor.dto.DoctorDto;
 import org.hms.medica.doctor.dto.DoctorResponseDto;
 import org.hms.medica.doctor.mapper.DoctorMapper;

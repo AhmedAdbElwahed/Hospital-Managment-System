@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hms.medica.admissions.model.Admission;
+import org.hms.medica.admission.model.Admission;
 import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.constants.BloodType;
 import org.hms.medica.constants.MaritalStatus;
@@ -26,9 +26,6 @@ import java.util.*;
 @AllArgsConstructor
 public class Patient extends User{
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
 
   private String insurancePolicyNumber;
   private BloodType bloodType;

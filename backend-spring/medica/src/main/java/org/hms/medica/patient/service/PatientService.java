@@ -1,7 +1,6 @@
 package org.hms.medica.patient.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +13,16 @@ import org.hms.medica.patient.dto.PatientResponseDto;
 import org.hms.medica.patient.mapper.PatientMapper;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.repo.PatientRepository;
+import org.hms.medica.user.exception.UserNotFoundException;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.service.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -77,5 +80,12 @@ public class PatientService {
         patientMapper.updatePatientFromDto(patientDto, patient);
     }
 
+
+
+    public Patient findById(Long patientId) {
+        return patientRepository.findById(patientId)
+                .orElseThrow(() -> new UserNotFoundException("Patient Not found with id: "
+                        + patientId));
+    }
 
 }

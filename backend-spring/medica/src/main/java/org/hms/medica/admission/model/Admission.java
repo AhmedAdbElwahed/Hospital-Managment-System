@@ -1,4 +1,4 @@
-package org.hms.medica.admissions.model;
+package org.hms.medica.admission.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,19 +8,17 @@ import org.hms.medica.constants.AdmissionType;
 import org.hms.medica.diagnoses.model.Diagnosis;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.ward.model.Ward;
+
 import java.time.LocalDateTime;
 
 @Entity
 @Setter
 @Getter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Admission extends AuditedEntity {
 
-    private LocalDateTime admissionDate;
-
-    // i made the diagnosis String for now
     @OneToOne
     @JoinColumn(name = "diagnosis_out_id")
     private Diagnosis diagnosisOut;

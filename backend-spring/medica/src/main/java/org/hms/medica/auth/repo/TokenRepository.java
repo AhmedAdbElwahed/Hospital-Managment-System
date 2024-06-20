@@ -1,4 +1,4 @@
-package org.hms.medica.auth.reop;
+package org.hms.medica.auth.repo;
 
 
 import org.hms.medica.auth.model.Token;
