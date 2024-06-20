@@ -1,7 +1,9 @@
-package org.hms.medica.doctor.dto;
+package org.hms.medica.patient.dto;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hms.medica.constants.BloodType;
+import org.hms.medica.constants.MaritalStatus;
 
 import java.time.LocalTime;
 
@@ -14,12 +16,8 @@ import java.time.LocalTime;
 @ToString
 public class AdditionalInfoDto {
 
-    private String education;
-    private String certifications;
-    private String experience;
-    private boolean activeStatus;
-    private String specialty;
-    private String licenseNumber;
-    private LocalTime workStartTime;
-    private LocalTime workEndTime;
+    private String insurancePolicyNumber;
+    private BloodType bloodType;
+    private MaritalStatus maritalStatus;
+    private String nationality;
 }

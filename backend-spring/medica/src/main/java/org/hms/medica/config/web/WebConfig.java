@@ -1,4 +1,4 @@
-package org.hms.medica.baseEntity.config;
+package org.hms.medica.config.web;
 
 import org.hms.medica.baseEntity.impl.AuditingAwareImpl;
 import org.springframework.context.annotation.Bean;

@@ -94,7 +94,6 @@ public class DoctorServiceImpl implements DoctorService {
         doctor.setDob(doctorDto.getRequiredInfoDto().getDob());
         doctor.setPhone(doctorDto.getRequiredInfoDto().getPhone());
         doctor.setIs_enabled(doctorDto.getRequiredInfoDto().getIs_enabled());
-        doctor.setCreate_at(LocalDateTime.now());
         doctor.setActiveStatus(doctorDto.getAdditionalInfoDto().isActiveStatus());
         doctor.setEducation(doctorDto.getAdditionalInfoDto().getEducation());
         doctor.setSpecialty(doctorDto.getAdditionalInfoDto().getSpecialty());

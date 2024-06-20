@@ -11,7 +11,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @ToString
 public class PatientResponseDto {
+
     private Long id;
     private RequiredInfoDto requiredInfoDto;
     private AdditionalInfoDto additionalInfoDto;
+    private Long patientHistoryId;
 }

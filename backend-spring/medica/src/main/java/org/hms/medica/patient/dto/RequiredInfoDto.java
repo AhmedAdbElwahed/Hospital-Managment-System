@@ -1,4 +1,4 @@
-package org.hms.medica.doctor.dto;
+package org.hms.medica.patient.dto;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;

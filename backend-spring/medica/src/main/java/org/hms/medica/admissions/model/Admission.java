@@ -1,10 +1,8 @@
 package org.hms.medica.admissions.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hms.medica.baseEntity.AuditedEntity;
 import org.hms.medica.constants.AdmissionType;
 import org.hms.medica.diagnoses.model.Diagnosis;
@@ -15,12 +13,10 @@ import java.time.LocalDateTime;
 @Entity
 @Setter
 @Getter
-@NoArgsConstructor
+@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class Admission extends AuditedEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
     private LocalDateTime admissionDate;
 
@@ -49,4 +45,6 @@ public class Admission extends AuditedEntity {
     @ManyToOne
     @JoinColumn(name = "ward_id")
     private Ward ward;
+
+
 }
