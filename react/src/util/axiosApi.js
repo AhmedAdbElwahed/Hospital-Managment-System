@@ -36,3 +36,26 @@ export const setupAxiosInterceptors = (store, refreshTokenRequest) => {
         }
     );
 }
+
+export const axiosBaseQuery = ({baseUrl} = {baseUrl: ""}) => {
+    return async ({url, method, data, params, headers}) => {
+        try {
+            const result = await axiosPrivate({
+                url: baseUrl + url,
+                method,
+                data,
+                params,
+                headers,
+            });
+            return {data: result.data};
+        } catch (error) {
+            const err = error
+            return {
+                error: {
+                    status: err.response?.status,
+                    data: err.response?.data || err.message,
+                },
+            }
+        }
+    }
+}

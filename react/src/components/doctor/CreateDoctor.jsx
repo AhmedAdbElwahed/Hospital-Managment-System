@@ -14,13 +14,15 @@ const CreateDoctor = () => {
     const {data} = useGetDoctorByIdQuery(id);
     const [doctorData, setDoctorData] = useState(null);
 
-
     useEffect(() => {
         if (id) {
 
             const doctor = mapDataToDoctors([data])[0];
             if (doctor) {
+
                 doctor['dob'] = doctor.dob ? dayjs(doctor.dob) : null;
+                doctor['workStartTime'] = doctor.workStartTime ?dayjs(`2024-06-21T${doctor.workStartTime}Z`, "DD/MM/YYYY hh:mm A"): null;
+                doctor['workEndTime'] = doctor.workEndTime ?dayjs(`2023-06-20T${doctor.workEndTime}Z`) : null;
             }
 
             setDoctorData(doctor);

@@ -16,6 +16,7 @@ import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import React, {useState} from "react";
 import {useRegisterDoctorMutation, useUpdateDoctorMutation} from "../../redux/features/doctor/doctorApiSlice";
 import {mapDoctorToDoctorDto} from "../../util/doctorUtils";
+import dayjs from "dayjs";
 
 const classNames = (...classes) => {
     return classes.filter(Boolean).join(' ');
@@ -27,7 +28,6 @@ export const DoctorForm = ({doctor}) => {
     const [updateDoctor, {isLoading}] = useUpdateDoctorMutation();
     const [open, setOpen] = useState(false);
 
-    console.log("data", doctor ? doctor : null);
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -48,9 +48,9 @@ export const DoctorForm = ({doctor}) => {
     const onUpdateSubmit = async (data) => {
 
         const doctorData = mapDoctorToDoctorDto(data);
-
+        doctorData.requiredInfoDto.dob = dayjs(doctorData.requiredInfoDto.dob).format('YYYY-MM-DD');
         try {
-            await updateDoctor({id: doctor.id, data:doctorData}).unwrap();
+            await updateDoctor({id: doctor.id, data: doctorData}).unwrap();
         } catch (error) {
             console.error('Registration error:', error);
         }
@@ -109,7 +109,7 @@ export const DoctorForm = ({doctor}) => {
                                 <div className="flex flex-col gap-3 bg-white p-3 h-full rounded-lg shadow-md">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                         <Controller
-                                            name="firstName"
+                                            name="firstname"
                                             control={control}
                                             defaultValue=""
                                             rules={{required: 'First name is required'}}
@@ -254,10 +254,12 @@ export const DoctorForm = ({doctor}) => {
                                         name="password"
                                         control={control}
                                         defaultValue=""
-                                        rules={{
-                                            required: 'Password is required',
-                                            minLength: {value: 6, message: 'Password must be at least 6 characters'}
-                                        }}
+                                        rules={doctor ? {} :
+                                            {
+                                                required: 'Password is required',
+                                                minLength: {value: 6, message: 'Password must be at least 6 characters'}
+                                            }
+                                        }
                                         render={({field}) => (
                                             <TextField
                                                 {...field}

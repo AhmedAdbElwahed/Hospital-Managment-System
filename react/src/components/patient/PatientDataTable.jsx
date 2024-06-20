@@ -1,34 +1,32 @@
 import * as React from 'react';
-import {CircularProgress} from "@mui/material";
 import {
     DataGrid,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarExport,
-    GridToolbarFilterButton,
-} from "@mui/x-data-grid";
+    GridToolbarFilterButton
+} from '@mui/x-data-grid';
+import {CircularProgress} from "@mui/material";
 import {Link} from "react-router-dom";
 import {Add} from "@mui/icons-material";
 import CustomNoRowsOverlay from "../shared/CustomNoRowsOverlay";
 
-const DoctorDataTable = ({rows, cols, error, isLoading}) => {
+
+export default function PatientDataTable({rows, cols, isLoading, error}) {
 
     const CustomDataGridToolbar = () => {
         return (
             <GridToolbarContainer>
-                <GridToolbarExport csvOptions={{
-                    fileName: "Doctors"
-                }}/>
+                <GridToolbarExport/>
                 <GridToolbarColumnsButton/>
                 <GridToolbarFilterButton/>
-                <Link to="/doctors/create-doctor"
+                <Link to="/patients/create-patient"
                       className="text-[#1976d2] h-full p-1 rounded-lg hover:bg-sky-800 hover:bg-opacity-5"><Add/>
-                    <span className="font-thin text-[13px] ">ADD DOCTOR</span>
+                    <span className="font-thin text-[13px] ">ADD PATIENT</span>
                 </Link>
             </GridToolbarContainer>
         );
     }
-
 
     return (
         <div style={{height: 500, width: '100%'}}>
@@ -50,13 +48,6 @@ const DoctorDataTable = ({rows, cols, error, isLoading}) => {
                                 toolbar: CustomDataGridToolbar,
                                 noRowsOverlay: CustomNoRowsOverlay
                             }}
-                            slotProps={{
-                                toolbar: {
-                                    csvOptions: {
-                                        fields: ['action']
-                                    }
-                                }
-                            }}
 
                         />)
 
@@ -64,9 +55,6 @@ const DoctorDataTable = ({rows, cols, error, isLoading}) => {
                     <h1>Can not fetch Doctors</h1>
                 )
             }
-
         </div>
     );
 }
-
-export default DoctorDataTable;

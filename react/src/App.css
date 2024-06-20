@@ -1,4 +1,6 @@
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 
 .App {
@@ -39,3 +41,42 @@
     transform: rotate(360deg);
   }
 }
+
+@layer components {
+
+  .main-container {
+    @apply flex min-h-screen flex-1 flex-col items-center px-6 pb-10 pt-16;
+  }
+
+  .left-sidebar {
+    @apply sticky left-0 top-0 z-20 flex h-screen w-[15%] flex-col bg-primary-200 justify-between overflow-auto pb-5 pt-28 max-md:hidden;
+  }
+
+  .top-bar {
+    @apply fixed top-0 z-30 flex w-full items-center justify-between border-b border-b-glassmorphism backdrop-blur-sm bg-primary-200/30 px-6;
+  }
+
+  .left-sidebar-link {
+    @apply relative flex justify-start gap-4 rounded-lg p-4 max-lg:justify-center hover:bg-primary-400;
+  }
+  .bottom-bar {
+    @apply fixed bottom-0 z-10 w-full rounded-t-3xl bg-glassmorphism p-4 backdrop-blur-lg xs:px-7 md:hidden;
+  }
+
+  .bottom-bar-container {
+    @apply flex items-center justify-between gap-3 xs:gap-5;
+  }
+
+  .bottom-bar-link {
+    @apply relative flex flex-col items-center gap-2 rounded-lg p-2 sm:flex-1 sm:px-2 sm:py-2.5;
+  }
+}
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+    border-radius: 2px;
+  }
+}
+

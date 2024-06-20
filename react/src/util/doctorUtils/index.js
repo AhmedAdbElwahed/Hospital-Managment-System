@@ -5,8 +5,8 @@ export const doctorCols  = [
     {field: 'id', headerName: 'ID', width: 70,
 
         renderCell: params => <Link className="text-blue-500" to={`/doctors/update-doctor/${params?.value}`} >{params?.value}</Link>},
-    {field: 'firstName', headerName: 'First Name', width: 130},
-    {field: 'lastName', headerName: 'Last Name', width: 130},
+    {field: 'firstname', headerName: 'First Name', width: 130},
+    {field: 'lastname', headerName: 'Last Name', width: 130},
     {
         field: 'dob', headerName: 'Date of Birth', type: 'date', // Assuming you want to display the date portion
         width: 90,
@@ -75,8 +75,8 @@ export const mapDataToDoctors = (data) => {
     return data.map((doctor) => {
         return doctor ? {
             id: doctor.id,
-            firstName: doctor.requiredInfoDto.firstname,
-            lastName: doctor.requiredInfoDto.lastname,
+            firstname: doctor.requiredInfoDto.firstname,
+            lastname: doctor.requiredInfoDto.lastname,
             dob: doctor.requiredInfoDto.dob,
             address: doctor.requiredInfoDto.address,
             phone: doctor.requiredInfoDto.phone,

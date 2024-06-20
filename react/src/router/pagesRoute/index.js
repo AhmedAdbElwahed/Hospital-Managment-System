@@ -4,16 +4,16 @@ import Appointments from "../../components/appointments/Appointments";
 import CreateAppointment from "../../components/appointments/CreateAppointment";
 import Dashboard from "../../components/dashboard/Dashboard";
 import Setting from "../../components/setting/Setting";
+import {PatientView} from "../../components/patient/PatientView";
 
 export const doctorRoute = {
     path: "doctors/",
     element: <DoctorView/>,
-    children: [
-        {
-            path: "doctors/create-doctor/:id",
-            element: <CreateDoctor/>
-        },
-    ]
+}
+
+export const patientRoute = {
+    path: "patients/",
+    element: <PatientView/>,
 }
 
 export const createDoctorRoute = {

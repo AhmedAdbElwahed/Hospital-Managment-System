@@ -1,16 +1,15 @@
 import {RouterProvider, createBrowserRouter} from 'react-router-dom';
 import {Login, Register} from '../auth/index';
-import App from '../App';
 import PrivateRoute from "./PrivateRoute";
-import DashboardContainer from "../components/DashboardContainer";
 import {Error404} from "../exception/Error404";
 import {
     appointmentsRoute,
     createDoctorRoute,
     dashboardRout,
-    doctorRoute,
+    doctorRoute, patientRoute,
     settingsRoute, updateDoctorRoute
 } from "./pagesRoute";
+import Layout from "../layout/Layout";
 
 
 export const Router = () => {
@@ -19,21 +18,15 @@ export const Router = () => {
     const router = createBrowserRouter([
         {
             path: "/",
-            element: <PrivateRoute><App/></PrivateRoute>,
+            element: <PrivateRoute><Layout/></PrivateRoute>,
             children: [
-                {
-                    path: "",
-                    element: <DashboardContainer/>,
-                    children: [
-                        doctorRoute,
-                        appointmentsRoute,
-                        dashboardRout,
-                        settingsRoute,
-                        createDoctorRoute,
-                        updateDoctorRoute,
-
-                    ]
-                }
+                doctorRoute,
+                patientRoute,
+                appointmentsRoute,
+                dashboardRout,
+                settingsRoute,
+                createDoctorRoute,
+                updateDoctorRoute,
             ]
         },
         {

@@ -1,39 +1,18 @@
-import {axiosPrivate} from "../../../util/axiosApi";
+import {axiosBaseQuery} from "../../../util/axiosApi";
 import {createApi} from "@reduxjs/toolkit/query/react";
+import {BASE_URL} from "../../../util/additionalFunc";
 
-const baseUrl = process.env.REACT_APP_BACKEND_BASE_URL;
 
-const axiosBaseQuery = ({baseUrl} = {baseUrl: ""}) => {
-    return async ({url, method, data, params, headers}) => {
-        try {
-            const result = await axiosPrivate({
-                url: baseUrl + url,
-                method,
-                data,
-                params,
-                headers,
-            });
-            return {data: result.data};
-        } catch (error) {
-            const err = error
-            return {
-                error: {
-                    status: err.response?.status,
-                    data: err.response?.data || err.message,
-                },
-            }
-        }
-    }
-}
+
 export const doctorApi = createApi({
     reducerPath: 'doctorApi',
     baseQuery: axiosBaseQuery({
-        baseUrl: baseUrl,
+        baseUrl: BASE_URL,
     }),
     endpoints: (builder) => ({
         getAllDoctors: builder.query({
             query: () => ({url: '/api/v1/doctor', method: 'get'}),
-            providesTags: ['DoctorList'],
+            providesTags: ['DoctorList', "Doctor"],
         }),
         registerDoctor: builder.mutation({
             query: (data) => {
