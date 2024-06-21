@@ -39,9 +39,29 @@ public class PatientController {
         return ResponseEntity.status(HttpStatus.OK).body(patientService.getAllPatients(predicate, pageable));
     }
 
+    @GetMapping("/get-by-id/{id}")
+    public ResponseEntity<PatientResponseDto> fetchPatientById(@PathVariable(name = "id") Long patientId) {
+        return ResponseEntity.status(HttpStatus.OK).body(patientService.getPatientById(patientId));
+    }
+
     @PostMapping("/add-patient")
     public ResponseEntity<String> registerPatient(@RequestBody PatientDto patientDto) {
         patientService.registerPatient(patientDto);
         return ResponseEntity.status(HttpStatus.CREATED).body("Patient add successfully");
+    }
+
+    @PutMapping("/update-patient/{id}")
+    public ResponseEntity<PatientResponseDto> updatePatient(
+            @PathVariable(name = "id") Long patientId,
+            @RequestBody PatientDto patientDto) {
+        System.out.println(patientDto);
+        var patient = patientService.updatePatient(patientId, patientDto);
+        return ResponseEntity.status(HttpStatus.OK).body(patient);
+    }
+
+    @DeleteMapping("/delete-by-id/{id}")
+    public ResponseEntity<String> deletePatientById(@PathVariable(name = "id") Long patientId) {
+        patientService.deleteById(patientId);
+        return ResponseEntity.status(HttpStatus.OK).body("Patient deleted successfully");
     }
 }

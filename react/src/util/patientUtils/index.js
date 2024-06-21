@@ -1,4 +1,6 @@
 import {Link} from "react-router-dom";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 export const patientColumns = [
     {
@@ -13,7 +15,10 @@ export const patientColumns = [
     {field: 'address', headerName: 'Address', width: 200},
     {field: 'phone', headerName: 'Phone', width: 120},
     {field: 'email', headerName: 'Email', width: 180},
-    {field: 'is_enabled', headerName: 'Enabled', width: 100},
+    {field: 'is_enabled', headerName: 'Enabled', width: 100,
+    renderCell: (params) => (params?.value === true ?
+        <CheckCircleIcon className="text-green-700"/> :
+        <CancelIcon className="text-red-700"/>)},
     {field: 'insurancePolicyNumber', headerName: 'Insurance Policy Number', width: 200},
     {field: 'bloodType', headerName: 'Blood Type', width: 100},
     {field: 'maritalStatus', headerName: 'Marital Status', width: 150},
@@ -32,11 +37,33 @@ export const mapDataToPatients = (data) => {
             email: patient.requiredInfoDto.email,
             gender: patient.requiredInfoDto.gender,
             is_enabled: patient.requiredInfoDto.is_enabled,
-            education: patient.additionalInfoDto.insurancePolicyNumber,
-            certifications: patient.additionalInfoDto.bloodType,
-            experience: patient.additionalInfoDto.maritalStatus,
-            activeStatus: patient.additionalInfoDto.nationality,
+            insurancePolicyNumber: patient.additionalInfoDto.insurancePolicyNumber,
+            bloodType: patient.additionalInfoDto.bloodType,
+            maritalStatus: patient.additionalInfoDto.maritalStatus,
+            nationality: patient.additionalInfoDto.nationality,
         } : null;
 
     });
+}
+
+export const mapPatientToPatientDto = (patient) => {
+    return {
+        "requiredInfoDto": {
+            firstname: patient.firstname,
+            lastname: patient.lastname,
+            gender: patient.gender,
+            dob: patient.dob,
+            address: patient.address,
+            phone: patient.phone,
+            email: patient.email,
+            password: patient.password,
+            is_enabled: patient.is_enabled,
+        },
+        "additionalInfoDto": {
+            insurancePolicyNumber: patient.insurancePolicyNumber,
+            bloodType: patient.bloodType,
+            maritalStatus: patient.maritalStatus,
+            nationality: patient.nationality,
+        }
+    };
 }

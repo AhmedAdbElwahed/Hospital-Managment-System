@@ -11,8 +11,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
-import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
@@ -22,7 +20,14 @@ import ListItemText from '@mui/material/ListItemText';
 import {sidebarLinksTop, sidebarLinksBottom} from "../../constants/sidebarLinks";
 import {Link, useLocation} from "react-router-dom";
 import {Main} from "../../layout/Main";
-import {AccountCircle} from "@mui/icons-material";
+import {logoutUser} from "../../redux/features/auth/authActions";
+import {useDispatch, useSelector} from "react-redux";
+import Avatar from "@mui/material/Avatar";
+import CardHeader from "@mui/material/CardHeader";
+import MoreVertIcon from "@mui/icons-material/MoreVert"
+import {red} from "@mui/material/colors";
+import {useEffect} from "react";
+import {jwtDecode} from "jwt-decode";
 
 const drawerWidth = 240;
 
@@ -57,6 +62,9 @@ export default function SideBar({outlet}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [user, setUser] = React.useState({});
+    const dispatch = useDispatch();
+    const {userTokens, error} = useSelector((state) => state.auth);
     const {pathname} = useLocation();
 
     const handleDrawerOpen = () => {
@@ -74,6 +82,25 @@ export default function SideBar({outlet}) {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = () => {
+        dispatch(logoutUser({
+            accessToken: userTokens.access_token
+        }));
+        if (error) {
+            setOpen(true);
+        }
+    }
+
+    useEffect(() => {
+        const jwt = jwtDecode(userTokens.access_token);
+        const userData = {
+            username: jwt.username,
+            role: jwt.role.split("_")[1].toLowerCase()
+        }
+        console.log("userdata: ", userData)
+        setUser(userData);
+    }, []);
 
     return (
         <Box sx={{display: 'flex'}}>
@@ -93,34 +120,15 @@ export default function SideBar({outlet}) {
                         {open ? "" : "MDEICA"}
                     </Typography>
                     <div className="flex w-full justify-end">
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
-                        >
-                            <AccountCircle/>
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                        >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
-                        </Menu>
+                        <CardHeader
+                            avatar={
+                                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                    {user.username && user.username.substring(0,2).toUpperCase()}
+                                </Avatar>
+                            }
+                            title={user.username ? user.username : "Anonymous"}
+                            subheader={user.role ? user.role : "Anonymous"}
+                        />
                     </div>
                 </Toolbar>
             </AppBar>
@@ -189,7 +197,7 @@ export default function SideBar({outlet}) {
                             <ListItem key={index} disablePadding
                                       className={`${isActive && 'text-white bg-[#1976d2]'}`}
                                       sx={{display: 'block'}}>
-                                <Link to={link.path}>
+                                <Link to={link.path} onClick={link.name === "Logout" && handleLogout}>
                                     <ListItemButton
                                         sx={{
                                             minHeight: 48,

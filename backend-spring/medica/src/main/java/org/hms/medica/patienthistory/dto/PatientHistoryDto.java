@@ -1,20 +1,19 @@
-package org.hms.medica.patienthistory.model;
+package org.hms.medica.patienthistory.dto;
 
-import jakarta.persistence.*;
-import lombok.*;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hms.medica.baseEntity.AuditedEntity;
-import org.hms.medica.patient.model.Patient;
 
-@Entity
-@Table(name = "patient_history")
 @Setter
 @Getter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientHistory extends AuditedEntity {
-
+public class PatientHistoryDto {
+    private  Long id;
     private boolean hasPastCardio;
     private boolean hasPhysDiuresis;
     private boolean hasPhysDiet;
@@ -51,7 +50,5 @@ public class PatientHistory extends AuditedEntity {
     private boolean hasFamEndo;
     private boolean hasFamResp;
 
-    @OneToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+    private Long patientId;
 }

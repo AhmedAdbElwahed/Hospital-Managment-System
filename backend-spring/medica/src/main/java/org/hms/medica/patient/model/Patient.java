@@ -1,10 +1,7 @@
 package org.hms.medica.patient.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hms.medica.admission.model.Admission;
 import org.hms.medica.appointment.model.Appointment;
@@ -22,6 +19,7 @@ import java.util.*;
 @Setter
 @Getter
 @SuperBuilder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Patient extends User{
@@ -32,8 +30,7 @@ public class Patient extends User{
   private MaritalStatus maritalStatus;
   private String nationality;
 
-  @OneToOne
-  @JoinColumn(name = "patient_history_id")
+  @OneToOne(mappedBy = "patient")
   private PatientHistory patientHistory;
 
   @ManyToMany(fetch = FetchType.LAZY)

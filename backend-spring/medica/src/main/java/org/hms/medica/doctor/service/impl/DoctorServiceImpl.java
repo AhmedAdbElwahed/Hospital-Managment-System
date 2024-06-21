@@ -78,7 +78,8 @@ public class DoctorServiceImpl implements DoctorService {
     public DoctorResponseDto updateDoctor(Long id, DoctorDto doctorDto) {
         var doctor = doctorRepository.findById(id).orElseThrow(() ->
                 new UsernameNotFoundException("Doctor Not Found With Id + " + id));
-        if (doctorDto.getRequiredInfoDto().getPassword() != null)
+        var doctorPassword = doctorDto.getRequiredInfoDto().getPassword();
+        if (!(doctorPassword.isEmpty() || doctorPassword.isBlank()))
             doctor.setPassword(passwordEncoder.encode(doctorDto.getRequiredInfoDto().getPassword()));
         createDoctorObj(doctorDto, doctor);
         doctorRepository.save(doctor);

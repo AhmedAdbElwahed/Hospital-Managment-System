@@ -5,6 +5,7 @@ import CreateAppointment from "../../components/appointments/CreateAppointment";
 import Dashboard from "../../components/dashboard/Dashboard";
 import Setting from "../../components/setting/Setting";
 import {PatientView} from "../../components/patient/PatientView";
+import CreatePatient from "../../components/patient/CreatePatient";
 
 export const doctorRoute = {
     path: "doctors/",
@@ -14,6 +15,16 @@ export const doctorRoute = {
 export const patientRoute = {
     path: "patients/",
     element: <PatientView/>,
+}
+
+export const createPatientRoute = {
+    path: "patients/create-patient/",
+    element: <CreatePatient/>
+}
+
+export const updatePatientRout = {
+    path: "patients/update-patient/:id",
+    element: <CreatePatient/>
 }
 
 export const createDoctorRoute = {

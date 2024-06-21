@@ -4,10 +4,10 @@ import PrivateRoute from "./PrivateRoute";
 import {Error404} from "../exception/Error404";
 import {
     appointmentsRoute,
-    createDoctorRoute,
+    createDoctorRoute, createPatientRoute,
     dashboardRout,
     doctorRoute, patientRoute,
-    settingsRoute, updateDoctorRoute
+    settingsRoute, updateDoctorRoute, updatePatientRout
 } from "./pagesRoute";
 import Layout from "../layout/Layout";
 
@@ -26,7 +26,9 @@ export const Router = () => {
                 dashboardRout,
                 settingsRoute,
                 createDoctorRoute,
+                createPatientRoute,
                 updateDoctorRoute,
+                updatePatientRout
             ]
         },
         {

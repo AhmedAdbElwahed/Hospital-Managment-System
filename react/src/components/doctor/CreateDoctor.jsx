@@ -1,11 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useForm} from 'react-hook-form';
-import {Snackbar, Alert, CircularProgress} from '@mui/material';
+import {CircularProgress} from '@mui/material';
 import {useGetDoctorByIdQuery} from '../../redux/features/doctor/doctorApiSlice';
 import {useParams} from "react-router-dom";
 import {mapDataToDoctors} from "../../util/doctorUtils";
 import {DoctorForm} from "./DoctorForm";
-import moment from "moment";
 import dayjs from "dayjs";
 
 

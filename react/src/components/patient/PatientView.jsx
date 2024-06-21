@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import PatientDataTable from "./PatientDataTable";
-import {useGetAllPatientsQuery} from "../../redux/features/patient/patientApiSlice";
+import {useDeletePatientByIdMutation, useGetAllPatientsQuery} from "../../redux/features/patient/patientApiSlice";
 import {mapDataToPatients, patientColumns} from "../../util/patientUtils";
 import {useEffect, useState} from "react";
 import {GridActionsCellItem} from "@mui/x-data-grid";
@@ -10,13 +10,13 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 export const PatientView = () => {
 
     const {data, error, isLoading} = useGetAllPatientsQuery();
+    const [deletePatientById] = useDeletePatientByIdMutation();
     const [rows, setRows] = useState([]);
     const [cols, setCols] = useState([]);
 
     const handleDeleteClick = (id) => async () => {
         try {
-            // await deleteDoctor(id);
-            // TODO: add delete logic here
+           await deletePatientById(id);
             console.log("delete: ", id);
         } catch (error) {
             console.log(error);
@@ -57,7 +57,7 @@ export const PatientView = () => {
     return (
         <section className="pt-6 pb-1 w-full gap-10 px-5 h-full flex flex-col">
             <h1 className="font-nunito-sans text-2xl font-bold ">Patient</h1>
-            <PatientDataTable rows={rows} cols={columns} error={error} isLoading={isLoading}/>
+            <PatientDataTable rows={rows} cols={cols} error={error} isLoading={isLoading}/>
         </section>
     )
 }

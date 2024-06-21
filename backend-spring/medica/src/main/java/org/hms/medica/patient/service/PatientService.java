@@ -1,7 +1,6 @@
 package org.hms.medica.patient.service;
 
 
-
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +17,7 @@ import org.hms.medica.user.model.User;
 import org.hms.medica.user.service.UserService;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +33,7 @@ public class PatientService {
     private final PatientAppointmentMapper patientAppointmentMapper;
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final PasswordEncoder passwordEncoder;
 
 
     public List<PatientAppointmentDto> getAppointments() {
@@ -59,7 +60,7 @@ public class PatientService {
     }
 
     public PatientResponseDto getPatientById(Long patientId) {
-        var patient =  patientRepository.findById(patientId)
+        var patient = patientRepository.findById(patientId)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("Patient not found with id: " + patientId));
         return patientMapper.mapPatientToPatientResponseDto(patient);
@@ -73,13 +74,17 @@ public class PatientService {
     }
 
     @Transactional
-    public void updatePatient(Long patientId, PatientDto patientDto) {
-        var patient =  patientRepository.findById(patientId)
+    public PatientResponseDto updatePatient(Long patientId, PatientDto patientDto) {
+        var patient = patientRepository.findById(patientId)
                 .orElseThrow(() ->
                         new UsernameNotFoundException("Patient not found with id: " + patientId));
-        patientMapper.updatePatientFromDto(patientDto, patient);
+        var patientPassword = patientDto.getRequiredInfoDto().getPassword();
+        if (!(patientPassword.isEmpty() || patientPassword.isBlank()))
+            patient.setPassword(passwordEncoder.encode(patientDto.getRequiredInfoDto().getPassword()));
+        createPatientObj(patientDto, patient);
+        patientRepository.save(patient);
+        return patientMapper.mapPatientToPatientResponseDto(patient);
     }
-
 
 
     public Patient findById(Long patientId) {
@@ -87,5 +92,26 @@ public class PatientService {
                 .orElseThrow(() -> new UserNotFoundException("Patient Not found with id: "
                         + patientId));
     }
+
+    public void deleteById(Long patientId) {
+        patientRepository.deleteById(patientId);
+    }
+
+    private void createPatientObj(PatientDto patientDto, Patient patient) {
+        patient.setFirstname(patientDto.getRequiredInfoDto().getFirstname());
+        patient.setLastname(patientDto.getRequiredInfoDto().getLastname());
+        patient.setAddress(patientDto.getRequiredInfoDto().getAddress());
+        patient.setEmail(patientDto.getRequiredInfoDto().getEmail());
+        patient.setGender(patientDto.getRequiredInfoDto().getGender());
+        patient.setDob(patientDto.getRequiredInfoDto().getDob());
+        patient.setPhone(patientDto.getRequiredInfoDto().getPhone());
+        patient.setIs_enabled(patientDto.getRequiredInfoDto().getIs_enabled());
+        patient.setNationality(patientDto.getAdditionalInfoDto().getNationality());
+        patient.setMaritalStatus(patientDto.getAdditionalInfoDto().getMaritalStatus());
+        patient.setBloodType(patientDto.getAdditionalInfoDto().getBloodType());
+        patient.setInsurancePolicyNumber(patientDto.getAdditionalInfoDto().getInsurancePolicyNumber());
+
+    }
+
 
 }

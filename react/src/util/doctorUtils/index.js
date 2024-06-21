@@ -1,5 +1,7 @@
 import moment from "moment/moment";
 import {Link} from "react-router-dom";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CancelIcon from "@mui/icons-material/Cancel";
 
 export const doctorCols  = [
     {field: 'id', headerName: 'ID', width: 70,
@@ -19,14 +21,18 @@ export const doctorCols  = [
     {field: 'gender', headerName: 'Gender', width: 100}, // Assuming you have a way to display gender values
     {
         field: 'is_enabled', headerName: 'Enabled', width: 80,
-        renderCell: (params) => params.row.is_enabled ? 'Yes' : 'No'
+        renderCell: (params) => (params?.value === true ?
+            <CheckCircleIcon className="text-green-700"/> :
+            <CancelIcon className="text-red-700"/>)
     }, // Render a formatted value for boolean
     {field: 'education', headerName: 'Education', width: 150},
     {field: 'certifications', headerName: 'Certifications', width: 150},
     {field: 'experience', headerName: 'Experience', width: 150},
     {
         field: 'activeStatus', headerName: 'Active', width: 80,
-        renderCell: (params) => params.row.activeStatus ? 'Yes' : 'No'
+        renderCell: (params) => (params?.value === true ?
+            <CheckCircleIcon className="text-green-700"/> :
+            <CancelIcon className="text-red-700"/>)
     }, // Render a formatted value for boolean
     {field: 'specialty', headerName: 'Specialty', width: 150},
     {field: 'licenseNumber', headerName: 'License Number', width: 150},
