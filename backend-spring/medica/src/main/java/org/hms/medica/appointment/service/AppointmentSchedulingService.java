@@ -21,7 +21,7 @@ public class AppointmentSchedulingService {
   private final UserService userService;
   private final PatientService patientService;
 
-  public Long scheduleAppointmentForCurrentUser(PatientAppointmentDto patientAppointmentDto) {
+  public Long scheduleAppointmentForCurrentPatient(PatientAppointmentDto patientAppointmentDto) {
     Patient patient = (Patient) userService.getCurrentUser();
     return processAppointmentScheduling(patientAppointmentDto, patient);
   }

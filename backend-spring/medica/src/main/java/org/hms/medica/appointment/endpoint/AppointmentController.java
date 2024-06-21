@@ -17,17 +17,17 @@ public class AppointmentController {
 
   @PreAuthorize("hasRole('ROLE_PATIENT')")
   @PostMapping
-  public ResponseEntity<String> scheduleAppointmentForCurrentUser(
+  public ResponseEntity<String> scheduleAppointmentForCurrentPatient(
       @Valid @RequestBody PatientAppointmentDto patientAppointmentDto) {
     Long appointmentId =
-        appointmentSchedulingService.scheduleAppointmentForCurrentUser(patientAppointmentDto);
+        appointmentSchedulingService.scheduleAppointmentForCurrentPatient(patientAppointmentDto);
     return ResponseEntity.status(HttpStatus.CREATED)
         .body("Appointment created with id " + appointmentId);
   }
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @PostMapping("/patients/{patientId}")
-  public ResponseEntity<String> scheduleAppointmentForPatient(
+  public ResponseEntity<String> scheduleAppointmentById(
       @Valid @RequestBody PatientAppointmentDto patientAppointmentDto,
       @PathVariable Long patientId) {
     Long appointmentId =
