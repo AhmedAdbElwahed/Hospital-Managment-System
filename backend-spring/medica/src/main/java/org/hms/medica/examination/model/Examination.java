@@ -5,6 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 import org.hms.medica.admission.model.Admission;
+import org.hms.medica.baseEntity.AuditedEntity;
 import org.hms.medica.patient.model.Patient;
 
 import jakarta.persistence.*;
@@ -14,26 +15,23 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Examination {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    private double oxygen_saturation;
-    private double urine_output;
-    private String bowel_movement;
-    private String auscultation;
-    private double heart_rate;
-    private double weight;
-    private double temperature;
-    private LocalDateTime date;
-    private double height;
-    @ManyToOne
-    @JoinColumn(name = "admission_id")
-    private Admission admission;
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+public class Examination extends AuditedEntity {
+  private double oxygenSaturation;
+  private double urineOutput;
+  private String bowelMovement;
+  private String auscultation;
+  private double heartRate;
+  private double weight;
+  private double temperature;
+  private double height;
 
+  @ManyToOne
+  @JoinColumn(name = "admission_id")
+  private Admission admission;
+
+  @ManyToOne
+  @JoinColumn(name = "patient_id")
+  private Patient patient;
 }
 // ex_id: Examination ID
 // ex_sat: Oxygen saturation

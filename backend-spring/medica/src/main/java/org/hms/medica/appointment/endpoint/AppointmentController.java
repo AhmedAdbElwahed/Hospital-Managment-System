@@ -6,6 +6,7 @@ import org.hms.medica.appointment.dto.PatientAppointmentDto;
 import org.hms.medica.appointment.service.AppointmentSchedulingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,10 +15,23 @@ import org.springframework.web.bind.annotation.*;
 public class AppointmentController {
   private final AppointmentSchedulingService appointmentSchedulingService;
 
+  @PreAuthorize("hasRole('ROLE_PATIENT')")
   @PostMapping
-  public ResponseEntity<String> scheduleAppointment(
+  public ResponseEntity<String> scheduleAppointmentForCurrentUser(
       @Valid @RequestBody PatientAppointmentDto patientAppointmentDto) {
-    Long appointmentId = appointmentSchedulingService.scheduleAppointment(patientAppointmentDto);
+    Long appointmentId =
+        appointmentSchedulingService.scheduleAppointmentForCurrentUser(patientAppointmentDto);
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body("Appointment created with id " + appointmentId);
+  }
+
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PostMapping("/patients/{patientId}")
+  public ResponseEntity<String> scheduleAppointmentForPatient(
+      @Valid @RequestBody PatientAppointmentDto patientAppointmentDto,
+      @PathVariable Long patientId) {
+    Long appointmentId =
+        appointmentSchedulingService.scheduleAppointmentById(patientAppointmentDto, patientId);
     return ResponseEntity.status(HttpStatus.CREATED)
         .body("Appointment created with id " + appointmentId);
   }

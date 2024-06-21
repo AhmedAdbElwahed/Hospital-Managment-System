@@ -1,9 +1,7 @@
-package org.hms.medica.exption.errorDto;
+package org.hms.medica.exception.errorDto;
 
 import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder

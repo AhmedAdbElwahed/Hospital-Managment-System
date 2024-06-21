@@ -7,6 +7,7 @@ import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.appointment.repository.AppointmentRepository;
 import org.hms.medica.doctor.service.DoctorService;
 import org.hms.medica.patient.model.Patient;
+import org.hms.medica.patient.service.PatientService;
 import org.hms.medica.user.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -18,14 +19,35 @@ public class AppointmentSchedulingService {
   private final PatientAppointmentMapper patientAppointmentMapper;
   private final DoctorService doctorService;
   private final UserService userService;
+  private final PatientService patientService;
 
-  public Long scheduleAppointment(PatientAppointmentDto patientAppointmentDto) {
+  public Long scheduleAppointmentForCurrentUser(PatientAppointmentDto patientAppointmentDto) {
+    Patient patient = (Patient) userService.getCurrentUser();
+    return processAppointmentScheduling(patientAppointmentDto, patient);
+  }
+
+  public Long scheduleAppointmentById(
+      PatientAppointmentDto patientAppointmentDto, Long patientId) {
+    Patient patient = patientService.getPatientById(patientId);
+    return processAppointmentScheduling(patientAppointmentDto, patient);
+  }
+
+  private Long processAppointmentScheduling(
+      PatientAppointmentDto patientAppointmentDto, Patient patient) {
+    Appointment appointment = mapToAppointmentEntity(patientAppointmentDto, patient);
+    appointmentValidator.validate(appointment);
+    return persistAppointment(appointment).getId();
+  }
+
+  private Appointment mapToAppointmentEntity(
+      PatientAppointmentDto patientAppointmentDto, Patient patient) {
     Appointment appointment = patientAppointmentMapper.toEntity(patientAppointmentDto);
     appointment.setDoctor(doctorService.getDoctorById(patientAppointmentDto.getDoctorId()));
-    Patient patient = (Patient) userService.getCurrentUser();
     appointment.setPatient(patient);
-    appointmentValidator.validate(appointment);
-    Appointment savedAppointment = appointmentRepository.save(appointment);
-    return savedAppointment.getId();
+    return appointment;
+  }
+
+  private Appointment persistAppointment(Appointment appointment) {
+    return appointmentRepository.save(appointment);
   }
 }
