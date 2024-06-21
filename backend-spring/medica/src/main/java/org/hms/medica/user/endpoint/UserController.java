@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/v1/user")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserService userService;
+  private final UserService userService;
 
-    @GetMapping("")
-    public UserResponseDto getUserInfo() {
-        return userService.getUserInfo();
-    }
+  @GetMapping()
+  public UserResponseDto getUserInfo() {
+    return userService.getUserInfo();
+  }
 }

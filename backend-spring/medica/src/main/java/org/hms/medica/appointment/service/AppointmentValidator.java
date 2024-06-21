@@ -7,6 +7,7 @@ import org.hms.medica.appointment.exception.InvalidAppointmentTimeSlot;
 import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.appointment.repository.AppointmentRepository;
 import org.hms.medica.doctor.model.Doctor;
+import org.hms.medica.patient.model.Patient;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,11 +26,10 @@ public class AppointmentValidator {
 
   private void validateIfScheduled(Appointment appointment) {
 
-    String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
-    User user = userService.findUserByEmail(userEmail);
+    Patient patient = appointment.getPatient();
 
     appointmentRepository
-        .findByPatientIdAndStartDateTime(user.getId(), appointment.getStartDateTime())
+        .findByPatientIdAndStartDateTime(patient.getId(), appointment.getStartDateTime())
         .ifPresent(
             appointment1 -> {
               throw new AppointmentAlreadyScheduledException(appointment1);

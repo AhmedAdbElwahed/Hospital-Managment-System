@@ -1,10 +1,8 @@
-package org.hms.medica.exption.handler;
+package org.hms.medica.exception.handler;
 
 import io.jsonwebtoken.ExpiredJwtException;
-import org.hms.medica.exption.errorDto.RestErrorMessage;
-import org.springframework.http.HttpHeaders;
+import org.hms.medica.exception.errorDto.RestErrorMessage;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

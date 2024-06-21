@@ -14,48 +14,50 @@ import java.util.Optional;
 @RequestMapping("/hms/v1/examinations")
 public class ExaminationController {
 
-    private final ExaminationService examinationService;
+  private final ExaminationService examinationService;
 
-    @Autowired
-    public ExaminationController(ExaminationService examinationService) {
-        this.examinationService = examinationService;
-    }
+  @Autowired
+  public ExaminationController(ExaminationService examinationService) {
+    this.examinationService = examinationService;
+  }
 
-    @PostMapping("/create")
-    public ResponseEntity<Examination> createExamination(@RequestBody Examination examination) {
-        Examination savedExamination = examinationService.saveExamination(examination);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedExamination);
-    }
+  @PostMapping()
+  public ResponseEntity<Examination> createExamination(@RequestBody Examination examination) {
+    Examination savedExamination = examinationService.saveExamination(examination);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedExamination);
+  }
 
-    @GetMapping
-    public ResponseEntity<List<Examination>> getAllExaminations() {
-        List<Examination> examinations = examinationService.getAllExaminations();
-        return ResponseEntity.ok(examinations);
-    }
+  @GetMapping
+  public ResponseEntity<List<Examination>> getAllExaminations() {
+    List<Examination> examinations = examinationService.getAllExaminations();
+    return ResponseEntity.ok(examinations);
+  }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Examination> getExaminationById(@PathVariable Long id) {
-        Optional<Examination> examinationOptional = examinationService.getExaminationById(id);
-        return examinationOptional.map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
-    }
+  @GetMapping("/{id}")
+  public ResponseEntity<Examination> getExaminationById(@PathVariable Long id) {
+    Optional<Examination> examinationOptional = examinationService.getExaminationById(id);
+    return examinationOptional
+        .map(ResponseEntity::ok)
+        .orElseGet(() -> ResponseEntity.notFound().build());
+  }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Examination> updateExamination(@PathVariable Long id, @RequestBody Examination examination) {
-        if (!examinationService.getExaminationById(id).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        examination.setId(id);
-        Examination updatedExamination = examinationService.saveExamination(examination);
-        return ResponseEntity.ok(updatedExamination);
+  @PutMapping("/{id}")
+  public ResponseEntity<Examination> updateExamination(
+      @PathVariable Long id, @RequestBody Examination examination) {
+    if (!examinationService.getExaminationById(id).isPresent()) {
+      return ResponseEntity.notFound().build();
     }
+    examination.setId(id);
+    Examination updatedExamination = examinationService.saveExamination(examination);
+    return ResponseEntity.ok(updatedExamination);
+  }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteExamination(@PathVariable Long id) {
-        if (!examinationService.getExaminationById(id).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        examinationService.deleteExaminationById(id);
-        return ResponseEntity.noContent().build();
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteExamination(@PathVariable Long id) {
+    if (!examinationService.getExaminationById(id).isPresent()) {
+      return ResponseEntity.notFound().build();
     }
+    examinationService.deleteExaminationById(id);
+    return ResponseEntity.noContent().build();
+  }
 }

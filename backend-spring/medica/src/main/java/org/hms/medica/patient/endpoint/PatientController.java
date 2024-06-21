@@ -41,7 +41,7 @@ public class PatientController {
 
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<PatientResponseDto> fetchPatientById(@PathVariable(name = "id") Long patientId) {
-        return ResponseEntity.status(HttpStatus.OK).body(patientService.getPatientById(patientId));
+        return ResponseEntity.status(HttpStatus.OK).body(patientService.getPatientDtoById(patientId));
     }
 
     @PostMapping("/add-patient")
