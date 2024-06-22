@@ -2,7 +2,6 @@ package org.hms.medica.patienthistory.service.impl;
 
 
 import lombok.AllArgsConstructor;
-import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.service.PatientService;
 import org.hms.medica.patienthistory.dto.PatientHistoryDto;
 import org.hms.medica.patienthistory.mapper.PatientHistoryMapper;
@@ -35,7 +34,8 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
     }
 
     @Override
-    public PatientHistoryDto getPatientHistoryByPatient(Patient patient) {
+    public PatientHistoryDto getPatientHistoryByPatient(Long patientId) {
+        var patient = patientService.getPatientById(patientId);
         var patientHistory = patientHistoryRepository.findPatientHistoryByPatient(patient).orElseThrow(() ->
                 new RuntimeException(String.format("Can not find patient history with patient: %s %s",
                         patient.getFirstname(), patient.getLastname())));
@@ -52,8 +52,10 @@ public class PatientHistoryServiceImpl implements PatientHistoryService {
 
     @Override
     public void updatePatientHistory(PatientHistoryDto patientHistoryDto) {
-        var patientHistory = patientHistoryRepository.findById(patientHistoryDto.getId()).orElseThrow(() ->
-                new RuntimeException("Can not find patient history with id: " + patientHistoryDto.getId()));
+        var patientHistory = patientHistoryRepository.findPatientHistoryByPatient(
+                patientService.getPatientById(patientHistoryDto.getPatientId())
+        ).orElseThrow(() ->
+                new RuntimeException("Can not find patient history with patient: %s %s"));;
         patientHistoryMapper.updatePatientHistory(patientHistoryDto, patientHistory);
         if (patientHistoryDto.getPatientId() > 0 &&
                 !(patientHistoryDto.getPatientId().equals(patientHistory.getPatient().getId()))) {

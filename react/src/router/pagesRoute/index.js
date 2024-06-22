@@ -6,6 +6,7 @@ import Dashboard from "../../components/dashboard/Dashboard";
 import Setting from "../../components/setting/Setting";
 import {PatientView} from "../../components/patient/PatientView";
 import CreatePatient from "../../components/patient/CreatePatient";
+import PatientHistoryView from "../../components/patienthistory/PatientHistoryView";
 
 export const doctorRoute = {
     path: "doctors/",
@@ -47,6 +48,11 @@ export const appointmentsRoute = {
         }
     ]
 
+}
+
+export const patientHistoryRout = {
+    path: "/patients/patient-history/:patientId?",
+    element: <PatientHistoryView/>
 }
 
 export const dashboardRout = {

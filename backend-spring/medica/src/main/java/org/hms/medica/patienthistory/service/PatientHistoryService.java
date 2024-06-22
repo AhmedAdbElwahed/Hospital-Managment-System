@@ -13,7 +13,7 @@ public interface PatientHistoryService {
 
     PatientHistoryDto getPatientHistoryById(Long id);
 
-    PatientHistoryDto getPatientHistoryByPatient(Patient patient);
+    PatientHistoryDto getPatientHistoryByPatient(Long patientId);
 
     @Transactional
     void savePatientHistory(PatientHistoryDto patientHistoryDto);

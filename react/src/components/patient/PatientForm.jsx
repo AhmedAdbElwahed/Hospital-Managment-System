@@ -17,7 +17,11 @@ import React, {useState} from "react";
 import dayjs from "dayjs";
 import {useRegisterPatientMutation, useUpdatePatientMutation} from "../../redux/features/patient/patientApiSlice";
 import {mapPatientToPatientDto} from "../../util/patientUtils";
-import {bloodTypes, maritalStatus, nationalities} from "../../constants/formSelectChoices";
+import {bloodTypes, maritalStatus, nationalities} from "../../constants/patientFormSelectChoices";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 const classNames = (...classes) => {
     return classes.filter(Boolean).join(' ');
@@ -28,6 +32,7 @@ const PatientForm = ({patient}) => {
     const [registerPatient, response] = useRegisterPatientMutation();
     const [updatePatient, {isLoading}] = useUpdatePatientMutation();
     const [open, setOpen] = useState(false);
+    const [showPassword, setShowPassword] = React.useState(false);
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -66,6 +71,12 @@ const PatientForm = ({patient}) => {
             console.error('Registration error:', error);
         }
         setOpen(true);
+    };
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
     };
 
 
@@ -262,15 +273,28 @@ const PatientForm = ({patient}) => {
                                             }
                                         }
                                         render={({field}) => (
-                                            <TextField
-                                                {...field}
-                                                label="Password"
-                                                type="password"
-                                                variant="outlined"
-                                                error={!!errors.password}
-                                                helperText={errors.password ? errors.password.message : ''}
-                                                fullWidth
-                                            />
+                                            <FormControl sx={{width: '100%' }} variant="outlined">
+                                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                                <OutlinedInput
+                                                    {...field}
+                                                    id="outlined-adornment-password"
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    endAdornment={
+                                                        <InputAdornment position="end">
+                                                            <IconButton
+                                                                aria-label="toggle password visibility"
+                                                                onClick={handleClickShowPassword}
+                                                                onMouseDown={handleMouseDownPassword}
+                                                                edge="end"
+                                                            >
+                                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    }
+                                                    label="Password"
+                                                />
+                                                <FormHelperText>{errors.gender ? errors.gender.message : ''}</FormHelperText>
+                                            </FormControl>
                                         )}
                                     />
 
@@ -321,7 +345,12 @@ const PatientForm = ({patient}) => {
                                                 <Select {...field} label="Blood Type">
                                                     {
                                                         bloodTypes.map((type) => (
-                                                            <MenuItem value={type}>{type.toLowerCase()}</MenuItem>
+                                                            <MenuItem
+                                                                key={type}
+                                                                value={type}
+                                                            >
+                                                                {type.toLowerCase()}
+                                                            </MenuItem>
                                                         ))
                                                     }
                                                 </Select>
@@ -342,7 +371,11 @@ const PatientForm = ({patient}) => {
                                                 <Select {...field} label="Marital Status">
                                                     {
                                                         maritalStatus.map((status) => (
-                                                            <MenuItem value={status}>{status.toLowerCase()}</MenuItem>
+                                                            <MenuItem key={status}
+                                                                      value={status}
+                                                            >
+                                                                {status.toLowerCase()}
+                                                            </MenuItem>
                                                         ))
                                                     }
                                                 </Select>
@@ -361,7 +394,11 @@ const PatientForm = ({patient}) => {
                                                     {
                                                         nationalities.map((nationality) => (
                                                             <MenuItem
-                                                                value={nationality}>{nationality.toLowerCase()}</MenuItem>
+                                                                key={nationality}
+                                                                value={nationality}
+                                                            >
+                                                                {nationality.toLowerCase()}
+                                                            </MenuItem>
                                                         ))
                                                     }
                                                 </Select>

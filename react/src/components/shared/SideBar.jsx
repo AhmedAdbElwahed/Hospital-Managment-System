@@ -120,15 +120,15 @@ export default function SideBar({outlet}) {
                         {open ? "" : "MDEICA"}
                     </Typography>
                     <div className="flex w-full justify-end">
-                        <CardHeader
-                            avatar={
-                                <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                    {user.username && user.username.substring(0,2).toUpperCase()}
-                                </Avatar>
-                            }
-                            title={user.username ? user.username : "Anonymous"}
-                            subheader={user.role ? user.role : "Anonymous"}
-                        />
+                        <div>
+                            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                                {user.username && user.username.substring(0,2).toUpperCase()}
+                            </Avatar>
+                        </div>
+                        <div className="ml-2 max-xs:hidden">
+                            <Typography variant="subtitle2">{user.username ? user.username : "Anonymous"}</Typography>
+                            <Typography variant="subtitle2">{user.role ? user.role : "Anonymous"}</Typography>
+                        </div>
                     </div>
                 </Toolbar>
             </AppBar>

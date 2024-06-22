@@ -48,6 +48,7 @@ export default function PatientDataTable({rows, cols, isLoading, error}) {
                                 toolbar: CustomDataGridToolbar,
                                 noRowsOverlay: CustomNoRowsOverlay
                             }}
+                            rowSelection={false}
 
                         />)
 

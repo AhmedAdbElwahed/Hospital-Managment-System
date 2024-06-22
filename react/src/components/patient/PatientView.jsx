@@ -6,11 +6,14 @@ import {mapDataToPatients, patientColumns} from "../../util/patientUtils";
 import {useEffect, useState} from "react";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import RateReviewIcon from '@mui/icons-material/RateReview';
+import {useNavigate} from "react-router-dom";
 
 export const PatientView = () => {
 
     const {data, error, isLoading} = useGetAllPatientsQuery();
     const [deletePatientById] = useDeletePatientByIdMutation();
+    const navigate = useNavigate();
     const [rows, setRows] = useState([]);
     const [cols, setCols] = useState([]);
 
@@ -21,6 +24,10 @@ export const PatientView = () => {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const handlePatientHistory = (id)=> () => {
+        navigate(`/patients/patient-history/${id}`);
     }
 
     const columns = patientColumns.concat([{
@@ -35,7 +42,14 @@ export const PatientView = () => {
                 label="Delete"
                 onClick={handleDeleteClick(id)}
                 color="inherit"
-            />]
+            />,
+                <GridActionsCellItem
+                    icon={<RateReviewIcon/>}
+                    label="Delete"
+                    onClick={handlePatientHistory(id)}
+                    color="inherit"
+                />
+            ]
         ),
     }]);
 
