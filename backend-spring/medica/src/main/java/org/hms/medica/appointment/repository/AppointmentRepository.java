@@ -1,6 +1,7 @@
 package org.hms.medica.appointment.repository;
 
 import org.hms.medica.appointment.model.Appointment;
+import org.hms.medica.doctor.model.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -21,5 +22,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
           "SELECT * FROM appointment where doctor_id = :userId OR patient_id= :userId ORDER BY start_date_time")
   List<Appointment> findAppointmentsByUserId(Long userId);
 
-  Optional<Appointment> findAppointmentByStartTime(LocalTime startTime);
+  Optional<Appointment> findAppointmentByStartTimeAndDoctor(LocalTime startTime, Doctor doctor);
 }

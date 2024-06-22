@@ -164,7 +164,7 @@ public class DoctorServiceImpl implements DoctorService {
         var startTime = doctor.getWorkStartTime();
         var endTime = doctor.getWorkEndTime();
         for (; startTime.isBefore(endTime); startTime = startTime.plusMinutes(30L)) {
-            if (!userAppointmentService.IsAppointmentByStartTimePresent(startTime)) {
+            if (!userAppointmentService.IsAppointmentByStartTimePresent(startTime, doctor)) {
                 availableTimes.add(startTime);
             }
         }
