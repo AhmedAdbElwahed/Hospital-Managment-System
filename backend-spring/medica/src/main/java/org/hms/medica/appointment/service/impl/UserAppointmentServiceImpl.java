@@ -7,6 +7,8 @@ import org.hms.medica.appointment.service.UserAppointmentService;
 import org.hms.medica.user.model.User;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -17,5 +19,10 @@ public class UserAppointmentServiceImpl implements UserAppointmentService {
   @Override
   public List<Appointment> findUserAppointments(User user) {
     return appointmentRepository.findAppointmentsByUserId(user.getId());
+  }
+
+  @Override
+  public boolean IsAppointmentByStartTimePresent(LocalTime startTime) {
+    return appointmentRepository.findAppointmentByStartTime(startTime).isPresent();
   }
 }

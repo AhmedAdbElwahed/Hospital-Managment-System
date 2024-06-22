@@ -4,10 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalTime;
+
+import lombok.*;
 import org.hms.medica.baseEntity.AuditedEntity;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.patient.model.Patient;
@@ -15,11 +14,12 @@ import org.hms.medica.patient.model.Patient;
 @Entity
 @Setter
 @Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Appointment extends AuditedEntity {
 
-  private LocalDateTime startDateTime;
+  private LocalTime startTime;
   private String reasonForVisit;
   private boolean isVirtual;
 

@@ -1,6 +1,7 @@
 package org.hms.medica.appointment.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hms.medica.appointment.dto.PatientAppointmentDto;
 import org.hms.medica.appointment.mapper.PatientAppointmentMapper;
 import org.hms.medica.appointment.model.Appointment;
@@ -12,6 +13,7 @@ import org.hms.medica.user.service.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AppointmentSchedulingService {
   private final AppointmentValidator appointmentValidator;
@@ -35,6 +37,7 @@ public class AppointmentSchedulingService {
   private Long processAppointmentScheduling(
       PatientAppointmentDto patientAppointmentDto, Patient patient) {
     Appointment appointment = mapToAppointmentEntity(patientAppointmentDto, patient);
+    log.info("Processed Appointment: {}", appointment);
     appointmentValidator.validate(appointment);
     return persistAppointment(appointment).getId();
   }

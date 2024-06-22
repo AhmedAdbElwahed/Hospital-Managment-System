@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -36,5 +37,7 @@ public interface DoctorService {
 
   @Transactional
   DoctorResponseDto updateDoctor(Long id, DoctorDto doctorDto);
+
+  List<LocalTime> getAllAvailableTimes(Long doctorId);
 
 }

@@ -29,7 +29,7 @@ public class AppointmentValidator {
     Patient patient = appointment.getPatient();
 
     appointmentRepository
-        .findByPatientIdAndStartDateTime(patient.getId(), appointment.getStartDateTime())
+        .findByPatientIdAndStartTime(patient.getId(), appointment.getStartTime())
         .ifPresent(
             appointment1 -> {
               throw new AppointmentAlreadyScheduledException(appointment1);
@@ -40,7 +40,7 @@ public class AppointmentValidator {
     Doctor doctor = appointment.getDoctor();
     LocalTime startTime = doctor.getWorkStartTime();
     LocalTime endTime = doctor.getWorkEndTime();
-    LocalTime appointmentStartTime = appointment.getStartDateTime().toLocalTime();
+    LocalTime appointmentStartTime = appointment.getStartTime();
     boolean validMinute =
         appointmentStartTime.getMinute() == 0 || appointmentStartTime.getMinute() == 30;
     if (startTime.isAfter(appointmentStartTime.minusMinutes(20))

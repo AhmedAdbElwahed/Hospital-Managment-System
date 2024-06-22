@@ -7,6 +7,6 @@ public class InvalidAppointmentTimeSlot extends RuntimeException {
     super(
         String.format(
             "Invalid appointment timeSlot for appointment with start datetime = %s",
-            appointment.getStartDateTime()));
+            appointment.getStartTime()));
   }
 }

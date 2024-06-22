@@ -30,6 +30,7 @@ public class AppointmentController {
   public ResponseEntity<String> scheduleAppointmentForPatient(
       @Valid @RequestBody PatientAppointmentDto patientAppointmentDto,
       @PathVariable Long patientId) {
+    System.out.println("Patient Appointment: " + patientAppointmentDto);
     Long appointmentId =
         appointmentSchedulingService.scheduleAppointmentById(patientAppointmentDto, patientId);
     return ResponseEntity.status(HttpStatus.CREATED)

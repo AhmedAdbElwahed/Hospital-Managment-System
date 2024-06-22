@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -33,6 +34,12 @@ public class DoctorController {
             Pageable pageable
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(doctorService.getAllDoctors(predicate, pageable));
+    }
+
+    @GetMapping("/get-available-time/{id}")
+    public ResponseEntity<List<LocalTime>> getAvailableDoctorTimeSlots(
+            @PathVariable(name = "id")Long doctorId) {
+        return ResponseEntity.status(HttpStatus.OK).body(doctorService.getAllAvailableTimes(doctorId));
     }
 
     @PostMapping("/register")
