@@ -1,6 +1,5 @@
 package org.hms.medica.doctor.service.impl;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +19,7 @@ import org.hms.medica.doctor.dto.DoctorResponseDto;
 import org.hms.medica.doctor.mapper.DoctorMapper;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.doctor.repo.DoctorRepository;
+import org.hms.medica.doctor.repo.QDoctorRepository;
 import org.hms.medica.doctor.service.DoctorService;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.repo.UserRepository;
@@ -36,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DoctorServiceImpl implements DoctorService {
 
     private DoctorRepository doctorRepository;
+    private QDoctorRepository qDoctorRepository;
     private RoleRepository roleRepository;
     private UserRepository userRepository;
     private UserAppointmentService userAppointmentService;
@@ -129,6 +130,14 @@ public class DoctorServiceImpl implements DoctorService {
                 .findById(id)
                 .orElseThrow(
                         () -> new UsernameNotFoundException(String.format("User with id %d Not found", id)));
+    }
+
+    @Override
+    public List<DoctorResponseDto> findDoctorByFullName(String fullName) {
+        return qDoctorRepository.findDoctorByFullName(fullName)
+                .stream()
+                .map(doctorMapper::mapDoctorToDoctorResponseDto)
+                .toList();
     }
 
     public Doctor getDoctorByEmail(String email) {

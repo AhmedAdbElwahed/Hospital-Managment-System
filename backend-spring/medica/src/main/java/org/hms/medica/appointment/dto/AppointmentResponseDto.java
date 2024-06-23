@@ -15,6 +15,8 @@ import java.time.LocalTime;
 @ToString
 public class AppointmentResponseDto {
 
+
+    private Long id;
     @NotNull
     private LocalTime startTime;
     @NotBlank

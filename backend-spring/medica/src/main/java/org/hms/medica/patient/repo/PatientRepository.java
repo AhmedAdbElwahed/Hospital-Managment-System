@@ -17,7 +17,7 @@ public interface PatientRepository extends JpaRepository<Patient, Long>,
         QuerydslPredicateExecutor<Patient>, QuerydslBinderCustomizer<QPatient> {
 
     @Override
-    default void customize(QuerydslBindings bindings,@NonNull QPatient doctor) {
+    default void customize(QuerydslBindings bindings,@NonNull QPatient patient) {
         bindings.bind(String.class)
                 .first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
     }

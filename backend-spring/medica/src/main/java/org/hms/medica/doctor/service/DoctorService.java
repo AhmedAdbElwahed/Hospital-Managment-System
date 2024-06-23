@@ -20,6 +20,8 @@ public interface DoctorService {
   DoctorResponseDto getDoctorDtoById(Long id);
   Doctor getDoctorById(Long id);
 
+  List<DoctorResponseDto> findDoctorByFullName(String fullName);
+
 
   Doctor getDoctorByEmail(String email);
 

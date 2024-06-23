@@ -12,6 +12,7 @@ public interface AdminAppointmentMapper {
     @Mapping(target = "doctorName", expression = "java(getFullName(appointment.getDoctor()))")
     @Mapping(target = "patientName", expression = "java(getFullName(appointment.getPatient()))")
     @Mapping(target = "isVirtual", source = "virtual")
+    @Mapping(target = "id", source = "id")
     AppointmentResponseDto mapAppointmentToAppointmentResponseDto(Appointment appointment);
 
     default String getFullName(User user) {

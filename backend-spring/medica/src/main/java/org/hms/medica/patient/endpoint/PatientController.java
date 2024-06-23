@@ -2,6 +2,7 @@ package org.hms.medica.patient.endpoint;
 
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.doctor.repo.DoctorRepository;
 import org.hms.medica.patient.dto.PatientDto;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/patients")
 @RequiredArgsConstructor
@@ -38,6 +40,15 @@ public class PatientController {
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(patientService.getAllPatients(predicate, pageable));
     }
+
+    @GetMapping("/search-full-name")
+    public ResponseEntity<List<PatientResponseDto>> searchPatientByFullName(
+            @RequestParam String fullName
+    )  {
+        log.info("full name: {}", fullName);
+        return ResponseEntity.status(HttpStatus.OK).body(patientService.findPatientByFullName(fullName));
+    }
+
 
     @GetMapping("/get-by-id/{id}")
     public ResponseEntity<PatientResponseDto> fetchPatientById(@PathVariable(name = "id") Long patientId) {
