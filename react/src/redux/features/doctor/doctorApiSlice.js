@@ -32,6 +32,12 @@ export const doctorApi = createApi({
                 method: 'get'
             }),
             providesTags: ["Doctor"],
+        }),
+        getAvailableTimes: builder.query({
+            query: (id) => ({
+                url: `/api/v1/doctor/get-available-time/${id}`,
+                method: 'get'
+            })
         })
         ,
         deleteDoctor: builder.mutation({
@@ -57,5 +63,6 @@ export const {
     useDeleteDoctorMutation,
     useUpdateDoctorMutation,
     useGetAllDoctorsQuery,
+    useGetAvailableTimesQuery,
     useGetDoctorByIdQuery,
 } = doctorApi;
