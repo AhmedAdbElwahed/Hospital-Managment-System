@@ -1,35 +1,51 @@
 package org.hms.medica.examination.service;
 
+import lombok.RequiredArgsConstructor;
+import org.hms.medica.doctor.model.Doctor;
+import org.hms.medica.doctor.service.DoctorService;
+import org.hms.medica.examination.dto.ExaminationDto;
+import org.hms.medica.examination.mapper.ExaminationMapper;
 import org.hms.medica.examination.model.Examination;
 import org.hms.medica.examination.repo.ExaminationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.hms.medica.user.model.User;
+import org.hms.medica.user.service.UserService;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class ExaminationService {
 
-    private final ExaminationRepository examinationRepository;
+  private final ExaminationRepository examinationRepository;
+  private final UserService userService;
+  private final DoctorService doctorService;
+  private final ExaminationMapper examinationMapper;
 
-    @Autowired
-    public ExaminationService(ExaminationRepository examinationRepository) {
-        this.examinationRepository = examinationRepository;
-    }
+  public Long createExamination(ExaminationDto examinationDto) {
+    User currentUser = userService.getCurrentUser();
+    Doctor doctor = doctorService.getDoctorById(currentUser.getId());
 
-    public Examination saveExamination(Examination examination) {
-        return examinationRepository.save(examination);
-    }
+    Examination examination = examinationMapper.mapToEntity(examinationDto);
+    examination.setDoctor(doctor);
+    return saveExamination(examination);
+  }
 
-    public List<Examination> getAllExaminations() {
-        return examinationRepository.findAll();
-    }
+  private Long saveExamination(Examination examination) {
+    Examination savedExamination = examinationRepository.save(examination);
+    return savedExamination.getId();
+  }
 
-    public Optional<Examination> getExaminationById(Long id) {
-        return examinationRepository.findById(id);
-    }
+  public List<Examination> retrieveAllExaminations() {
+    return examinationRepository.findAll();
+  }
 
-    public void deleteExaminationById(Long id) {
-        examinationRepository.deleteById(id);
-    }
+  public Optional<Examination> findExaminationById(Long id) {
+    return examinationRepository.findById(id);
+  }
+
+  public void removeExaminationById(Long id) {
+    examinationRepository.deleteById(id);
+  }
 }
