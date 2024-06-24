@@ -3,6 +3,7 @@ package org.hms.medica.appointment.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hms.medica.constants.AppointmentStatus;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -25,6 +26,10 @@ public class AppointmentResponseDto {
     private String doctorName;
     @NotNull
     private String patientName;
+
+    private AppointmentStatus appointmentStatus;
+
+    private LocalDateTime createdAt;
     @NotNull
     private boolean isVirtual;
 }

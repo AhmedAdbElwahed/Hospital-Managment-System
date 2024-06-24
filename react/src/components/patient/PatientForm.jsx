@@ -68,7 +68,9 @@ const PatientForm = ({patient}) => {
 
     const onRegisterSubmit = async (data) => {
         const patientData = mapPatientToPatientDto(data);
-
+        patientData.additionalInfoDto.nationality = patientData.additionalInfoDto.nationality ?
+            patientData.additionalInfoDto.nationality.label
+            : null
         try {
             await registerPatient(patientData).unwrap();
         } catch (error) {

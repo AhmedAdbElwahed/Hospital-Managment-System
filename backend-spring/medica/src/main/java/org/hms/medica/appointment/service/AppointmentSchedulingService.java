@@ -6,6 +6,7 @@ import org.hms.medica.appointment.dto.PatientAppointmentDto;
 import org.hms.medica.appointment.mapper.PatientAppointmentMapper;
 import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.appointment.repository.AppointmentRepository;
+import org.hms.medica.constants.AppointmentStatus;
 import org.hms.medica.doctor.service.DoctorService;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.service.PatientService;
@@ -51,6 +52,7 @@ public class AppointmentSchedulingService {
   }
 
   private Appointment persistAppointment(Appointment appointment) {
+    appointment.setAppointmentStatus(AppointmentStatus.PENDING);
     return appointmentRepository.save(appointment);
   }
 }

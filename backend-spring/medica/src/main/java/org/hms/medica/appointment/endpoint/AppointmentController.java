@@ -4,6 +4,7 @@ import com.querydsl.core.types.Predicate;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.hms.medica.appointment.dto.AppointmentResponseDto;
+import org.hms.medica.appointment.dto.AppointmentStatusDto;
 import org.hms.medica.appointment.dto.PatientAppointmentDto;
 import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.appointment.repository.AppointmentRepository;
@@ -59,9 +60,18 @@ public class AppointmentController {
                 .body("Appointment created with id " + appointmentId);
     }
 
+    @PostMapping("/change-status")
+    public ResponseEntity<String> changeAppointmentStatus(
+            @RequestBody AppointmentStatusDto appointmentStatusDto
+            ) {
+        userAppointmentService.changeAppointmentStatus(appointmentStatusDto);
+        return ResponseEntity.status(HttpStatus.OK).body("Appointment Status Changed Successfully");
+    }
+
     @DeleteMapping("/delete-by-id/{id}")
     public ResponseEntity<String> deleteAppointmentById(@PathVariable(name = "id") Long appointmentId) {
         userAppointmentService.deleteAppointment(appointmentId);
         return ResponseEntity.status(HttpStatus.OK).body("Appointment deleted Successfully");
     }
+
 }

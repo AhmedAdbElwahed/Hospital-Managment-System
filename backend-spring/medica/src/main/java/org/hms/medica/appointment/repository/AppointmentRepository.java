@@ -14,6 +14,7 @@ import org.springframework.data.querydsl.binding.SingleValueBinding;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,7 +31,11 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long>,
           "SELECT * FROM appointment where doctor_id = :userId OR patient_id= :userId ORDER BY start_date_time")
   List<Appointment> findAppointmentsByUserId(Long userId);
 
-  Optional<Appointment> findAppointmentByStartTimeAndDoctor(LocalTime startTime, Doctor doctor);
+  Optional<Appointment> findAppointmentByStartTimeAndDoctorAndCreatedDate(
+          LocalTime startTime,
+          Doctor doctor,
+          LocalDateTime todayDate
+  );
 
   @Override
   default void customize(QuerydslBindings bindings, @NonNull QAppointment appointment) {

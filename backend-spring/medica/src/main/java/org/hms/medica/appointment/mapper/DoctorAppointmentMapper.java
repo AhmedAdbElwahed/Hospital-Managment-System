@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Mapper
 public interface DoctorAppointmentMapper {
+  @Mapping(target = "appointmentStatus", ignore = true)
   @Mapping(target = "patient", ignore = true)
   @Mapping(target = "id", ignore = true)
   @Mapping(target = "doctor", ignore = true)

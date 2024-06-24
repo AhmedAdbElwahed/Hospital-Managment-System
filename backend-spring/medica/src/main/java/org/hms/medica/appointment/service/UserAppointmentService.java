@@ -2,6 +2,7 @@ package org.hms.medica.appointment.service;
 
 import com.querydsl.core.types.Predicate;
 import org.hms.medica.appointment.dto.AppointmentResponseDto;
+import org.hms.medica.appointment.dto.AppointmentStatusDto;
 import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.user.model.User;
@@ -18,6 +19,9 @@ public interface UserAppointmentService {
   boolean IsAppointmentByStartTimePresent(LocalTime startTime, Doctor doctor);
 
   List<AppointmentResponseDto> findAllAppointments(Predicate predicate, Pageable pageable);
+
+  @Transactional
+  void changeAppointmentStatus(AppointmentStatusDto appointmentStatusDto);
 
   @Transactional
   void deleteAppointment(Long id);

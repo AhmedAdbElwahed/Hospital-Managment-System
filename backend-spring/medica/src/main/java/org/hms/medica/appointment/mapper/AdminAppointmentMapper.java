@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface AdminAppointmentMapper {
 
+    @Mapping(target = "createdAt", source = "createdDate")
     @Mapping(target = "doctorName", expression = "java(getFullName(appointment.getDoctor()))")
     @Mapping(target = "patientName", expression = "java(getFullName(appointment.getPatient()))")
     @Mapping(target = "isVirtual", source = "virtual")
