@@ -19,6 +19,7 @@
         <lombok.version>1.18.30</lombok.version>
         <mapstruct-lombok.version>0.2.0</mapstruct-lombok.version>
     </properties>
+    
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -53,6 +54,29 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- <dependency>
+            <groupId>io.agora</groupId>
+            <artifactId>rtc-sdk</artifactId>
+            <version>LATEST_VERSION</version>
+        </dependency> -->
+
+
+        <!-- WebSocket Dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        
+        
+        <!-- Thymeleaf Dependencies -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
