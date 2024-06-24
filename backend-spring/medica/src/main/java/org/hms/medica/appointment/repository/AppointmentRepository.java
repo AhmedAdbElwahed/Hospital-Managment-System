@@ -14,6 +14,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
   Optional<Appointment> findByPatientIdAndStartDateTime(
       Long patientId, LocalDateTime startDateTime);
 
+  Optional<Appointment> findByDoctorIdAndStartDateTime(Long doctorId, LocalDateTime startDateTime);
+
   @Query(
       nativeQuery = true,
       value =
