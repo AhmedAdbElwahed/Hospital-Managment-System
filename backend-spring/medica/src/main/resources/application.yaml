@@ -1,7 +1,7 @@
 spring:
   datasource:
     username: postgres
-    password: Ahmed@2252300
+    password: postgres
     url: jdbc:postgresql://localhost:5432/medica
     driver-class-name: org.postgresql.Driver
 
@@ -14,10 +14,10 @@ spring:
     show-sql: true
 
   mail:
-    host: smtp.gmail.com
-    username: os.omarsalah@gmail.com
+    host: sandbox.smtp.mailtrap.io #smtp.gmail.com
+    username: af7756b39fe8eb #os.omarsalah@gmail.com
     port: 587
-    password: urzmokjzfhbyxzrl
+    password: e3a9e4bc120f82 #urzmokjzfhbyxzrl
     properties:
       mail:
         smtp:
@@ -26,6 +26,12 @@ spring:
             enable: true
   elasticsearch:
     uris: http://localhost:9200
+
+  mvc:
+    cors:
+      allowed-origins: "*"
+      allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+
 
 
 
