@@ -22,6 +22,12 @@ export const patientApi = createApi({
             }),
             providesTags: ["Patient"],
         }),
+        searchPatientByFullName: builder.query({
+            query: (fullName) => ({
+                url: `/api/v1/patients/search-full-name?fullName=${fullName}`,
+                method: "get"
+            })
+        }),
         registerPatient: builder.mutation({
             query: (data) => ({
                 url: "/api/v1/patients/add-patient",
@@ -51,6 +57,7 @@ export const patientApi = createApi({
 export const {
     useGetAllPatientsQuery,
     useGetPatientByIdQuery,
+    useSearchPatientByFullNameQuery,
     useRegisterPatientMutation,
     useUpdatePatientMutation,
     useDeletePatientByIdMutation

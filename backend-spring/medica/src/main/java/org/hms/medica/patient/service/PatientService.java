@@ -12,6 +12,7 @@ import org.hms.medica.patient.dto.PatientResponseDto;
 import org.hms.medica.patient.mapper.PatientMapper;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.repo.PatientRepository;
+import org.hms.medica.patient.repo.QPatientRepository;
 import org.hms.medica.user.exception.UserNotFoundException;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.service.UserService;
@@ -35,6 +36,7 @@ public class PatientService {
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
     private final PasswordEncoder passwordEncoder;
+    private final QPatientRepository qPatientRepository;
 
   public List<PatientAppointmentDto> getAppointments() {
     User user = userService.getCurrentUser();
@@ -48,6 +50,13 @@ public class PatientService {
               return patientAppointmentDto;
             })
         .collect(Collectors.toList());
+  }
+
+  public List<PatientResponseDto> findPatientByFullName(String fullName) {
+      return qPatientRepository.findPatientByFullName(fullName)
+              .stream()
+              .map(patientMapper::mapPatientToPatientResponseDto)
+              .toList();
   }
 
   public List<PatientResponseDto> getAllPatients(Predicate predicate, Pageable pageable) {

@@ -1,4 +1,3 @@
-
 import DoctorDataTable from "./DoctorDataTable";
 import {useDeleteDoctorMutation, useGetAllDoctorsQuery} from "../../redux/features/doctor/doctorApiSlice";
 import {useEffect, useState} from "react";
@@ -6,12 +5,15 @@ import {doctorCols, mapDataToDoctors} from "../../util/doctorUtils";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import * as React from "react";
-import Box from "@mui/material/Box";
+import AccessTimeFilledIcon from "@mui/icons-material/RateReview";
+import {useNavigate} from "react-router-dom";
+import {Clock1Icon} from "lucide-react";
 
 const DoctorView = () => {
 
     const {data, error, isLoading} = useGetAllDoctorsQuery();
     const [deleteDoctor] = useDeleteDoctorMutation();
+    const navigate = useNavigate();
     const [rows, setRows] = useState([]);
     const [cols, setCols] = useState([]);
 
@@ -21,6 +23,10 @@ const DoctorView = () => {
         } catch (error) {
             console.log(error);
         }
+    }
+
+    const handleAppointment = (id) => () => {
+        navigate(`/appointments/create-appointment/${id}`);
     }
 
 
@@ -38,7 +44,14 @@ const DoctorView = () => {
                 label="Delete"
                 onClick={handleDeleteClick(id)}
                 color="inherit"
-            />]
+            />,
+                <GridActionsCellItem
+                    icon={<Clock1Icon/>}
+                    label="Delete"
+                    onClick={handleAppointment(id)}
+                    color="inherit"
+                />
+            ]
         ),
     }]);
     const getRows = () => {

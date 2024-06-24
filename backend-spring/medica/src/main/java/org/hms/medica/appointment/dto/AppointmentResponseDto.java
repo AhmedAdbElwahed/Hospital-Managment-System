@@ -2,11 +2,10 @@ package org.hms.medica.appointment.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-
-import lombok.*;
 
 @Getter
 @Setter
@@ -14,13 +13,18 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 @ToString
-public class DoctorAppointmentDto {
+public class AppointmentResponseDto {
+
+
+    private Long id;
     @NotNull
     private LocalTime startTime;
     @NotBlank
     private String reasonForVisit;
     @NotNull
-    private Long patientId;
+    private String doctorName;
+    @NotNull
+    private String patientName;
     @NotNull
     private boolean isVirtual;
 }

@@ -5,6 +5,7 @@ import {useGetPatientByIdQuery} from "../../redux/features/patient/patientApiSli
 import dayjs from "dayjs";
 import {mapDataToPatients} from "../../util/patientUtils";
 import PatientForm from "./PatientForm";
+import {countries} from "../../constants/patientFormSelectChoices";
 
 const CreatePatient = () => {
     const {id} = useParams();
@@ -17,6 +18,9 @@ const CreatePatient = () => {
             const patient = mapDataToPatients([data])[0];
             if (patient) {
                 patient['dob'] = patient.dob ? dayjs(patient.dob) : null;
+                patient['nationality'] = patient.nationality ?
+                    countries.find(value => value.label === patient.nationality)
+                    : null;
             }
 
             setPatientData(patient);

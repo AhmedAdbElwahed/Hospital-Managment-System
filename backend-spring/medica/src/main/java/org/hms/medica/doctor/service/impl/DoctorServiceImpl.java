@@ -1,6 +1,7 @@
 package org.hms.medica.doctor.service.impl;
 
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -10,6 +11,7 @@ import lombok.AllArgsConstructor;
 import com.querydsl.core.types.Predicate;
 import org.hms.medica.appointment.dto.DoctorAppointmentDto;
 import org.hms.medica.appointment.mapper.DoctorAppointmentMapper;
+import org.hms.medica.appointment.repository.AppointmentRepository;
 import org.hms.medica.appointment.service.UserAppointmentService;
 import org.hms.medica.auth.repo.RoleRepository;
 import org.hms.medica.doctor.dto.DoctorDto;
@@ -17,6 +19,7 @@ import org.hms.medica.doctor.dto.DoctorResponseDto;
 import org.hms.medica.doctor.mapper.DoctorMapper;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.doctor.repo.DoctorRepository;
+import org.hms.medica.doctor.repo.QDoctorRepository;
 import org.hms.medica.doctor.service.DoctorService;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.repo.UserRepository;
@@ -33,6 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DoctorServiceImpl implements DoctorService {
 
     private DoctorRepository doctorRepository;
+    private QDoctorRepository qDoctorRepository;
     private RoleRepository roleRepository;
     private UserRepository userRepository;
     private UserAppointmentService userAppointmentService;
@@ -40,6 +44,7 @@ public class DoctorServiceImpl implements DoctorService {
     private DoctorAppointmentMapper doctorAppointmentMapper;
     private PasswordEncoder passwordEncoder;
     private DoctorMapper doctorMapper;
+    private AppointmentRepository appointmentRepository;
 
     public void registerDoctor(DoctorDto doctorDto) {
         var role = roleRepository.getRoleByName("ROLE_DOCTOR").orElseThrow(
@@ -86,6 +91,7 @@ public class DoctorServiceImpl implements DoctorService {
         return doctorMapper.mapDoctorToDoctorResponseDto(doctor);
     }
 
+
     private void createDoctorObj(DoctorDto doctorDto, Doctor doctor) {
         doctor.setFirstname(doctorDto.getRequiredInfoDto().getFirstname());
         doctor.setLastname(doctorDto.getRequiredInfoDto().getLastname());
@@ -126,6 +132,14 @@ public class DoctorServiceImpl implements DoctorService {
                         () -> new UsernameNotFoundException(String.format("User with id %d Not found", id)));
     }
 
+    @Override
+    public List<DoctorResponseDto> findDoctorByFullName(String fullName) {
+        return qDoctorRepository.findDoctorByFullName(fullName)
+                .stream()
+                .map(doctorMapper::mapDoctorToDoctorResponseDto)
+                .toList();
+    }
+
     public Doctor getDoctorByEmail(String email) {
         return doctorRepository
                 .getDoctorByEmail(email)
@@ -151,4 +165,20 @@ public class DoctorServiceImpl implements DoctorService {
                 .map(doctorMapper::mapDoctorToDoctorResponseDto)
                 .toList();
     }
+
+    @Override
+    public List<LocalTime> getAllAvailableTimes(Long doctorId) {
+        List<LocalTime> availableTimes = new ArrayList<>();
+        var doctor = getDoctorById(doctorId);
+        var startTime = doctor.getWorkStartTime();
+        var endTime = doctor.getWorkEndTime();
+        for (; startTime.isBefore(endTime); startTime = startTime.plusMinutes(30L)) {
+            if (!userAppointmentService.IsAppointmentByStartTimePresent(startTime, doctor)) {
+                availableTimes.add(startTime);
+            }
+        }
+        return availableTimes;
+    }
+
+
 }

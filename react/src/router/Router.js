@@ -3,7 +3,7 @@ import {Login, Register} from '../auth/index';
 import PrivateRoute from "./PrivateRoute";
 import {Error404} from "../exception/Error404";
 import {
-    appointmentsRoute,
+    appointmentsRoute, createAppointmentRout,
     createDoctorRoute,
     createPatientRoute,
     dashboardRout,
@@ -35,6 +35,7 @@ export const Router = () => {
                 updateDoctorRoute,
                 updatePatientRout,
                 patientHistoryRout,
+                createAppointmentRout,
             ]
         },
         {

@@ -1,5 +1,5 @@
 import {Tab, TabGroup, TabList, TabPanel, TabPanels} from "@headlessui/react";
-import {Controller, useForm} from "react-hook-form";
+import {Controller, useController, useForm} from "react-hook-form";
 import {
     Alert,
     Button,
@@ -9,7 +9,6 @@ import {
     InputLabel,
     MenuItem,
     Select, Snackbar,
-    TextField
 } from "@mui/material";
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
@@ -17,10 +16,13 @@ import React, {useState} from "react";
 import dayjs from "dayjs";
 import {useRegisterPatientMutation, useUpdatePatientMutation} from "../../redux/features/patient/patientApiSlice";
 import {mapPatientToPatientDto} from "../../util/patientUtils";
-import {bloodTypes, maritalStatus, nationalities} from "../../constants/patientFormSelectChoices";
+import {bloodTypes, countries, maritalStatus, nationalities} from "../../constants/patientFormSelectChoices";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import InputAdornment from "@mui/material/InputAdornment";
 import IconButton from "@mui/material/IconButton";
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 const classNames = (...classes) => {
@@ -33,6 +35,13 @@ const PatientForm = ({patient}) => {
     const [updatePatient, {isLoading}] = useUpdatePatientMutation();
     const [open, setOpen] = useState(false);
     const [showPassword, setShowPassword] = React.useState(false);
+    const {
+        handleSubmit,
+        control,
+        formState: {errors}
+    } = useForm({
+        defaultValues: patient,
+    });
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
@@ -42,18 +51,13 @@ const PatientForm = ({patient}) => {
         setOpen(false);
     };
 
-    const {
-        handleSubmit,
-        control,
-        formState: {errors}
-    } = useForm({
-        defaultValues: patient,
-    });
-
     const onUpdateSubmit = async (data) => {
 
         const patientData = mapPatientToPatientDto(data);
         patientData.requiredInfoDto.dob = dayjs(patientData.requiredInfoDto.dob).format('YYYY-MM-DD');
+        patientData.additionalInfoDto.nationality = patientData.additionalInfoDto.nationality ?
+            patientData.additionalInfoDto.nationality.label
+            : null
         try {
             await updatePatient({id: patient.id, data: patientData}).unwrap();
         } catch (error) {
@@ -273,7 +277,7 @@ const PatientForm = ({patient}) => {
                                             }
                                         }
                                         render={({field}) => (
-                                            <FormControl sx={{width: '100%' }} variant="outlined">
+                                            <FormControl sx={{width: '100%'}} variant="outlined">
                                                 <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
                                                 <OutlinedInput
                                                     {...field}
@@ -287,7 +291,7 @@ const PatientForm = ({patient}) => {
                                                                 onMouseDown={handleMouseDownPassword}
                                                                 edge="end"
                                                             >
-                                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                {showPassword ? <VisibilityOff/> : <Visibility/>}
                                                             </IconButton>
                                                         </InputAdornment>
                                                     }
@@ -341,7 +345,7 @@ const PatientForm = ({patient}) => {
                                         defaultValue=""
                                         render={({field}) => (
                                             <FormControl fullWidth error={!!errors.bloodType}>
-                                                <InputLabel>Active Status</InputLabel>
+                                                <InputLabel>Blood Type</InputLabel>
                                                 <Select {...field} label="Blood Type">
                                                     {
                                                         bloodTypes.map((type) => (
@@ -383,29 +387,52 @@ const PatientForm = ({patient}) => {
                                             </FormControl>
                                         )}
                                     />
-                                    <Controller
-                                        name="nationality"
-                                        control={control}
-                                        defaultValue=""
-                                        render={({field}) => (
-                                            <FormControl fullWidth error={!!errors.nationality}>
-                                                <InputLabel>Nationality</InputLabel>
-                                                <Select {...field} label="Nationality">
-                                                    {
-                                                        nationalities.map((nationality) => (
-                                                            <MenuItem
-                                                                key={nationality}
-                                                                value={nationality}
-                                                            >
-                                                                {nationality.toLowerCase()}
-                                                            </MenuItem>
-                                                        ))
-                                                    }
-                                                </Select>
-                                                <FormHelperText>{errors.nationality ? errors.nationality.message : ''}</FormHelperText>
-                                            </FormControl>
-                                        )}
-                                    />
+                                    <div>
+                                        <Controller
+                                            name="nationality"
+                                            control={control}
+                                            render={({field: {onChange, ..._field}}) => (
+                                                <>
+                                                    <Autocomplete
+                                                        id="country-select-demo"
+                                                        sx={{width: "100%"}}
+                                                        options={countries}
+                                                        autoHighlight
+                                                        value={_field.value}
+                                                        onChange={(_, data) => {
+                                                           console.log(data && data);
+                                                            return onChange(data)}}
+                                                        getOptionLabel={(option) => option.label}
+                                                        renderOption={(props, option) => (
+                                                            <Box component="li"
+                                                                 sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
+                                                                <img
+                                                                    loading="lazy"
+                                                                    width="20"
+                                                                    srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+                                                                    src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+                                                                    alt=""
+                                                                />
+                                                                {option.label}
+                                                            </Box>
+                                                        )}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                {...params}
+                                                                label="Nationality"
+                                                                inputProps={{
+                                                                    ...params.inputProps,
+                                                                    autoComplete: 'new-password', // disable autocomplete and autofill
+                                                                }}
+                                                            />
+                                                        )}
+                                                        {..._field}
+                                                    />
+                                                    <FormHelperText>{errors.nationality ? errors.nationality.message : ''}</FormHelperText>
+                                                </>
+                                            )}/>
+                                    </div>
+
 
                                 </div>
                             </TabPanel>

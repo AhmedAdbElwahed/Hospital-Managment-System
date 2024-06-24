@@ -1,12 +1,12 @@
 import DoctorView from "../../components/doctor/DoctorView";
 import CreateDoctor from "../../components/doctor/CreateDoctor";
-import Appointments from "../../components/appointments/Appointments";
-import CreateAppointment from "../../components/appointments/CreateAppointment";
 import Dashboard from "../../components/dashboard/Dashboard";
 import Setting from "../../components/setting/Setting";
 import {PatientView} from "../../components/patient/PatientView";
 import CreatePatient from "../../components/patient/CreatePatient";
 import PatientHistoryView from "../../components/patienthistory/PatientHistoryView";
+import AppointmentsView from "../../components/appointments/AppointmentsView";
+import CreateAppointment from "../../components/appointments/CreateAppointment";
 
 export const doctorRoute = {
     path: "doctors/",
@@ -40,14 +40,12 @@ export const updateDoctorRoute = {
 
 export const appointmentsRoute = {
     path: "appointments/",
-    element: <Appointments/>,
-    children: [
-        {
-            path: "create-doctor/",
-            element: <CreateAppointment/>
-        }
-    ]
+    element: <AppointmentsView/>,
+}
 
+export const createAppointmentRout = {
+    path: "appointments/create-appointment/:doctorId",
+    element: <CreateAppointment/>
 }
 
 export const patientHistoryRout = {

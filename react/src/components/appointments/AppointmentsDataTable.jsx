@@ -1,17 +1,20 @@
-import * as React from 'react';
-import {CircularProgress} from "@mui/material";
+import React from 'react';
 import {
     DataGrid,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarExport,
-    GridToolbarFilterButton,
+    GridToolbarFilterButton
 } from "@mui/x-data-grid";
-import {Link} from "react-router-dom";
-import {Add} from "@mui/icons-material";
 import CustomNoRowsOverlay from "../shared/CustomNoRowsOverlay";
+import {CircularProgress} from "@mui/material";
 
-const DoctorDataTable = ({rows, cols, error, isLoading}) => {
+
+
+
+const AppointmentsDataTable = ({rows, cols, error, isLoading}) => {
+
+    console.log(rows);
 
     const CustomDataGridToolbar = () => {
         return (
@@ -21,15 +24,9 @@ const DoctorDataTable = ({rows, cols, error, isLoading}) => {
                 }}/>
                 <GridToolbarColumnsButton/>
                 <GridToolbarFilterButton/>
-                <Link to="/doctors/create-doctor"
-                      className="text-[#1976d2] h-full p-1 rounded-lg hover:bg-sky-800 hover:bg-opacity-5"><Add/>
-                    <span className="font-thin text-[13px] ">ADD DOCTOR</span>
-                </Link>
             </GridToolbarContainer>
         );
     }
-
-
     return (
         <div style={{height: 500, width: '100%'}}>
             {
@@ -43,6 +40,9 @@ const DoctorDataTable = ({rows, cols, error, isLoading}) => {
                             initialState={{
                                 pagination: {
                                     paginationModel: {page: 0, pageSize: 6},
+                                },
+                                sorting: {
+                                    sortModel: [{ field: 'startTime', sort: 'asc' }],
                                 },
                             }}
                             pageSizeOptions={[5, 10]}
@@ -62,12 +62,11 @@ const DoctorDataTable = ({rows, cols, error, isLoading}) => {
                         />)
 
                 ) : (
-                    <h1>Can not fetch Doctors</h1>
+                    <h1>Can not fetch Appointments</h1>
                 )
             }
-
         </div>
     );
-}
+};
 
-export default DoctorDataTable;
+export default AppointmentsDataTable;
