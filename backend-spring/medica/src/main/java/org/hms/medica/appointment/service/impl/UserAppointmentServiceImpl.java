@@ -2,11 +2,13 @@ package org.hms.medica.appointment.service.impl;
 
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hms.medica.appointment.dto.AppointmentResponseDto;
 import org.hms.medica.appointment.dto.AppointmentStatusDto;
 import org.hms.medica.appointment.mapper.AdminAppointmentMapper;
 import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.appointment.repository.AppointmentRepository;
+import org.hms.medica.appointment.repository.QAppointmentRepository;
 import org.hms.medica.appointment.service.UserAppointmentService;
 import org.hms.medica.constants.AppointmentStatus;
 import org.hms.medica.doctor.model.Doctor;
@@ -21,10 +23,12 @@ import java.time.LocalTime;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserAppointmentServiceImpl implements UserAppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final AdminAppointmentMapper adminAppointmentMapper;
+    private final QAppointmentRepository qAppointmentRepository;
 
     @Override
     public List<Appointment> findUserAppointments(User user) {
@@ -34,16 +38,10 @@ public class UserAppointmentServiceImpl implements UserAppointmentService {
     @Override
     public boolean IsAppointmentByStartTimePresent(LocalTime startTime, Doctor doctor) {
 
-        var appointment =  appointmentRepository.
-                findAppointmentByStartTimeAndDoctorAndCreatedDate(
-                        startTime,
-                        doctor,
-                        LocalDateTime.now()
-                ).orElse(null);
+        var appointment =  qAppointmentRepository.findAppointmentAtStartTimeAndDoctor(startTime, doctor);
         if (appointment != null) {
-            if (appointment.getCreatedDate().toLocalDate().isEqual(LocalDate.now())) {
-                return appointment.getAppointmentStatus().equals(AppointmentStatus.CANCELED);
-            }
+            log.info("Appointment start Time: {}", appointment.getStartTime());
+            return appointment.getAppointmentStatus().equals(AppointmentStatus.PENDING);
         }
         return false;
     }
@@ -61,6 +59,16 @@ public class UserAppointmentServiceImpl implements UserAppointmentService {
                 new RuntimeException("No Appointment found with id: " + appointmentStatusDto.getAppointmentId()));
         appointment.setAppointmentStatus(appointmentStatusDto.getAppointmentStatus());
         appointmentRepository.save(appointment);
+    }
+
+    @Override
+    public List<Appointment> findTodayAppointments(LocalDateTime localDateTime) {
+        return qAppointmentRepository.findTodayAppointments(localDateTime);
+    }
+
+    @Override
+    public List<Appointment> findAppointmentsByStatus(AppointmentStatus status) {
+        return qAppointmentRepository.findAppointmentsByStatus(status);
     }
 
     @Override

@@ -7,6 +7,7 @@ import {setupListeners} from "@reduxjs/toolkit/query";
 import {patientApi} from "./features/patient/patientApiSlice";
 import {patientHistoryApi} from "./features/patientHistory/patientHistoryApiSlice";
 import {appointmentApi} from "./features/appointment/appointmentApiSlice";
+import {dashboardApi} from "./features/dashboard/dashboardApiSlice";
 
 const store = configureStore({
     reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
         [patientApi.reducerPath]: patientApi.reducer,
         [patientHistoryApi.reducerPath]: patientHistoryApi.reducer,
         [appointmentApi.reducerPath]: appointmentApi.reducer,
+        [dashboardApi.reducerPath]: dashboardApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat([
@@ -22,6 +24,7 @@ const store = configureStore({
             patientApi.middleware,
             patientHistoryApi.middleware,
             appointmentApi.middleware,
+            dashboardApi.middleware,
         ]),
     devTools: true
 });

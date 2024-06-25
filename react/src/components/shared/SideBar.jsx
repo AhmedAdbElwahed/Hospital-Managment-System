@@ -28,6 +28,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert"
 import {red} from "@mui/material/colors";
 import {useEffect} from "react";
 import {jwtDecode} from "jwt-decode";
+import {stringAvatar} from "../../util/additionalFunc";
 
 const drawerWidth = 240;
 
@@ -121,9 +122,9 @@ export default function SideBar({outlet}) {
                     </Typography>
                     <div className="flex w-full justify-end">
                         <div>
-                            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                                {user.username && user.username.substring(0,2).toUpperCase()}
-                            </Avatar>
+                            <Avatar
+                                {...stringAvatar(`${user ? user.username : 'N A'} `)}
+                            />
                         </div>
                         <div className="ml-2 max-xs:hidden">
                             <Typography variant="subtitle2">{user.username ? user.username : "Anonymous"}</Typography>

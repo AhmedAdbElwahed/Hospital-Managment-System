@@ -22,6 +22,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,51 +40,59 @@ public class PatientService {
     private final PasswordEncoder passwordEncoder;
     private final QPatientRepository qPatientRepository;
 
-  public List<PatientAppointmentDto> getAppointments() {
-    User user = userService.getCurrentUser();
-    log.info(String.valueOf(user.getId()));
-    return userAppointmentService.findUserAppointments(user).stream()
-        .map(
-            (appointment) -> {
-              PatientAppointmentDto patientAppointmentDto =
-                  patientAppointmentMapper.toDto(appointment);
-              patientAppointmentDto.setDoctorId(appointment.getDoctor().getId());
-              return patientAppointmentDto;
-            })
-        .collect(Collectors.toList());
-  }
+    public List<PatientAppointmentDto> getAppointments() {
+        User user = userService.getCurrentUser();
+        log.info(String.valueOf(user.getId()));
+        return userAppointmentService.findUserAppointments(user).stream()
+                .map(
+                        (appointment) -> {
+                            PatientAppointmentDto patientAppointmentDto =
+                                    patientAppointmentMapper.toDto(appointment);
+                            patientAppointmentDto.setDoctorId(appointment.getDoctor().getId());
+                            return patientAppointmentDto;
+                        })
+                .collect(Collectors.toList());
+    }
 
-  public List<PatientResponseDto> findPatientByFullName(String fullName) {
-      return qPatientRepository.findPatientByFullName(fullName)
-              .stream()
-              .map(patientMapper::mapPatientToPatientResponseDto)
-              .toList();
-  }
+    public List<Patient> findAllPatients() {
+        return patientRepository.findAll();
+    }
 
-  public List<PatientResponseDto> getAllPatients(Predicate predicate, Pageable pageable) {
-    return patientRepository.findAll(predicate, pageable).stream()
-        .map(patientMapper::mapPatientToPatientResponseDto)
-        .toList();
-  }
+    public List<Patient> findAllTodayPatients(LocalDateTime localDateTime) {
+        return qPatientRepository.findTodayPatients(localDateTime);
+    }
 
-  public Patient getPatientById(Long patientId) {
-    return patientRepository
-        .findById(patientId)
-        .orElseThrow(
-            () -> new UsernameNotFoundException("Patient not found with id: " + patientId));
-  }
+    public List<PatientResponseDto> findPatientByFullName(String fullName) {
+        return qPatientRepository.findPatientByFullName(fullName)
+                .stream()
+                .map(patientMapper::mapPatientToPatientResponseDto)
+                .toList();
+    }
 
-  public PatientResponseDto getPatientDtoById(Long patientId) {
-    Patient patient = getPatientById(patientId);
-    return patientMapper.mapPatientToPatientResponseDto(patient);
-  }
+    public List<PatientResponseDto> getAllPatients(Predicate predicate, Pageable pageable) {
+        return patientRepository.findAll(predicate, pageable).stream()
+                .map(patientMapper::mapPatientToPatientResponseDto)
+                .toList();
+    }
 
-  @Transactional
-  public void registerPatient(PatientDto patientDto) {
-    var patient = new Patient();
-    patient = patientMapper.mapPatientDtoToPatient(patientDto);
-    patientRepository.save(patient);
-  }
+    public Patient getPatientById(Long patientId) {
+        return patientRepository
+                .findById(patientId)
+                .orElseThrow(
+                        () -> new UsernameNotFoundException("Patient not found with id: " + patientId));
+    }
+
+    public PatientResponseDto getPatientDtoById(Long patientId) {
+        Patient patient = getPatientById(patientId);
+        return patientMapper.mapPatientToPatientResponseDto(patient);
+    }
+
+    @Transactional
+    public void registerPatient(PatientDto patientDto) {
+        var patient = new Patient();
+        patient = patientMapper.mapPatientDtoToPatient(patientDto);
+        patientRepository.save(patient);
+    }
 
     @Transactional
     public PatientResponseDto updatePatient(Long patientId, PatientDto patientDto) {
@@ -102,6 +112,21 @@ public class PatientService {
         return patientRepository.findById(patientId)
                 .orElseThrow(() -> new UserNotFoundException("Patient Not found with id: "
                         + patientId));
+    }
+
+    public List<Patient> findNewPatients() {
+        return qPatientRepository.findNewPatients();
+    }
+
+    public List<PatientResponseDto> findMostRecentPatients() {
+        return qPatientRepository.findRecentPatients()
+                .stream()
+                .map(patientMapper::mapPatientToPatientResponseDto)
+                .toList();
+    }
+
+    public List<Patient> findOldPatients() {
+        return qPatientRepository.findOldPatient();
     }
 
     public void deleteById(Long patientId) {

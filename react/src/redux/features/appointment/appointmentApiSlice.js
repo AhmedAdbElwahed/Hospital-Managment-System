@@ -29,6 +29,14 @@ export const appointmentApi = createApi({
                 data
             }),
             invalidatesTags: ["Appointments"]
+        }),
+        changeStatus: builder.mutation({
+            query: (data) => ({
+                url: "/api/v1/appointments/change-status",
+                method: 'put',
+                data
+            }),
+            invalidatesTags: ['Appointments']
         })
     }),
 });
@@ -36,5 +44,6 @@ export const appointmentApi = createApi({
 export const {
     useDeleteAppointmentByIdMutation,
     useCreateAppointmentMutation,
+    useChangeStatusMutation,
     useGetAllAppointmentsQuery,
 } = appointmentApi;

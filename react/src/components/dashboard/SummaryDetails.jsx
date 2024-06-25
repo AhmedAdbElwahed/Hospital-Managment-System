@@ -6,16 +6,16 @@ import {Link} from "react-router-dom";
 import PatientCard from "./PatientCard";
 
 
-export default function SalesDetails() {
+export default function SummaryDetails({statistics, recentPatients, todayAppointments}) {
 
     const data = [
-        {label: 'Old Patients', value: 3000, color: "#ccd0d7"},
-        {label: 'New Patients', value: 2000, color: "#e86c2e"},
-        {label: 'Total Patients', value: 5000, color: "#2761ef"},
+        {label: 'Old Patients', value: statistics.oldPatient, color: "#ccd0d7"},
+        {label: 'New Patients', value: statistics.newPatient, color: "#e86c2e"},
+        {label: 'Total Patients', value: statistics.totalPatient, color: "#2761ef"},
 
     ];
     return (
-        <section className='p-3 flex flex-row max-sm:flex-col max-md:flex-col max-lg:flex-col gap-8 bg-[#f7f7f7] rounded-lg shadow-md'>
+        <section className='p-3 flex flex-row max-sm:flex-col max-md:flex-col max-lg:flex-col gap-4 bg-[#f7f7f7] rounded-lg shadow-md'>
             <div className="flex flex-col">
                 <Typography variant="subtitle2">Patient Summary</Typography>
                 <div>
@@ -49,14 +49,14 @@ export default function SalesDetails() {
             </div>
             <div className="h-full w-full bg-[#eceffd] rounded-lg p-4">
                 <Typography variant="subtitle2" color={"#2761ef"}>Today Appointment</Typography>
-                <AppointmentTable/>
+                <AppointmentTable todayAppointments={todayAppointments}/>
                 <Link className="text-small-regular text-[#2761ef]"
                       to="/appointments">See All</Link>
             </div>
 
-            <div className="h-full w-full bg-[#eceffd] rounded-lg p-4 flex flex-col gap-4">
-                <Typography variant="subtitle2" color={"#2761ef"} >Today Appointment</Typography>
-                <PatientCard/>
+            <div className="h-full w-full bg-[#eceffd] rounded-lg p-4">
+                <Typography variant="subtitle2" color={"#2761ef"} >Recent Patients</Typography>
+                <PatientCard recentPatients={recentPatients}/>
                 <Link className="text-small-regular text-[#2761ef]"
                       to="/appointments">See All</Link>
             </div>

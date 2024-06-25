@@ -1,45 +1,64 @@
 import React from 'react';
-import Avatar from "@mui/material/Avatar";
+import Table from "@mui/material/Table";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
+import TableContainer from "@mui/material/TableContainer";
+import Chip from "@mui/material/Chip";
+import dayjs from "dayjs";
 
-const PatientCard = () => {
+function createData(name, calories, fat) {
+    return {name, calories, fat};
+}
+
+const rows = [
+    createData(159, 'Frozen yoghurt', "Male"),
+    createData(237, 'Ice cream sandwich', "Male"),
+    createData(262, 'Eclair', "Male"),
+    createData(305, 'Cupcake', "Male"),
+    createData(356, 'Gingerbread', "Male"),
+];
+
+const PatientCard = ({recentPatients}) => {
     return (
-        <div className="flex flex-col gap-6">
-            <div className="flex flex-row w-full gap-8">
-                <Avatar>SU</Avatar>
-                <div className="flex flex-col w-full">
-                    <span className="text-sm font-61ef]">Ahmed Mohammed</span>
-                    <span className="font-thin text-xs text-gray-500">Health Check</span>
-                </div>
-                <div className="flex flex-col w-full">
-                    <span className="text-sm font-bold text-[#2761ef]">Patient ID</span>
-                    <span className="font-thin text-xs text-gray-500">12345</span>
-                </div>
-            </div>
-
-            <div className="flex flex-row w-full gap-8">
-                <Avatar>SU</Avatar>
-                <div className="flex flex-col w-full">
-                    <span className="text-sm font-bold text-[#2761ef]">Ahmed Mohammed</span>
-                    <span className="font-thin text-xs text-gray-500">Health Check</span>
-                </div>
-                <div className="flex flex-col w-full">
-                    <span className="text-sm font-bold text-[#2761ef]">Patient ID</span>
-                    <span className="font-thin text-xs text-gray-500">12345</span>
-                </div>
-            </div>
-
-            <div className="flex flex-row w-full gap-8">
-                <Avatar>SU</Avatar>
-                <div className="flex flex-col w-full">
-                    <span className="text-sm font-bold text-[#2761ef]">Ahmed Mohammed</span>
-                    <span className="font-thin text-xs text-gray-500">Health Check</span>
-                </div>
-                <div className="flex flex-col w-full">
-                    <span className="text-sm font-bold text-[#2761ef]">Patient ID</span>
-                    <span className="font-thin text-xs text-gray-500">12345</span>
-                </div>
-            </div>
-        </div>
+        <TableContainer>
+            <Table sx={{minWidth: 400}} size="small" aria-label="simple table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell><span className="font-semibold">ID</span></TableCell>
+                        <TableCell><span className="font-semibold">Name/Age</span></TableCell>
+                        <TableCell><span className="font-semibold">Gender</span></TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {recentPatients.map((row) => (
+                        <TableRow
+                            key={row.id}
+                        >
+                            <TableCell>
+                                <Chip sx={{
+                                    minWidth: 60
+                                }} label={row.id}/>
+                            </TableCell>
+                            <TableCell>
+                                <p className="text-sm font-bold text-[#2761ef]">
+                                    {`${row.requiredInfoDto.firstname} ${row.requiredInfoDto.lastname}`}
+                                </p>
+                                <span className="font-light text-xs text-gray-500">
+                                 {dayjs().diff(dayjs(row.requiredInfoDto.dob), "years")}
+                                </span>
+                            </TableCell>
+                            <TableCell>
+                                <span className="text-[#2761ef] rounded-sm bg-[#2761ef]/10 p-1">
+                                    {row.requiredInfoDto.gender.toLowerCase()}
+                                </span>
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
     );
 };
 

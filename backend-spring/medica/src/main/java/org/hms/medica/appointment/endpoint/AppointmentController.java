@@ -60,7 +60,7 @@ public class AppointmentController {
                 .body("Appointment created with id " + appointmentId);
     }
 
-    @PostMapping("/change-status")
+    @PutMapping("/change-status")
     public ResponseEntity<String> changeAppointmentStatus(
             @RequestBody AppointmentStatusDto appointmentStatusDto
             ) {

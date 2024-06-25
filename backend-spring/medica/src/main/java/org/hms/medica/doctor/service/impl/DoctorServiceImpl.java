@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import lombok.AllArgsConstructor;
 import com.querydsl.core.types.Predicate;
+import lombok.extern.slf4j.Slf4j;
 import org.hms.medica.appointment.dto.DoctorAppointmentDto;
 import org.hms.medica.appointment.mapper.DoctorAppointmentMapper;
 import org.hms.medica.appointment.repository.AppointmentRepository;
@@ -32,6 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
 
@@ -172,10 +174,16 @@ public class DoctorServiceImpl implements DoctorService {
         var doctor = getDoctorById(doctorId);
         var startTime = doctor.getWorkStartTime();
         var endTime = doctor.getWorkEndTime();
-        for (; startTime.isBefore(endTime); startTime = startTime.plusMinutes(30L)) {
-            if (!userAppointmentService.IsAppointmentByStartTimePresent(startTime, doctor)) {
-                availableTimes.add(startTime);
+        while (!startTime.equals(endTime)) {
+
+            boolean isPresent = userAppointmentService.IsAppointmentByStartTimePresent(startTime, doctor);
+            log.info("is Appointment present: {}", isPresent);
+            log.info("is Appointment present: {}", isPresent);
+            if (!isPresent) {
+                if(startTime.isBefore(LocalTime.now()))
+                    availableTimes.add(startTime);
             }
+            startTime = startTime.plusMinutes(30L);
         }
         return availableTimes;
     }
