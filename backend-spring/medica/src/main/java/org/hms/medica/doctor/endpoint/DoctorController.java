@@ -7,12 +7,14 @@ import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.doctor.repo.DoctorRepository;
 import org.hms.medica.doctor.service.DoctorService;
 import com.querydsl.core.types.Predicate;
+import org.hms.medica.patient.dto.PatientResponseDto;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalTime;
 import java.util.List;
 
 @RestController
@@ -33,6 +35,19 @@ public class DoctorController {
             Pageable pageable
     ) {
         return ResponseEntity.status(HttpStatus.OK).body(doctorService.getAllDoctors(predicate, pageable));
+    }
+
+    @GetMapping("/search-full-name")
+    public ResponseEntity<List<DoctorResponseDto>> searchDoctorByFullName(
+            @RequestParam String fullName
+    )  {
+        return ResponseEntity.status(HttpStatus.OK).body(doctorService.findDoctorByFullName(fullName));
+    }
+
+    @GetMapping("/get-available-time/{id}")
+    public ResponseEntity<List<LocalTime>> getAvailableDoctorTimeSlots(
+            @PathVariable(name = "id")Long doctorId) {
+        return ResponseEntity.status(HttpStatus.OK).body(doctorService.getAllAvailableTimes(doctorId));
     }
 
     @PostMapping("/register")

@@ -55,6 +55,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- <dependency>
+            <groupId>io.agora</groupId>
+            <artifactId>rtc-sdk</artifactId>
+            <version>LATEST_VERSION</version>
+        </dependency> -->
+
 
         <!-- WebSocket Dependencies -->
         <dependency>

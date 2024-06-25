@@ -1,11 +1,13 @@
 package org.hms.medica.examination.model;
 
 import lombok.*;
+
 import java.time.LocalDateTime;
+
 import org.hms.medica.admission.model.Admission;
 import org.hms.medica.baseEntity.AuditedEntity;
-import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.patient.model.Patient;
+
 import jakarta.persistence.*;
 
 @Getter
@@ -18,10 +20,10 @@ public class Examination extends AuditedEntity {
   private double urineOutput;
   private String bowelMovement;
   private String auscultation;
-  private float heartRate;
-  private float weight;
-  private float temperature;
-  private float height;
+  private double heartRate;
+  private double weight;
+  private double temperature;
+  private double height;
 
   @ManyToOne
   @JoinColumn(name = "admission_id")
@@ -30,8 +32,17 @@ public class Examination extends AuditedEntity {
   @ManyToOne
   @JoinColumn(name = "patient_id")
   private Patient patient;
-
-  @ManyToOne
-  @JoinColumn(name = "doctor_id")
-  private Doctor doctor;
 }
+// ex_id: Examination ID
+// ex_sat: Oxygen saturation
+// ex_diuresis: Urine output
+// ex_bowel: Bowel movement
+// ex_auscultation: Results of listening to a patient's internal sounds with a
+// stethoscope
+// ex_hr: Heart rate
+// ex_weight: Weight
+// ex_temp: Temperature
+// ex_date: Examination date
+// ex_height: Height
+// Admission_ID: Admission ID number
+// patient_id: Patient ID number

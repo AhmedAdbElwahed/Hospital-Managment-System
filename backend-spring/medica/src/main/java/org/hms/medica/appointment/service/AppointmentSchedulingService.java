@@ -1,10 +1,12 @@
 package org.hms.medica.appointment.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.hms.medica.appointment.dto.PatientAppointmentDto;
 import org.hms.medica.appointment.mapper.PatientAppointmentMapper;
 import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.appointment.repository.AppointmentRepository;
+import org.hms.medica.constants.AppointmentStatus;
 import org.hms.medica.doctor.service.DoctorService;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.service.PatientService;
@@ -12,6 +14,7 @@ import org.hms.medica.user.service.UserService;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class AppointmentSchedulingService {
   private final AppointmentValidator appointmentValidator;
@@ -21,7 +24,7 @@ public class AppointmentSchedulingService {
   private final UserService userService;
   private final PatientService patientService;
 
-  public Long scheduleAppointmentForCurrentPatient(PatientAppointmentDto patientAppointmentDto) {
+  public Long scheduleAppointmentForCurrentUser(PatientAppointmentDto patientAppointmentDto) {
     Patient patient = (Patient) userService.getCurrentUser();
     return processAppointmentScheduling(patientAppointmentDto, patient);
   }
@@ -35,6 +38,7 @@ public class AppointmentSchedulingService {
   private Long processAppointmentScheduling(
       PatientAppointmentDto patientAppointmentDto, Patient patient) {
     Appointment appointment = mapToAppointmentEntity(patientAppointmentDto, patient);
+    log.info("Processed Appointment: {}", appointment);
     appointmentValidator.validate(appointment);
     return persistAppointment(appointment).getId();
   }
@@ -48,6 +52,7 @@ public class AppointmentSchedulingService {
   }
 
   private Appointment persistAppointment(Appointment appointment) {
+    appointment.setAppointmentStatus(AppointmentStatus.PENDING);
     return appointmentRepository.save(appointment);
   }
 }

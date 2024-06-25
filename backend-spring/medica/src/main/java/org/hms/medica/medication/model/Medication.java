@@ -8,11 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hms.medica.baseEntity.AuditedEntity;
 
 import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Entity
@@ -20,10 +17,13 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Medication extends AuditedEntity {
+public class Medication {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  private String name;
-  private String dosage;
-  private LocalDate startDate;
-  private LocalDate endDate;
+    private String name;
+    private String dosage;
+    private Instant startDate;
+    private Instant endDate;
 }
