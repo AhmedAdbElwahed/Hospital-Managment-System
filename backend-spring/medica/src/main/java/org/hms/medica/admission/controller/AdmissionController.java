@@ -28,7 +28,7 @@ public class AdmissionController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> getadmissions() {
+    public ResponseEntity<?> getAdmissions() {
 
         List<AdmissionResponseDto> admissionRequestDtos = admissionService.getAdmissions();
         return ResponseEntity.ok(admissionRequestDtos);
