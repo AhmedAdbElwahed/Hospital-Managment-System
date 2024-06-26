@@ -4,10 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hms.medica.auth.dto.AuthenticationRequest;
-import org.hms.medica.auth.dto.AuthenticationResponse;
-import org.hms.medica.auth.dto.RegisterRequest;
-import org.hms.medica.auth.dto.ResetPassword;
+import org.hms.medica.auth.dto.*;
 import org.hms.medica.auth.service.AuthService;
 import org.hms.medica.otp.service.OTPService;
 import org.hms.medica.user.dto.UserRequestDto;
@@ -78,11 +75,11 @@ public class AuthController {
                 .body(isReset ? "Password Reset Successfully": "Invalid Otp");
     }
 
-//    @PatchMapping("user/update")
-//    public ResponseEntity<UserResponseDto> updateUser(@RequestBody UserRequestDto userDto) {
-//        log.info(userDto.toString());
-//        return ResponseEntity.status(HttpStatus.OK).body(authService.updateUser(userDto));
-//    }
+    @PostMapping("/admin/password/reset")
+    public ResponseEntity<String> adminResetPassword(@RequestBody AdminResetPassword resetPassword) {
+        authService.adminRestPassword(resetPassword);
+        return ResponseEntity.status(HttpStatus.OK).body("Password Is Changed Successfully");
+    }
 
     @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id) {

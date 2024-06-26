@@ -11,8 +11,6 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import MenuIcon from '@mui/icons-material/Menu';
-import Menu from "@mui/material/Menu"
-import MenuItem from "@mui/material/MenuItem"
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
@@ -22,7 +20,12 @@ import ListItemText from '@mui/material/ListItemText';
 import {sidebarLinksTop, sidebarLinksBottom} from "../../constants/sidebarLinks";
 import {Link, useLocation} from "react-router-dom";
 import {Main} from "../../layout/Main";
-import {AccountCircle} from "@mui/icons-material";
+import {logoutUser} from "../../redux/features/auth/authActions";
+import {useDispatch, useSelector} from "react-redux";
+import Avatar from "@mui/material/Avatar";
+import {useEffect} from "react";
+import {jwtDecode} from "jwt-decode";
+import {stringAvatar} from "../../util/additionalFunc";
 
 const drawerWidth = 240;
 
@@ -57,6 +60,9 @@ export default function SideBar({outlet}) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(true);
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [user, setUser] = React.useState({});
+    const dispatch = useDispatch();
+    const {userTokens, error} = useSelector((state) => state.auth);
     const {pathname} = useLocation();
 
     const handleDrawerOpen = () => {
@@ -75,10 +81,41 @@ export default function SideBar({outlet}) {
         setAnchorEl(null);
     };
 
+    const handleLogout = () => {
+        dispatch(logoutUser({
+            accessToken: userTokens.access_token
+        }));
+        if (error) {
+            setOpen(true);
+        }
+    }
+
+    useEffect(() => {
+        const jwt = jwtDecode(userTokens.access_token);
+        const userData = {
+            username: jwt.username,
+            role: jwt.role.split("_")[1].toLowerCase()
+        }
+        console.log("userdata: ", userData)
+        setUser(userData);
+    }, []);
+
     return (
-        <Box sx={{display: 'flex'}}>
+        <Box sx={{display: 'flex'}} className="h-screen">
             <CssBaseline/>
-            <AppBar position="fixed" open={open}>
+            <AppBar
+                className="bg-white/30"
+                position="fixed"
+                open={open}
+                sx={
+                    {
+                        backgroundColor: "rgba(255, 255, 255, 0.60)",
+                        "backdropFilter": "blur(4px)",
+                        color: "black",
+                        boxShadow: "0px 0px 0px 0px",
+                    }
+                }
+            >
                 <Toolbar>
                     <IconButton
                         color="inherit"
@@ -89,38 +126,25 @@ export default function SideBar({outlet}) {
                     >
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div" className="w-full">
-                        {open ? "" : "MDEICA"}
-                    </Typography>
+                    {
+                        !open && (
+                            <img
+                                className="w-[150px]"
+                                src="/assets/medicaAsset%202.svg"
+                                alt="Medica"
+                            />
+                        )
+                    }
                     <div className="flex w-full justify-end">
-                        <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            onClick={handleMenu}
-                            color="inherit"
-                        >
-                            <AccountCircle/>
-                        </IconButton>
-                        <Menu
-                            id="menu-appbar"
-                            anchorEl={anchorEl}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorEl)}
-                            onClose={handleClose}
-                        >
-                            <MenuItem onClick={handleClose}>Profile</MenuItem>
-                            <MenuItem onClick={handleClose}>My account</MenuItem>
-                        </Menu>
+                        <div>
+                            <Avatar
+                                {...stringAvatar(`${user ? user.username : 'N A'} `)}
+                            />
+                        </div>
+                        <div className="flex flex-col ml-2 max-xs:hidden">
+                            <span className="text-sm font-bold">{user.username ? user.username : "Anonymous"}</span>
+                            <span className="text-sm">{user.role ? user.role : "Anonymous"}</span>
+                        </div>
                     </div>
                 </Toolbar>
             </AppBar>
@@ -133,25 +157,53 @@ export default function SideBar({outlet}) {
                         boxSizing: 'border-box',
                     },
                 }}
+
+                PaperProps={{
+                    sx: {
+                        backgroundColor: "#323584",
+                        borderRightColor: "#f4f4f4",
+                        color: "white"
+                    }
+                }}
                 variant="persistent"
                 anchor="left"
                 open={open}
             >
                 <DrawerHeader>
-                    <Typography variant="h6" className="w-full">{open ? "MEDICA" : ""}</Typography>
+                    {/*<Typography variant="h6" className="w-full">{open ? "MEDICA" : ""}</Typography>*/}
+                    {
+                        open && (
+                            <div className="flex justify-items-center w-full">
+                                <img
+                                    className="w-[150px]"
+                                    src="/assets/medica-whiteAsset%203.svg"
+                                    alt="Medica"
+                                />
+                            </div>
+                        )
+                    }
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon/> : <ChevronRightIcon/>}
                     </IconButton>
                 </DrawerHeader>
-                <Divider/>
+                <Divider sx={{
+                    backgroundColor: "#f4f4f4"
+                }}/>
                 <List>
                     {sidebarLinksTop.map((link, index) => {
                         const isActive = (pathname.includes(link.path)
                             && link.path.length > 1) || pathname === link.path;
                         return (
                             <ListItem key={index} disablePadding
-                                      className={`${isActive && 'text-white bg-[#1976d2]'}`}
-                                      sx={{display: 'block'}}>
+                                      className={`${isActive && 'bg-[#f4f4f4] text-black'}`}
+                                      sx={
+                                          {
+                                              display: 'block',
+                                              borderRadius: "40px 0 0 40px",
+                                              marginLeft: "10px",
+                                              width: 229
+                                          }
+                                      }>
                                 <Link to={link.path}>
                                     <ListItemButton
                                         sx={{
@@ -168,7 +220,7 @@ export default function SideBar({outlet}) {
                                             }}
                                         >
                                             <div
-                                                className={`${isActive && 'text-white bg-[#1976d2]'}`}
+                                                className={`${isActive ? 'text-[#323584]' : "text-white "}`}
                                             >
                                                 {link.icon}
                                             </div>
@@ -187,9 +239,16 @@ export default function SideBar({outlet}) {
                             && link.path.length > 1) || pathname === link.path;
                         return (
                             <ListItem key={index} disablePadding
-                                      className={`${isActive && 'text-white bg-[#1976d2]'}`}
-                                      sx={{display: 'block'}}>
-                                <Link to={link.path}>
+                                      className={`${isActive && 'bg-[#f4f4f4] text-black'}`}
+                                      sx={
+                                          {
+                                              display: 'block',
+                                              borderRadius: "40px 0 0 40px",
+                                              marginLeft: "10px",
+                                              width: 229
+                                          }
+                                      }>
+                                <Link to={link.path} onClick={link.name === "Logout" && handleLogout}>
                                     <ListItemButton
                                         sx={{
                                             minHeight: 48,
@@ -205,7 +264,7 @@ export default function SideBar({outlet}) {
                                             }}
                                         >
                                             <div
-                                                className={`${isActive && 'text-white bg-[#1976d2]'}`}
+                                                className={`${isActive ? 'text-[#323584]' : "text-white "}`}
                                             >
                                                 {link.icon}
                                             </div>
@@ -218,7 +277,7 @@ export default function SideBar({outlet}) {
                     })}
                 </List>
             </Drawer>
-            <Main className="w-[80%]" open={open}>
+            <Main className="w-[80%] h-full bg-[#f4f4f4]" open={open}>
                 <DrawerHeader/>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>

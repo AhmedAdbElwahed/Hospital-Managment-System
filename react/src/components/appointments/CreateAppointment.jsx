@@ -1,113 +1,162 @@
-import React, {useState} from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import React, {useEffect, useState} from 'react';
+import Paper from '@mui/material/Paper';
+import InputBase from '@mui/material/InputBase';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import SearchIcon from '@mui/icons-material/Search';
+import Autocomplete from '@mui/material/Autocomplete';
+import {useGetAllPatientsQuery, useSearchPatientByFullNameQuery} from "../../redux/features/patient/patientApiSlice";
+import {CircularProgress, debounce} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import {stringAvatar} from "../../util/additionalFunc";
+import AppointmentForm from "./AppointmentForm";
+import {useParams} from "react-router-dom";
+import {useGetAvailableTimesQuery, useGetDoctorByIdQuery} from "../../redux/features/doctor/doctorApiSlice";
+import CustomBreadcrumbs from "../shared/CustomBreadcrumbs";
+import HomeIcon from "@mui/icons-material/Home";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faUserDoctor} from "@fortawesome/free-solid-svg-icons";
 
-export default function CreateAppointment() {
-    const [date, setdate] = useState();
+const links = [
+    {path: "/", icon: <HomeIcon sx={{mr: 0.5}} fontSize="inherit"/>},
+    {path: "/doctors", icon: <FontAwesomeIcon className="w-[15px] h-[15px] mr-[0.5px]" icon={faUserDoctor} />},
+]
+
+const CreateAppointment = () => {
+
+
+    const {doctorId} = useParams();
+    const [value, setValue] = React.useState(null);
+    const [open, setOpen] = useState(false);
+    const [inputValue, setInputValue] = React.useState('');
+    const [options, setOptions] = React.useState([]);
+    const {data: doctor} = useGetDoctorByIdQuery(doctorId);
+    const {data: availableTimes} = useGetAvailableTimesQuery(doctorId);
+    const {data, isLoading, isSuccess, error} = useSearchPatientByFullNameQuery(inputValue);
+
+    console.log(data);
+
+    useEffect(() => {
+        let isActive = true;
+        if (inputValue === '') {
+            setOptions(value ? [value] : []);
+            return undefined;
+        }
+
+        if (isActive) {
+            setOptions([...data])
+        }
+
+        return () => {
+            isActive = false;
+        };
+
+    }, [value, inputValue,]);
+
+    useEffect(() => {
+        if (!open) {
+            setOptions([]);
+        }
+    }, [open]);
 
 
     return (
-
-        <section>
-            <div
-                 // TODO: Create A link to go back to appointmentPage
-                 className='flex items-center cursor-pointer'>
-                <img src="/assets/back.svg" alt=""/>
-                <h1 className='font-nunito-sans text-2xl font-bold'>
-                    Appointments
-                </h1>
+        <section className="flex flex-col pb-1 w-full gap-4 px-5 h-full">
+            <div className="flex flex-row gap-2 w-full bg-white rounded-lg p-4">
+                <p className="font-bold">Dashboard</p>
+                <Divider orientation="vertical"/>
+                <CustomBreadcrumbs links={links} pageName="Book Appointment"/>
             </div>
+            <div>
+                <Paper
+                    component="div"
+                    sx={{p: '2px 4px', display: 'flex', alignItems: 'center', width: "100%"}}
+                >
+                    <IconButton type="button" sx={{p: '10px'}} aria-label="search">
+                        <SearchIcon/>
+                    </IconButton>
 
-            <div className='w-full flex flex-col gap-3 px-5 '>
-                <p className='text-[#6B779A] font-bold'>Meeting Name</p>
-                <p className='font-bold px-5'>Patient Ali Meeting - 1</p>
+                    <Autocomplete
+                        fullWidth
+                        onOpen={() => {
+                            setOpen(true);
+                        }}
+                        onClose={() => {
+                            setOpen(false);
+                        }}
+                        options={options}
+                        autoComplete
+                        includeInputInList
+                        filterSelectedOptions
+                        value={value}
+                        getOptionLabel={(option) =>
+                            typeof option === 'string' ? option : option.requiredInfoDto.firstname
+                        }
+                        filterOptions={(x) => x}
+                        onChange={(event, newValue) => {
+                            setOptions(newValue ? [newValue, ...options] : options);
+                            setValue(newValue);
+                        }}
+                        onInputChange={(event, newInputValue) => {
+                            console.log(newInputValue);
+                            setInputValue(newInputValue);
+                        }}
+                        noOptionsText="No Patients"
+                        renderOption={(props, option) => {
+                            return (
+                                option.requiredInfoDto ? (
+                                    <Box component="li"
+                                         sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
+                                        <Avatar
+                                            className="w-[20px] mr-2"
+                                            {...stringAvatar(
+                                                `${option.requiredInfoDto.firstname} ${option.requiredInfoDto.lastname}`
+                                            )} />
+                                        {`${option.requiredInfoDto.firstname} ${option.requiredInfoDto.lastname}`}
+                                    </Box>
+                                ) : (
+                                    <Box component="li"
+                                         sx={{'& > img': {mr: 2, flexShrink: 0}}} {...props}>
+
+                                        <Typography variant="subtitle1">No Patients</Typography>
+                                    </Box>
+                                )
+
+
+                            )
+                        }}
+                        renderInput={(params) => (
+                            <TextField
+                                variant="standard"
+                                placeholder="Search For Patients"
+                                {...params}
+                                inputProps={{
+                                    ...params.inputProps,
+                                    autoComplete: 'new-password', // disable autocomplete and autofill
+                                }}
+                            />
+                        )}
+                    />
+
+
+                </Paper>
             </div>
+            <div>
+                <Paper
+                    component="div"
+                    className="px-[6px] py-[6px] flex flex-col justify-items-center w-full"
+                >
+                    <Typography variant="h6">Book appointment</Typography>
+                    {doctor ? <AppointmentForm patient={value} doctor={doctor} startTimes={availableTimes}/> :
+                        <CircularProgress/>}
 
-            <form className='my-10' action="">
-
-                <div className='flex gap-6 flex-col w-full  md:p-6  items-start '>
-                    <div className=" items-center relative border border-gray-300 rounded-lg  cursor-pointer flex">
-                        <DatePicker
-                            selected={date}
-                            onChange={date => setdate(date)}
-                            dateFormat="MM/yyyy"
-                            showMonthYearPicker
-                            showYearDropdown
-                            className="block px-5 py-2  mt-1 outline-none cursor-pointer rounded-lg focus:ring-blue-500 focus:border-blue-500"
-                        />
-                        <button type="button"
-                                className=' pointer-events-none px-2 flex right-0 absolute items-center justify-center cursor-pointer'>
-                            <img className=' w-5' src="/assets/arrowdown.svg" alt=""/>
-                        </button>
-                    </div>
-
-                    <div className='w-full flex items-center gap-5 justify-start overflow-x-auto'>
-                        <div
-                            className='bg-[#0E82FD] text-white flex flex-col justify-center items-center rounded-xl p-9'>
-                            <p className='font-bold text-3xl'>14</p>
-                            <p className='font-bold'>TUE</p>
-                        </div>
-                        <div
-                            className='bg-[#0E82FD] text-white flex flex-col justify-center items-center rounded-xl p-9'>
-                            <p className='font-bold text-3xl'>14</p>
-                            <p className='font-bold'>TUE</p>
-                        </div>
-                        <div
-                            className='bg-[#0E82FD] text-white flex flex-col justify-center items-center rounded-xl p-9'>
-                            <p className='font-bold text-3xl'>14</p>
-                            <p className='font-bold'>TUE</p>
-                        </div>
-                        <div
-                            className='bg-[#0E82FD] text-white flex flex-col justify-center items-center rounded-xl p-9'>
-                            <p className='font-bold text-3xl'>14</p>
-                            <p className='font-bold'>TUE</p>
-                        </div>
-                        <div
-                            className='bg-[#0E82FD] text-white flex flex-col justify-center items-center rounded-xl p-9'>
-                            <p className='font-bold text-3xl'>14</p>
-                            <p className='font-bold'>TUE</p>
-                        </div>
-                        <div
-                            className='bg-[#0E82FD] text-white flex flex-col justify-center items-center rounded-xl p-9'>
-                            <p className='font-bold text-3xl'>14</p>
-                            <p className='font-bold'>TUE</p>
-                        </div>
-                        <div
-                            className='bg-[#0E82FD] text-white flex flex-col justify-center items-center rounded-xl p-9'>
-                            <p className='font-bold text-3xl'>14</p>
-                            <p className='font-bold'>TUE</p>
-                        </div>
-                        <div
-                            className='bg-[#0E82FD] text-white flex flex-col justify-center items-center rounded-xl p-9'>
-                            <p className='font-bold text-3xl'>14</p>
-                            <p className='font-bold'>TUE</p>
-                        </div>
-                        <div
-                            className='bg-[#0E82FD] text-white flex flex-col justify-center items-center rounded-xl p-9'>
-                            <p className='font-bold text-3xl'>14</p>
-                            <p className='font-bold'>TUE</p>
-                        </div>
-                    </div>
-                </div>
-
-
-                <p className='font-bold text-2xl px-5 my-5'>Available Time</p>
-
-                <div className='grid grid-cols-2 md:grid-cols-4 gap-5'>
-                    <p className='p-2 cursor-pointer bg-gray-300 rounded-xl flex items-center justify-center font-bold text-gray-600'>90:00
-                        AM</p>
-                    <p className='p-3 cursor-pointer bg-gray-300 rounded-xl flex items-center justify-center font-bold text-gray-600'>90:00
-                        AM</p>
-                </div>
-
-                <button
-                    className=' p-3  w-full my-5 bg-[#0E82FD] text-gray-100 rounded-xl flex items-center justify-center md:w-[360px] '
-                    type='submit '>
-                    Set Appointment
-                </button>
-
-            </form>
-
+                </Paper>
+            </div>
         </section>
-    )
-}
+    );
+};
+
+export default CreateAppointment;

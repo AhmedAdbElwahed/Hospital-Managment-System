@@ -1,10 +1,11 @@
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
-import Diversity2Icon from '@mui/icons-material/Diversity2';
 import PaymentIcon from '@mui/icons-material/Payment';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from "@mui/icons-material/Logout";
 import {HospitalIcon} from "lucide-react";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faHospitalUser, faUserDoctor} from "@fortawesome/free-solid-svg-icons";
 
 export const sidebarLinksTop = [
   {
@@ -20,12 +21,12 @@ export const sidebarLinksTop = [
   {
     name: "Doctors",
     path: "/doctors",
-    icon: <Diversity2Icon/>,
+    icon: <FontAwesomeIcon className="w-[26px] h-[26px]" icon={faUserDoctor} />,
   },
   {
     name: "Patients",
     path: "/patients",
-    icon: <HospitalIcon/>,
+    icon: <FontAwesomeIcon className="w-[26px] h-[26px]" icon={faHospitalUser} />,
   },
   {
     name: "Payment",

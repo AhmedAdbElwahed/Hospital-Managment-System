@@ -12,8 +12,6 @@ import org.springframework.data.querydsl.binding.SingleValueBinding;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long>,

@@ -29,32 +29,40 @@ export default function PatientDataTable({rows, cols, isLoading, error}) {
     }
 
     return (
-        <div style={{height: 500, width: '100%'}}>
-            {
-                !error ? (
-                    isLoading ? (
-                        <CircularProgress/>
+        <div className="p-4 bg-white rounded-lg">
+            <div style={{height: 500, width: '100%'}} className="bg-white border border-[#f4f4f4]">
+                {
+                    !error ? (
+                        isLoading ? (
+                            <CircularProgress/>
+                        ) : (
+                            <DataGrid
+                                sx={{
+                                    '& .MuiDataGrid-columnHeader': {
+                                        backgroundColor: "#f4f4f4",
+                                    },
+                                }}
+                                rows={rows}
+                                columns={cols}
+                                initialState={{
+                                    pagination: {
+                                        paginationModel: {page: 0, pageSize: 6},
+                                    },
+                                }}
+                                pageSizeOptions={[5, 10]}
+                                slots={{
+                                    toolbar: CustomDataGridToolbar,
+                                    noRowsOverlay: CustomNoRowsOverlay
+                                }}
+                                rowSelection={false}
+
+                            />)
+
                     ) : (
-                        <DataGrid
-                            rows={rows}
-                            columns={cols}
-                            initialState={{
-                                pagination: {
-                                    paginationModel: {page: 0, pageSize: 6},
-                                },
-                            }}
-                            pageSizeOptions={[5, 10]}
-                            slots={{
-                                toolbar: CustomDataGridToolbar,
-                                noRowsOverlay: CustomNoRowsOverlay
-                            }}
-
-                        />)
-
-                ) : (
-                    <h1>Can not fetch Doctors</h1>
-                )
-            }
+                        <h1>Can not fetch Doctors</h1>
+                    )
+                }
+            </div>
         </div>
     );
 }

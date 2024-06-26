@@ -12,16 +12,21 @@ import org.mapstruct.MappingTarget;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Mapper
 @Component
-@Mapper(componentModel = "spring")
 @RequiredArgsConstructor
 public abstract class ExaminationMapper {
 
   @Autowired private PatientService patientService;
 
+  @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdDate", ignore = true)
+  @Mapping(target = "createdBy", ignore = true)
+  @Mapping(target = "admission", ignore = true)
   @Mapping(target = "patient", ignore = true)
   public abstract Examination mapToEntity(ExaminationDto examinationDto);
 
+  @Mapping(target = "patientId", expression = "java(examination.getPatient().getId())")
   public abstract ExaminationDto mapToDto(Examination examination);
 
   @AfterMapping

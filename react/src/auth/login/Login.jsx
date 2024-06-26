@@ -2,17 +2,24 @@ import './Login.css';
 import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom'
 import {loginUser} from '../../redux/features/auth/authActions'
-import {useForm} from 'react-hook-form';
+import {Controller, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {loginFromSchema} from '../../util/forms';
 import {useDispatch, useSelector} from "react-redux";
-import {Alert, CircularProgress, Snackbar} from "@mui/material";
+import {Alert, CircularProgress, FormHelperText, Snackbar, TextField} from "@mui/material";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import InputLabel from "@mui/material/InputLabel";
+import IconButton from "@mui/material/IconButton";
+import FormControl from "@mui/material/FormControl";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 export default function Login() {
 
     const {loading, success, userTokens, error} = useSelector(state => state.auth)
-    const {register, handleSubmit, formState: {errors}} = useForm({resolver: zodResolver(loginFromSchema)});
+    const {control, handleSubmit, formState: {errors}} = useForm({resolver: zodResolver(loginFromSchema)});
     const navigate = useNavigate();
+    const [showPassword, setShowPassword] = React.useState(false);
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
 
@@ -50,6 +57,14 @@ export default function Login() {
     };
 
 
+
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+
     return (
         <main className='w-full  min-h-screen flex flex-col-reverse  items-center justify-end md:grid md:grid-cols-2 '>
 
@@ -66,24 +81,54 @@ export default function Login() {
                 <form className='flex w-full flex-col px-3 pt-5 md:w-[80%] gap-3 '
                       onSubmit={handleSubmit(handleOnSubmit)}>
                     <div className='flex flex-col'>
-                        <label htmlFor="email">Email:</label>
-                        <input
-                            {...register("email")}
-                            id="email"
-                            className='h-[50px] border border-[#e2e8f0] rounded-lg px-2'
-                            type="text"
-                            placeholder='Your email address'/>
-                        {errors.email && <span>{errors.email.message}</span>}
+                        <Controller
+                            name="email"
+                            control={control}
+                            defaultValue=""
+                            rules={{required: 'Email is required'}}
+                            render={({field}) => (
+                                <TextField
+                                    {...field}
+                                    label="Email"
+                                    variant="outlined"
+                                    error={!!errors.email}
+                                    helperText={errors.email ? errors.email.message : ''}
+                                    fullWidth
+                                />
+                            )}
+                        />
                     </div>
                     <div className='flex flex-col'>
-                        <label htmlFor="password">Password:</label>
-                        <input
-                            {...register("password")}
-                            id="password"
-                            className='h-[50px] border border-[#e2e8f0] rounded-lg px-2'
-                            type="password"
-                            placeholder='Your password'/>
-                        {errors.password && <span>{errors.password.message}</span>}
+                        <Controller
+                            name="password"
+                            control={control}
+                            defaultValue=""
+                            rules={{required: 'First name is required'}}
+                            render={({field}) => (
+                                <FormControl sx={{width: '100%' }} variant="outlined">
+                                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                    <OutlinedInput
+                                        {...field}
+                                        id="outlined-adornment-password"
+                                        type={showPassword ? 'text' : 'password'}
+                                        endAdornment={
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                    edge="end"
+                                                >
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        }
+                                        label="Password"
+                                    />
+                                    <FormHelperText>{errors.gender ? errors.gender.message : ''}</FormHelperText>
+                                </FormControl>
+                            )}
+                        />
                     </div>
 
                     <label className="inline-flex items-center cursor-pointer my-3">

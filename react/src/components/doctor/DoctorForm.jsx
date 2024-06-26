@@ -17,6 +17,12 @@ import React, {useState} from "react";
 import {useRegisterDoctorMutation, useUpdateDoctorMutation} from "../../redux/features/doctor/doctorApiSlice";
 import {mapDoctorToDoctorDto} from "../../util/doctorUtils";
 import dayjs from "dayjs";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import IconButton from "@mui/material/IconButton";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
+import PersonIcon from "@mui/icons-material/Person";
+import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 
 const classNames = (...classes) => {
     return classes.filter(Boolean).join(' ');
@@ -27,6 +33,7 @@ export const DoctorForm = ({doctor}) => {
     const [registerDoctor, response] = useRegisterDoctorMutation();
     const [updateDoctor, {isLoading}] = useUpdateDoctorMutation();
     const [open, setOpen] = useState(false);
+    const [showPassword, setShowPassword] = React.useState(false);
 
 
     const handleClose = (event, reason) => {
@@ -68,6 +75,13 @@ export const DoctorForm = ({doctor}) => {
         setOpen(true);
     };
 
+    const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+
     return (
         <>
             <form onSubmit={handleSubmit(
@@ -87,7 +101,10 @@ export const DoctorForm = ({doctor}) => {
                                     )
                                 }
                             >
-                                Personal Info
+                                <div className="flex justify-center">
+                                    <PersonIcon/>
+                                    <p className="p-1">Personal Info</p>
+                                </div>
                             </Tab>
                             <Tab
                                 className={({selected}) =>
@@ -100,7 +117,10 @@ export const DoctorForm = ({doctor}) => {
                                     )
                                 }
                             >
-                                Additional Info
+                                <div className="flex justify-center">
+                                    <BookmarkAddIcon/>
+                                    <p className="p-1">Additional Info</p>
+                                </div>
                             </Tab>
                         </TabList>
                         <TabPanels className="mt-2">
@@ -261,15 +281,28 @@ export const DoctorForm = ({doctor}) => {
                                             }
                                         }
                                         render={({field}) => (
-                                            <TextField
-                                                {...field}
-                                                label="Password"
-                                                type="password"
-                                                variant="outlined"
-                                                error={!!errors.password}
-                                                helperText={errors.password ? errors.password.message : ''}
-                                                fullWidth
-                                            />
+                                            <FormControl sx={{width: '100%'}} variant="outlined">
+                                                <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                                                <OutlinedInput
+                                                    {...field}
+                                                    id="outlined-adornment-password"
+                                                    type={showPassword ? 'text' : 'password'}
+                                                    endAdornment={
+                                                        <InputAdornment position="end">
+                                                            <IconButton
+                                                                aria-label="toggle password visibility"
+                                                                onClick={handleClickShowPassword}
+                                                                onMouseDown={handleMouseDownPassword}
+                                                                edge="end"
+                                                            >
+                                                                {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    }
+                                                    label="Password"
+                                                />
+                                                <FormHelperText>{errors.gender ? errors.gender.message : ''}</FormHelperText>
+                                            </FormControl>
                                         )}
                                     />
 

@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @SuperBuilder
 public class ExaminationDto {
+    private Long patientId;
     private double oxygenSaturation;
     private double urineOutput;
     private String bowelMovement;
