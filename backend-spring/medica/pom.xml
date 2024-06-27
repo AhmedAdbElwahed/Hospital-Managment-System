@@ -55,11 +55,13 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.stripe/stripe-java -->
         <dependency>
             <groupId>com.stripe</groupId>
             <artifactId>stripe-java</artifactId>
-            <version>LATEST_VERSION</version> <!-- Replace with the latest version -->
+            <version>26.0.0</version>
         </dependency>
+
 
 
 
