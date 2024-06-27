@@ -14,7 +14,7 @@ public interface PatientMapper {
 
     @Mapping(target = "requiredInfoDto", expression = "java(mapPatientToRequiredInfoDto(patient))")
     @Mapping(target = "additionalInfoDto", expression = "java(mapPatientToAdditionalInfoDto(patient))")
-    @Mapping(target = "patientHistoryId", ignore = true)
+    @Mapping(target = "patientHistoryId", expression = "java(patient.getPatientHistory() != null ? patient.getPatientHistory().getId() : null)")
     PatientResponseDto mapPatientToPatientResponseDto(Patient patient);
 
 
