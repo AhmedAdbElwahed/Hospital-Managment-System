@@ -55,6 +55,14 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>LATEST_VERSION</version> <!-- Replace with the latest version -->
+        </dependency>
+
+
+
         <!-- <dependency>
             <groupId>io.agora</groupId>
             <artifactId>rtc-sdk</artifactId>
