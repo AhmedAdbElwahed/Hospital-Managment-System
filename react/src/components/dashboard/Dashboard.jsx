@@ -26,6 +26,10 @@ export default function Dashboard() {
         setStatistics1(statistics);
     }, [statistics, recentPatients, todayAppointments]);
 
+    useEffect(() => {
+        document.title = 'DashBoard';
+    }, []);
+
     return (
         <section className=' py-6 w-full gap-6 px-5 h-full flex flex-col '>
             <div className='w-full gap-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4'>

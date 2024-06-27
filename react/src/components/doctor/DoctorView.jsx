@@ -5,7 +5,6 @@ import {doctorCols, mapDataToDoctors} from "../../util/doctorUtils";
 import {GridActionsCellItem} from "@mui/x-data-grid";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import * as React from "react";
-import AccessTimeFilledIcon from "@mui/icons-material/RateReview";
 import {useNavigate} from "react-router-dom";
 import {Clock1Icon} from "lucide-react";
 import HomeIcon from "@mui/icons-material/Home";
@@ -36,9 +35,6 @@ const DoctorView = () => {
         navigate(`/appointments/create-appointment/${id}`);
     }
 
-
-
-
     const columns = doctorCols.concat([{
         field: 'actions',
         type: 'actions',
@@ -66,6 +62,7 @@ const DoctorView = () => {
         setRows(newRows);
     }
     useEffect(() => {
+        document.title = "Doctors";
         setCols(columns);
     }, []);
 

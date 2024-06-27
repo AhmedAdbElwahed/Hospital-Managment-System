@@ -7,6 +7,7 @@ import CreatePatient from "../../components/patient/CreatePatient";
 import PatientHistoryView from "../../components/patienthistory/PatientHistoryView";
 import AppointmentsView from "../../components/appointments/AppointmentsView";
 import CreateAppointment from "../../components/appointments/CreateAppointment";
+import MyPDFViewer from "../../pdf/MyPDFViewer";
 
 export const doctorRoute = {
     path: "doctors/",
@@ -61,4 +62,9 @@ export const dashboardRout = {
 export const settingsRoute = {
     path: "/settings",
     element: <Setting/>
+}
+
+export const pdfRoute = {
+    path: "/pdf/:patientId",
+    element: <MyPDFViewer/>
 }

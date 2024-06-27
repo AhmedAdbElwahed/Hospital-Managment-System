@@ -19,12 +19,15 @@ const links = [
 
 const CreatePatient = () => {
     const {id} = useParams();
-    const {data} = useGetPatientByIdQuery(id);
+    const [skip, setSkip] = useState(true);
+    const {data} = useGetPatientByIdQuery(id, {
+        skip,
+    });
     const [patientData, setPatientData] = useState(null);
 
     useEffect(() => {
         if (id) {
-
+            setSkip(false);
             const patient = mapDataToPatients([data])[0];
             if (patient) {
                 patient['dob'] = patient.dob ? dayjs(patient.dob) : null;
@@ -36,6 +39,10 @@ const CreatePatient = () => {
             setPatientData(patient);
         }
     }, [data, id]);
+
+    useEffect(() => {
+        document.title = 'Create Patient';
+    }, []);
     
     return (
         <section className="flex flex-col pb-1 w-full gap-4 px-5 h-full">

@@ -34,6 +34,10 @@ export default function Setting() {
         }
     }, [currentUser]);
 
+    useEffect(() => {
+        document.title = 'Settings';
+    }, []);
+
 
     return (
         <section className="flex flex-col pb-1 w-full gap-4 px-5 h-full">

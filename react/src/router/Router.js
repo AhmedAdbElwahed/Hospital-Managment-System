@@ -9,7 +9,7 @@ import {
     dashboardRout,
     doctorRoute,
     patientHistoryRout,
-    patientRoute,
+    patientRoute, pdfRoute,
     settingsRoute,
     updateDoctorRoute,
     updatePatientRout
@@ -38,6 +38,7 @@ export const Router = () => {
                 createAppointmentRout,
             ]
         },
+        pdfRoute,
         {
             path: "auth/login",
             element: <Login/>

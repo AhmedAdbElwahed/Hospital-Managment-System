@@ -12,7 +12,6 @@ import {CircularProgress} from "@mui/material";
 
 const AppointmentsDataTable = ({rows, cols, error, isLoading}) => {
 
-    console.log(rows);
 
     const CustomDataGridToolbar = () => {
         return (

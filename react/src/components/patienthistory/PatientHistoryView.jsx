@@ -43,6 +43,10 @@ const PatientHistoryView = () => {
             }
         }
     }, [patientHistory, patientId]);
+
+    useEffect(() => {
+        document.title = 'Patient History';
+    }, []);
     return (
         <section className="flex flex-col pb-1 w-full gap-4 px-5 h-full">
             <div className="flex flex-row gap-2 w-full bg-white rounded-lg p-4">

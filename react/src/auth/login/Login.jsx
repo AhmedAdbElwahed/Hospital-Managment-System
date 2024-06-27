@@ -56,6 +56,10 @@ export default function Login() {
         setOpen(false);
     };
 
+    useEffect(() => {
+        document.title = "Login"
+    }, [])
+
 
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);

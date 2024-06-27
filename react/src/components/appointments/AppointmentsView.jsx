@@ -64,8 +64,10 @@ const AppointmentsView = () => {
         setRows(data);
     }
     useEffect(() => {
+        document.title = "Appointments";
         setCols(columns);
     }, []);
+
 
 
     useEffect(() => {

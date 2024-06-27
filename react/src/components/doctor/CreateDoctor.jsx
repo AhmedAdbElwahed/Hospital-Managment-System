@@ -18,12 +18,15 @@ const links = [
 
 const CreateDoctor = () => {
     const {id} = useParams();
-    const {data} = useGetDoctorByIdQuery(id);
+    const [skip, setSkip] = useState(true);
+    const {data} = useGetDoctorByIdQuery(id, {
+        skip,
+    });
     const [doctorData, setDoctorData] = useState(null);
 
     useEffect(() => {
         if (id) {
-
+            setSkip(false);
             const doctor = mapDataToDoctors([data])[0];
             if (doctor) {
 
@@ -35,6 +38,10 @@ const CreateDoctor = () => {
             setDoctorData(doctor);
         }
     }, [data, id]);
+
+    useEffect(() => {
+        document.title = 'Create Doctor';
+    }, []);
 
 
     return (

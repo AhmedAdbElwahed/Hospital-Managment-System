@@ -11,6 +11,7 @@ import {useNavigate} from "react-router-dom";
 import Divider from "@mui/material/Divider";
 import CustomBreadcrumbs from "../shared/CustomBreadcrumbs";
 import HomeIcon from "@mui/icons-material/Home";
+import LocalPrintshopIcon from '@mui/icons-material/LocalPrintshop';
 
 const links = [
     {path: "/", icon: <HomeIcon sx={{mr: 0.5}} fontSize="inherit"/>},
@@ -26,15 +27,19 @@ export const PatientView = () => {
 
     const handleDeleteClick = (id) => async () => {
         try {
-           await deletePatientById(id);
+            await deletePatientById(id);
             console.log("delete: ", id);
         } catch (error) {
             console.log(error);
         }
     }
 
-    const handlePatientHistory = (id)=> () => {
+    const handlePatientHistory = (id) => () => {
         navigate(`/patients/patient-history/${id}`);
+    }
+
+    const handlePrintPatient = (id) => () => {
+        window.open(`/pdf/${id}`,'_blank');
     }
 
     const columns = patientColumns.concat([{
@@ -44,18 +49,25 @@ export const PatientView = () => {
         width: 100,
         cellClassName: 'actions',
         getActions: ({id}) => (
-            [<GridActionsCellItem
+            [
+                <GridActionsCellItem
                 icon={<DeleteIcon/>}
                 label="Delete"
                 onClick={handleDeleteClick(id)}
-                color="inherit"
+                color="error"
             />,
                 <GridActionsCellItem
                     icon={<RateReviewIcon/>}
-                    label="Delete"
+                    label="History"
                     onClick={handlePatientHistory(id)}
-                    color="inherit"
-                />
+                    color="primary"
+                />,
+                <GridActionsCellItem
+                    icon={<LocalPrintshopIcon/>}
+                    label="Delete"
+                    onClick={handlePrintPatient(id)}
+                    color="success"
+                />,
             ]
         ),
     }]);
@@ -73,6 +85,10 @@ export const PatientView = () => {
             getRows();
         }
     }, [data]);
+
+    useEffect(() => {
+        document.title = "Patients"
+    }, [])
 
 
     return (

@@ -62,6 +62,10 @@ const CreateAppointment = () => {
         }
     }, [open]);
 
+    useEffect(() => {
+        document.title = 'Book Appointment';
+    }, []);
+
 
     return (
         <section className="flex flex-col pb-1 w-full gap-4 px-5 h-full">
