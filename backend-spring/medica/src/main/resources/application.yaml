@@ -13,11 +13,16 @@ spring:
         format_sql: true
     show-sql: true
 
+  stripe:
+    api-key: k_test_51PVCfoD7kDMB0EVHY3pGPb8X8oysHRvxDj8n4SpZ8A8wsgtsDjMtL93gFJHV66mMQybBP3bqHZKi8QQCa8KGpDcN00kSmMMyQL # Replace with your secret key
+    webhook-secret: whsec_YourWebhookSecret # Replace with your webhook secret
+
+
   mail:
-    host: sandbox.smtp.mailtrap.io #smtp.gmail.com
-    username: af7756b39fe8eb #os.omarsalah@gmail.com
+    host: sandbox.smtp.mailtrap.io
+    username: af7756b39fe8eb
     port: 587
-    password: e3a9e4bc120f82 #urzmokjzfhbyxzrl
+    password: e3a9e4bc120f82
     properties:
       mail:
         smtp:
@@ -26,18 +31,6 @@ spring:
             enable: true
   elasticsearch:
     uris: http://localhost:9200
-
-
-  mvc:
-    cors:
-      allowed-origins: "*"
-      allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
-
-  stripe:
-    api-key: sk_test_51PVCfoD7kDMB0EVHY3pGPb8X8oysHRvxDj8n4SpZ8A8wsgtsDjMtL93gFJHV66mMQybBP3bqHZKi8QQCa8KGpDcN00kSmMMyQL
-    webhook-secret: whsec_YourWebhookSecret
-
-
 
 
 

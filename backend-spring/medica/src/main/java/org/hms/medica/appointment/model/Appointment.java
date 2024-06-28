@@ -22,7 +22,7 @@ public class Appointment extends AuditedEntity {
   private LocalTime startTime;
   private String reasonForVisit;
   private boolean isVirtual;
-  private boolean paid; // New field to track payment status
+  private boolean paid = false; // New field to track payment status
 
   @Enumerated(EnumType.STRING)
   private AppointmentStatus appointmentStatus;
