@@ -19,7 +19,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import {useCreateAppointmentMutation} from "../../redux/features/appointment/appointmentApiSlice";
 
-const AppointmentForm = ({patient, doctor, startTimes=[]}) => {
+const AppointmentForm = ({patient, doctor, startTimes = []}) => {
     const [createAppointment, response] = useCreateAppointmentMutation();
     const [open, setOpen] = useState(false);
     const {
@@ -55,17 +55,19 @@ const AppointmentForm = ({patient, doctor, startTimes=[]}) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                     <TextField
-                        contentEditable={false}
-                        focused={false}
-                        value={ patient ? patient.requiredInfoDto.firstname : ''}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        value={patient ? patient.requiredInfoDto.firstname : ''}
                         placeholder="First Name"
                         variant="outlined"
                         fullWidth
                     />
                     <TextField
-                        contentEditable={false}
-                        focused={false}
-                        value={ patient ? patient.requiredInfoDto.lastname : ''}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        value={patient ? patient.requiredInfoDto.lastname : ''}
                         placeholder="Last Name"
                         variant="outlined"
                         fullWidth
@@ -76,17 +78,19 @@ const AppointmentForm = ({patient, doctor, startTimes=[]}) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                     <TextField
-                        contentEditable={false}
-                        focused={false}
-                        value={ patient ? patient.additionalInfoDto.nationality : ''}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        value={patient ? patient.additionalInfoDto.nationality : ''}
                         placeholder="Nationality"
                         variant="outlined"
                         fullWidth
                     />
                     <TextField
-                        contentEditable={false}
-                        focused={false}
-                        value={ patient ? dayjs().diff(dayjs(patient.requiredInfoDto.dob), "years") : ''}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                        value={patient ? dayjs().diff(dayjs(patient.requiredInfoDto.dob), "years") : ''}
                         placeholder="Age"
                         variant="outlined"
                         fullWidth
@@ -100,28 +104,31 @@ const AppointmentForm = ({patient, doctor, startTimes=[]}) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                     <TextField
-                        contentEditable={false}
-                        focused={false}
+                        InputProps={{
+                            readOnly: true,
+                        }}
                         placeholder="First Name"
-                        value={ doctor ? doctor.requiredInfoDto.firstname : ''}
+                        value={doctor ? doctor.requiredInfoDto.firstname : ''}
                         variant="outlined"
                         fullWidth
                     />
                     <TextField
-                        contentEditable={false}
-                        focused={false}
+                        InputProps={{
+                            readOnly: true,
+                        }}
                         placeholder="Last Name"
-                        value={ doctor ? doctor.requiredInfoDto.lastname : ''}
+                        value={doctor ? doctor.requiredInfoDto.lastname : ''}
                         variant="outlined"
                         fullWidth
                     />
 
                 </div>
                 <TextField
-                    contentEditable={false}
-                    focused={false}
+                    InputProps={{
+                        readOnly: true,
+                    }}
                     placeholder="Specialty"
-                    value={ doctor ? doctor.additionalInfoDto.specialty : ''}
+                    value={doctor ? doctor.additionalInfoDto.specialty : ''}
                     variant="outlined"
                     fullWidth
                 />

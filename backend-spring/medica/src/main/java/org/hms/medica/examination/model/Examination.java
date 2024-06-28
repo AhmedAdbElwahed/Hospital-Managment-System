@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 import org.hms.medica.admission.model.Admission;
 import org.hms.medica.baseEntity.AuditedEntity;
+import org.hms.medica.constants.AuscultationFinding;
+import org.hms.medica.constants.BowelMovement;
 import org.hms.medica.patient.model.Patient;
 
 import jakarta.persistence.*;
@@ -18,8 +20,10 @@ import jakarta.persistence.*;
 public class Examination extends AuditedEntity {
   private double oxygenSaturation;
   private double urineOutput;
-  private String bowelMovement;
-  private String auscultation;
+  @Enumerated(EnumType.STRING)
+  private BowelMovement bowelMovement;
+  @Enumerated(EnumType.STRING)
+  private AuscultationFinding auscultation;
   private double heartRate;
   private double weight;
   private double temperature;
