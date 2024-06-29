@@ -13,9 +13,9 @@ spring:
         format_sql: true
     show-sql: true
 
-  stripe:
-    api-key: k_test_51PVCfoD7kDMB0EVHY3pGPb8X8oysHRvxDj8n4SpZ8A8wsgtsDjMtL93gFJHV66mMQybBP3bqHZKi8QQCa8KGpDcN00kSmMMyQL # Replace with your secret key
-    webhook-secret: whsec_YourWebhookSecret # Replace with your webhook secret
+#  stripe:
+#    api-key: k_test_51PVCfoD7kDMB0EVHY3pGPb8X8oysHRvxDj8n4SpZ8A8wsgtsDjMtL93gFJHV66mMQybBP3bqHZKi8QQCa8KGpDcN00kSmMMyQL # Replace with your secret key
+#    webhook-secret: whsec_YourWebhookSecret # Replace with your webhook secret
 
 
   mail:

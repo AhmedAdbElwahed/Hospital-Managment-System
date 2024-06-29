@@ -28,7 +28,7 @@
  import org.springframework.web.bind.annotation.CrossOrigin;
  import org.springframework.web.bind.annotation.RequestBody;
 
- @RestController
+ @Controller
  @RequestMapping("/api/payment")
  public class PaymentController {
 
@@ -38,11 +38,13 @@
   @Autowired
   private AppointmentRepository appointmentRepository;
 
-  @Value("${stripe.webhook-secret}")
-  private String endpointSecret;
+//  @Value("${stripe.webhook-secret}")
+  private String endpointSecret = "whsec_203b159fd8c918adc2c0ecd573e7b5029cca5dc01f459e9a9926d46962f27f6c";
 
   @PostMapping("/create-checkout-session")
-  public ResponseEntity<String> createCheckoutSession(@RequestParam Long appointmentId, @RequestParam double amount, @RequestParam String currency) {
+  public ResponseEntity<String> createCheckoutSession(@RequestParam("appointmentId") Long appointmentId,
+                                                      @RequestParam("amount") double amount,
+                                                      @RequestParam("currency") String currency) {
    try {
     String checkoutUrl = paymentService.createCheckoutSession(appointmentId, amount, currency);
     return ResponseEntity.ok(checkoutUrl);
@@ -51,7 +53,7 @@
    }
   }
 
-  @PostMapping("/webhook")
+//  @PostMapping("/webhook")
   public ResponseEntity<String> handleStripeWebhook(HttpServletRequest request) {
    String payload;
    String sigHeader = request.getHeader("Stripe-Signature");
@@ -85,47 +87,5 @@
     appointmentRepository.save(appointment);
    }
   }
+
  }
-
-
-// @RestController
-// @RequestMapping("/webhook")
-// public class StripeWebhookController {
-//
-//  @Value("${stripe.webhook.secret}")
-//  private String endpointSecret;
-//
-//  @PostMapping
-//  public ResponseEntity<String> handleStripeWebhook(@RequestBody String payload,
-//                                                    @RequestHeader("Stripe-Signature") String sigHeader) {
-//   Event event = null;
-//   try {
-//    event = Webhook.constructEvent(
-//            payload, sigHeader, endpointSecret
-//    );
-//   } catch (SignatureVerificationException e) {
-//    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-//   }
-//
-//   if ("checkout.session.completed".equals(event.getType())) {
-//    Session session = (Session) event.getDataObjectDeserializer().getObject().orElse(null);
-//
-//    if (session != null && "payment".equals(session.getMode()) && "paid".equals(session.getPaymentStatus())) {
-//     try {
-//      Order order = orderRepository.findById(session.getClientReferenceId()).orElseThrow();
-//      order.setPaid(true);
-//      order.setStripeId(session.getPaymentIntent());
-//      orderRepository.save(order);
-//
-//      // launch asynchronous task
-//      paymentCompletedTask.launch(order.getId());
-//      System.out.println("Hello from webhook");
-//     } catch (NoSuchElementException e) {
-//      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//     }
-//    }
-//   }
-//
-//   return new ResponseEntity<>(HttpStatus.OK);
-//  }
-// }
