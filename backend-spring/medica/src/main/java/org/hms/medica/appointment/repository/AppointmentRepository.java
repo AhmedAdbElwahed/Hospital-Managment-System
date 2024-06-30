@@ -28,7 +28,7 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long>,
   @Query(
       nativeQuery = true,
       value =
-          "SELECT * FROM appointment where doctor_id = :userId OR patient_id= :userId ORDER BY start_date_time")
+          "SELECT * FROM appointment where doctor_id = :userId OR patient_id= :userId ORDER BY start_time")
   List<Appointment> findAppointmentsByUserId(Long userId);
 
   Optional<Appointment> findAppointmentByStartTimeAndDoctorAndCreatedDate(

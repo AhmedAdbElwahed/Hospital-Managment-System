@@ -21,4 +21,5 @@ public interface PatientAppointmentMapper {
   @Mapping(target = "doctorId", expression = "java(appointment.getDoctor().getId())")
   @Mapping(target = "isVirtual", source = "virtual")
   PatientAppointmentDto toDto(Appointment appointment);
+
 }
