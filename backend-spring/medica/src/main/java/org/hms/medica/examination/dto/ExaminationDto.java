@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class ExaminationDto {
     private Long patientId;
+    private long id;
     private double oxygenSaturation;
     private double urineOutput;
     private String bowelMovement;
