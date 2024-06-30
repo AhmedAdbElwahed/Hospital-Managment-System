@@ -14,4 +14,8 @@ public class AdmissionRequestDto {
     private AdmissionType admissionType;
     @NotNull
     private String wardName;
+
+    private String diagnosisIn;
+
+    private String diagnosisOut;
 }

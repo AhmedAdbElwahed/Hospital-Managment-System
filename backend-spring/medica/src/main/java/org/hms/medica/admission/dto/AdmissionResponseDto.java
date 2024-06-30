@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class AdmissionResponseDto {
+
     private String diagnosisOutDetails;
 
     private String diagnosisInDetails;
@@ -18,9 +19,14 @@ public class AdmissionResponseDto {
     private AdmissionType dischargeType;
 
     private LocalDateTime dischargeDate;
+
     private int bedDays;
 
     private Long patientId;
 
     private String wardName;
+
+    private String diagnosisIn;
+
+    private String diagnosisOut;
 }

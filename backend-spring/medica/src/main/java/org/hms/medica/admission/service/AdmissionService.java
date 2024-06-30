@@ -6,6 +6,7 @@ import org.hms.medica.admission.dto.AdmissionResponseDto;
 import org.hms.medica.admission.mapper.AdmissionMapper;
 import org.hms.medica.admission.model.Admission;
 import org.hms.medica.admission.repository.AdmissionRepository;
+import org.hms.medica.diagnoses.model.Diagnosis;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.service.PatientService;
 import org.hms.medica.ward.model.Ward;
@@ -30,6 +31,17 @@ public class AdmissionService {
                 .patient(patient)
                 .admissionType(admissionRequestDto.getAdmissionType())
                 .build();
+        if(admissionRequestDto.getDiagnosisIn() != null){
+            Diagnosis dIn = new Diagnosis();
+            dIn.setDetails(admissionRequestDto.getDiagnosisIn());
+            admission.setDiagnosisIn(dIn);
+        }
+
+        if(admissionRequestDto.getDiagnosisOut() != null){
+            Diagnosis dOut = new Diagnosis();
+            dOut.setDetails(admissionRequestDto.getDiagnosisIn());
+            admission.setDiagnosisIn(dOut);
+        }
 
         Ward ward = wardService.admitToWard(admission, admissionRequestDto.getWardName());
         admission.setWard(ward);
