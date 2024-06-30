@@ -43,8 +43,8 @@ public class AppointmentValidator {
     LocalTime appointmentStartTime = appointment.getStartTime();
     boolean validMinute =
         appointmentStartTime.getMinute() == 0 || appointmentStartTime.getMinute() == 30;
-    if (startTime.isAfter(appointmentStartTime.minusMinutes(20))
-        || endTime.isBefore(appointmentStartTime.plusMinutes(20))
+    if (appointmentStartTime.isBefore(startTime)
+        || appointmentStartTime.isAfter(endTime.minusMinutes(1))
         || !validMinute) {
       throw new InvalidAppointmentTimeSlot(appointment);
     }
