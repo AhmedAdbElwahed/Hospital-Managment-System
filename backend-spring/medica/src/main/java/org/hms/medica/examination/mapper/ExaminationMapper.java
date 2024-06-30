@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 @Mapper
 @Component
-@RequiredArgsConstructor
 public abstract class ExaminationMapper {
 
   @Autowired private PatientService patientService;
