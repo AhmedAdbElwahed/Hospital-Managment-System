@@ -10,24 +10,11 @@
  import org.springframework.web.bind.annotation.RequestMapping;
  import org.springframework.web.bind.annotation.RestController;
  import org.springframework.beans.factory.annotation.Autowired;
- import org.springframework.beans.factory.annotation.Value;
  import org.springframework.http.ResponseEntity;
  import org.springframework.web.bind.annotation.*;
  import jakarta.servlet.http.HttpServletRequest;
  import java.io.IOException;
- import com.stripe.Stripe;
- import com.stripe.exception.SignatureVerificationException;
- import org.springframework.http.HttpStatus;
  import org.springframework.stereotype.Controller;
- import org.springframework.web.bind.annotation.RequestHeader;
- import com.stripe.exception.StripeException;
- import com.stripe.model.Customer;
- import com.stripe.model.Product;
- import com.stripe.param.checkout.SessionCreateParams;
- import com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData;
- import org.springframework.web.bind.annotation.CrossOrigin;
- import org.springframework.web.bind.annotation.RequestBody;
-
  @Controller
  @RequestMapping("/api/payment")
  public class PaymentController {
@@ -53,7 +40,7 @@
    }
   }
 
-//  @PostMapping("/webhook")
+  @PostMapping("/webhook")
   public ResponseEntity<String> handleStripeWebhook(HttpServletRequest request) {
    String payload;
    String sigHeader = request.getHeader("Stripe-Signature");
