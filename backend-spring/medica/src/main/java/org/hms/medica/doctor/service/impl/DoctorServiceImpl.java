@@ -178,7 +178,6 @@ public class DoctorServiceImpl implements DoctorService {
 
             boolean isPresent = userAppointmentService.IsAppointmentByStartTimePresent(startTime, doctor);
             log.info("is Appointment present: {}", isPresent);
-            log.info("is Appointment present: {}", isPresent);
             if (!isPresent) {
                 if(startTime.isAfter(LocalTime.now()))
                     availableTimes.add(startTime);
@@ -187,6 +186,4 @@ public class DoctorServiceImpl implements DoctorService {
         }
         return availableTimes;
     }
-
-
 }
