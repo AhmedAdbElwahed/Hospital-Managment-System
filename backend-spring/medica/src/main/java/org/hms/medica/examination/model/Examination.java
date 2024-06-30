@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+import lombok.experimental.SuperBuilder;
 import org.hms.medica.admission.model.Admission;
 import org.hms.medica.baseEntity.AuditedEntity;
 import org.hms.medica.constants.AuscultationFinding;
@@ -16,6 +17,7 @@ import jakarta.persistence.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 @Entity
 public class Examination extends AuditedEntity {
   private double oxygenSaturation;

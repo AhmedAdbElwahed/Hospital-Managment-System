@@ -11,8 +11,9 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-public class ExaminationDto {
+public class ExaminationResponseDto {
     private Long patientId;
+    private long id;
     private double oxygenSaturation;
     private double urineOutput;
     private String bowelMovement;

@@ -3,6 +3,7 @@ package org.hms.medica.examination.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.hms.medica.examination.dto.ExaminationDto;
+import org.hms.medica.examination.dto.ExaminationResponseDto;
 import org.hms.medica.examination.service.ExaminationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -25,12 +26,12 @@ public class ExaminationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ExaminationDto>> getAllExaminations() {
+    public ResponseEntity<List<ExaminationResponseDto>> getAllExaminations() {
         return ResponseEntity.status(HttpStatus.OK).body(examinationService.getAllExaminations());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExaminationDto> getExaminationById(@PathVariable Long id) {
+    public ResponseEntity<ExaminationResponseDto> getExaminationById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatusCode.valueOf(200))
                 .body(examinationService.getExaminationById(id));
     }
