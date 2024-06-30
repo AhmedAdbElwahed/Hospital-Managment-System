@@ -9,6 +9,7 @@ import {patientHistoryApi} from "./features/patientHistory/patientHistoryApiSlic
 import {appointmentApi} from "./features/appointment/appointmentApiSlice";
 import {dashboardApi} from "./features/dashboard/dashboardApiSlice";
 import {settingsApi} from "./features/settings/settingsApiSlice";
+import {wardApi} from "./features/ward/wardApiSlice";
 
 const store = configureStore({
     reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
         [appointmentApi.reducerPath]: appointmentApi.reducer,
         [dashboardApi.reducerPath]: dashboardApi.reducer,
         [settingsApi.reducerPath]: settingsApi.reducer,
+        [wardApi.reducerPath]: wardApi.reducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat([
@@ -28,6 +30,7 @@ const store = configureStore({
             appointmentApi.middleware,
             dashboardApi.middleware,
             settingsApi.middleware,
+            wardApi.middleware,
         ]),
     devTools: true
 });

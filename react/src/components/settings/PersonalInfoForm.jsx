@@ -182,7 +182,9 @@ const PersonalInfoForm = ({userInfo}) => {
                             }}
                             render={({field}) => (
                                 <TextField
-                                    disabled={true}
+                                    InputProps={{
+                                        readOnly: true,
+                                    }}
                                     {...field}
                                     label="Email"
                                     variant="outlined"

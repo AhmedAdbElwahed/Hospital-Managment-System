@@ -36,15 +36,12 @@ const PatientHistoryForm = ({patientId, patientHist}) => {
     const [additionalInfo, setAdditionalInfo] = useState([false, false, false, false]);
     const [open, setOpen] = useState(false);
 
-    console.log("response: ",response ? response: null);
-
     const {control, handleSubmit} =
         useForm({
             defaultValues: patientHist,
 
         });
 
-    console.log("PatientHist: ", patientHist);
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             console.log("error")

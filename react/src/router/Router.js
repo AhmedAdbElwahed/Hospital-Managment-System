@@ -3,16 +3,17 @@ import {Login, Register} from '../auth/index';
 import PrivateRoute from "./PrivateRoute";
 import {Error404} from "../exception/Error404";
 import {
+    admissionRout,
     appointmentsRoute, createAppointmentRout,
-    createDoctorRoute,
-    createPatientRoute,
+    createDoctorRoute, createExaminationRout,
+    createPatientRoute, createWardRout,
     dashboardRout,
-    doctorRoute,
+    doctorRoute, examinationRoute,
     patientHistoryRout,
     patientRoute, pdfRoute,
     settingsRoute,
     updateDoctorRoute,
-    updatePatientRout
+    updatePatientRout, updateWardRout, wardsRout
 } from "./pagesRoute";
 import Layout from "../layout/Layout";
 
@@ -36,6 +37,12 @@ export const Router = () => {
                 updatePatientRout,
                 patientHistoryRout,
                 createAppointmentRout,
+                wardsRout,
+                examinationRoute,
+                admissionRout,
+                createWardRout,
+                updateWardRout,
+                createExaminationRout,
             ]
         },
         pdfRoute,

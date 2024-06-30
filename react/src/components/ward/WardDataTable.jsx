@@ -1,18 +1,19 @@
-import * as React from 'react';
+import React from 'react';
+import {CircularProgress} from "@mui/material";
 import {
     DataGrid,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarExport,
     GridToolbarFilterButton
-} from '@mui/x-data-grid';
-import {CircularProgress} from "@mui/material";
+} from "@mui/x-data-grid";
+import CustomNoRowsOverlay from "../shared/CustomNoRowsOverlay";
 import {Link} from "react-router-dom";
 import {Add} from "@mui/icons-material";
-import CustomNoRowsOverlay from "../shared/CustomNoRowsOverlay";
 
+const WardDataTable = ({rows, cols, isLoading, error}) => {
 
-export default function PatientDataTable({rows, cols, isLoading, error}) {
+    console.log(rows)
 
     const CustomDataGridToolbar = () => {
         return (
@@ -20,9 +21,9 @@ export default function PatientDataTable({rows, cols, isLoading, error}) {
                 <GridToolbarExport/>
                 <GridToolbarColumnsButton/>
                 <GridToolbarFilterButton/>
-                <Link to="/patients/create-patient"
+                <Link to="/wards/create-ward"
                       className="text-[#1976d2] h-full p-1 rounded-lg hover:bg-sky-800 hover:bg-opacity-5"><Add/>
-                    <span className="font-thin text-[13px] ">ADD PATIENT</span>
+                    <span className="font-thin text-[13px] ">ADD Ward</span>
                 </Link>
             </GridToolbarContainer>
         );
@@ -59,10 +60,12 @@ export default function PatientDataTable({rows, cols, isLoading, error}) {
                             />)
 
                     ) : (
-                        <h1>Can not fetch Patients</h1>
+                        <h1>Can not fetch Wards</h1>
                     )
                 }
             </div>
         </div>
     );
-}
+};
+
+export default WardDataTable;

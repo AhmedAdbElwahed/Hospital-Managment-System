@@ -1,12 +1,22 @@
 import {createTw} from "react-pdf-tailwind";
 import {StyleSheet} from "@react-pdf/renderer";
 
+/**
+ *
+ * @param ms time in millisecond
+ * @returns {Promise<unknown>}
+ */
 export const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 export const BASE_URL = process.env.REACT_APP_BACKEND_BASE_URL;
 
+/**
+ *
+ * @param string name to be converted
+ * @returns {string} hex color code
+ */
 function stringToColor(string) {
     let hash = 0;
     let i;
@@ -278,4 +288,15 @@ export const styles = StyleSheet.create({
     tbody2: {flex: 2, borderRightWidth: 1,}
 
 });
+
+/**
+ *
+ * @param weight in kg
+ * @param height in m
+ * @returns {number} body mass index (BMI)
+ * @constructor
+ */
+export const BMI = (weight, height) => {
+    return weight / (height * height);
+}
 

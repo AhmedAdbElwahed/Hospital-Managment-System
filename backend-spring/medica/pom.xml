@@ -55,16 +55,6 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.stripe/stripe-java -->
-        <dependency>
-            <groupId>com.stripe</groupId>
-            <artifactId>stripe-java</artifactId>
-            <version>26.0.0</version>
-        </dependency>
-
-
-
-
         <!-- <dependency>
             <groupId>io.agora</groupId>
             <artifactId>rtc-sdk</artifactId>

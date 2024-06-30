@@ -5,7 +5,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from "@mui/icons-material/Logout";
 import {HospitalIcon} from "lucide-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faHospitalUser, faUserDoctor} from "@fortawesome/free-solid-svg-icons";
+import {faBedPulse, faHospitalUser, faIdCardClip, faThermometer, faUserDoctor} from "@fortawesome/free-solid-svg-icons";
 
 export const sidebarLinksTop = [
   {
@@ -29,10 +29,27 @@ export const sidebarLinksTop = [
     icon: <FontAwesomeIcon className="w-[26px] h-[26px]" icon={faHospitalUser} />,
   },
   {
+    name: "Admission",
+    path: "/admission",
+    icon: <FontAwesomeIcon className="w-[24px] h-[24px]" icon={faIdCardClip} />,
+  },
+  {
+    name: "Examination",
+    path: "/examination",
+    icon: <FontAwesomeIcon className="w-[24px] h-[24px]" icon={faThermometer} />,
+  },
+  {
+    name: "Wards",
+    path: "/wards",
+    icon: <FontAwesomeIcon className="w-[24px] h-[24px]" icon={faBedPulse} />,
+  },
+  {
     name: "Payment",
     path: "/payment",
     icon: <PaymentIcon/>,
   },
+
+
 ];
 
 export const sidebarLinksBottom = [
