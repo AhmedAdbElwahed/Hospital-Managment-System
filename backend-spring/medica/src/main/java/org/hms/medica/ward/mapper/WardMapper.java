@@ -17,7 +17,7 @@ public interface WardMapper {
     @Mapping(target = "isActive", source = "active")
     WardResponseDto mapWardToWardResponseDto(Ward ward);
 
-    @Mapping(target = "id", ignore = true)
+
     @Mapping(target = "patients", ignore = true)
     @Mapping(target = "doctors", ignore = true)
     Ward mapWardRequestDtoTWard(WardRequestDto wardRequestDto);

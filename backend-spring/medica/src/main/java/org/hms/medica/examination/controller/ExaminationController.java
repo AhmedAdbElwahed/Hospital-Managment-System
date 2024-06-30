@@ -1,16 +1,15 @@
 package org.hms.medica.examination.controller;
 
+
 import lombok.RequiredArgsConstructor;
 import org.hms.medica.examination.dto.ExaminationDto;
-import org.hms.medica.examination.model.Examination;
 import org.hms.medica.examination.service.ExaminationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/hms/v1/examinations")
@@ -19,45 +18,37 @@ public class ExaminationController {
 
     private final ExaminationService examinationService;
 
-
     @PostMapping()
-    public ResponseEntity<String> createExamination(@RequestBody ExaminationDto examination) {
-        examinationService.saveExamination(examination);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Examination Add successfully to patient No: " + examination.getPatientId());
+    public ResponseEntity<String> createExamination(@RequestBody ExaminationDto examinationDto) {
+        examinationService.saveExamination(examinationDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Added Successfully");
     }
 
     @GetMapping
-    public ResponseEntity<List<Examination>> getAllExaminations() {
-        List<Examination> examinations = examinationService.getAllExaminations();
-        return ResponseEntity.ok(examinations);
+    public ResponseEntity<List<ExaminationDto>> getAllExaminations() {
+        return ResponseEntity.status(HttpStatus.OK).body(examinationService.getAllExaminations());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Examination> getExaminationById(@PathVariable Long id) {
-        Optional<Examination> examinationOptional = examinationService.getExaminationById(id);
-        return examinationOptional
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ExaminationDto> getExaminationById(@PathVariable Long id) {
+        return ResponseEntity.status(HttpStatusCode.valueOf(200))
+                .body(examinationService.getExaminationById(id));
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<Examination> updateExamination(
-//            @PathVariable Long id, @RequestBody Examination examination) {
-//        if (!examinationService.getExaminationById(id).isPresent()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        examination.setId(id);
-//        Examination updatedExamination = examinationService.saveExamination(examination);
-//        return ResponseEntity.ok(updatedExamination);
+//  @PutMapping("/{id}")
+//  public ResponseEntity<Examination> updateExamination(
+//      @PathVariable Long id, @RequestBody Examination examination) {
+//    if (!examinationService.getExaminationById(id).isPresent()) {
+//      return ResponseEntity.notFound().build();
 //    }
+//    examination.setId(id);
+//    Examination updatedExamination = examinationService.saveExamination(examination);
+//    return ResponseEntity.ok(updatedExamination);
+//  }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExamination(@PathVariable Long id) {
-        if (!examinationService.getExaminationById(id).isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
         examinationService.deleteExaminationById(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

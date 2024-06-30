@@ -18,12 +18,14 @@ public abstract class ExaminationMapper {
 
   @Autowired private PatientService patientService;
 
-  @Mapping(target = "id", ignore = true)
+  
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "createdBy", ignore = true)
   @Mapping(target = "admission", ignore = true)
   @Mapping(target = "patient", ignore = true)
   public abstract Examination mapToEntity(ExaminationDto examinationDto);
+
+//  ExaminationDto mapExaminationtoExaminationDto(Examination examination);
 
   @Mapping(target = "patientId", expression = "java(examination.getPatient().getId())")
   public abstract ExaminationDto mapToDto(Examination examination);

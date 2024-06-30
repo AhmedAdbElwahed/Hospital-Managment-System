@@ -180,7 +180,7 @@ public class DoctorServiceImpl implements DoctorService {
             log.info("is Appointment present: {}", isPresent);
             log.info("is Appointment present: {}", isPresent);
             if (!isPresent) {
-                if(startTime.isBefore(LocalTime.now()))
+                if(startTime.isAfter(LocalTime.now()))
                     availableTimes.add(startTime);
             }
             startTime = startTime.plusMinutes(30L);
