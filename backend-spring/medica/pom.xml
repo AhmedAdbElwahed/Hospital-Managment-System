@@ -55,11 +55,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
-        <!-- <dependency>
-            <groupId>io.agora</groupId>
-            <artifactId>rtc-sdk</artifactId>
-            <version>LATEST_VERSION</version>
-        </dependency> -->
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>26.0.0</version>
+        </dependency>
 
 
         <!-- WebSocket Dependencies -->
