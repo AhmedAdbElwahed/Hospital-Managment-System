@@ -10,8 +10,9 @@ import org.springframework.stereotype.Component;
 @Mapper
 public interface AdmissionMapper {
 
-    @Mapping(source = "diagnosisOut.details", target = "diagnosisOutDetails")
-    @Mapping(source = "diagnosisIn.details", target = "diagnosisInDetails")
-    @Mapping(source = "ward.name", target = "wardName")
-    AdmissionResponseDto toDto(Admission admission);
+  @Mapping(target = "wardId", expression = "java(admission.getWard().getId())")
+  AdmissionResponseDto mapToResponseDto(Admission admission);
+
+  @Mapping(target = "wardId", expression = "java(admission.getWard().getId())")
+  AdmissionResponseDto mapToRequestDto(Admission admission);
 }

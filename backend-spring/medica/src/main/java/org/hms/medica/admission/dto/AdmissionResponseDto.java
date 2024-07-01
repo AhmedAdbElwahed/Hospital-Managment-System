@@ -9,18 +9,18 @@ import java.time.LocalDateTime;
 @Setter
 @Getter
 public class AdmissionResponseDto {
-    private String diagnosisOutDetails;
+  private Long id;
+  private String diagnosisOut;
 
-    private String diagnosisInDetails;
+  private String diagnosisIn;
 
-    private AdmissionType admissionType;
+  private AdmissionType admissionType;
 
-    private AdmissionType dischargeType;
+  private AdmissionType dischargeType;
 
-    private LocalDateTime dischargeDate;
-    private int bedDays;
-
-    private Long patientId;
-
-    private String wardName;
+  private LocalDateTime dischargeDate;
+  private Integer numOfBedDays;
+  private Long patientId;
+  private Long doctorId;
+  private Long wardId;
 }

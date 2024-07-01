@@ -9,6 +9,7 @@ import org.hms.medica.diagnoses.model.Diagnosis;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.ward.model.Ward;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,30 +20,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Admission extends AuditedEntity {
 
-    @OneToOne
-    @JoinColumn(name = "diagnosis_out_id")
-    private Diagnosis diagnosisOut;
+  private String diagnosisOut;
 
-    @OneToOne
-    @JoinColumn(name = "diagnosis_in_id")
-    private Diagnosis diagnosisIn;
+  private String diagnosisIn;
 
-    @Enumerated(EnumType.STRING)
-    private AdmissionType admissionType;
+  @Enumerated(EnumType.STRING)
+  private AdmissionType admissionType;
 
-    @Enumerated(EnumType.STRING)
-    private AdmissionType dischargeType;
+  private LocalDate admissionDate;
+  private LocalDate dischargeDate;
+  private int numOfBedDays;
 
-    private LocalDateTime dischargeDate;
-    private int bedDays;
+  @ManyToOne
+  @JoinColumn(name = "patient_id")
+  private Patient patient;
 
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
-
-    @ManyToOne
-    @JoinColumn(name = "ward_id")
-    private Ward ward;
-
-
+  @ManyToOne
+  @JoinColumn(name = "ward_id")
+  private Ward ward;
 }
