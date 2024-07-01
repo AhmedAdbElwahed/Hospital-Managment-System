@@ -13,24 +13,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class AdmissionResponseDto {
+  private Long id;
+  private String diagnosisOut;
 
-    private String diagnosisOutDetails;
+  private String diagnosisIn;
 
-    private String diagnosisInDetails;
+  private AdmissionType admissionType;
 
-    private AdmissionType admissionType;
-
-    private AdmissionType dischargeType;
-
-    private LocalDateTime dischargeDate;
-
-    private int bedDays;
-
-    private Long patientId;
-
-    private String wardName;
-
-    private String diagnosisIn;
-
-    private String diagnosisOut;
+  private LocalDateTime dischargeDate;
+  private Integer numOfBedDays;
+  private String patientName;
+  private String doctorName;
+  private String wardName;
 }

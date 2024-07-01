@@ -7,7 +7,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
@@ -33,9 +33,9 @@ spring:
       allowed-origins: "*"
       allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
 
-#  stripe:
-#    api-key: sk_test_51PVCfoD7kDMB0EVHY3pGPb8X8oysHRvxDj8n4SpZ8A8wsgtsDjMtL93gFJHV66mMQybBP3bqHZKi8QQCa8KGpDcN00kSmMMyQL
-#    webhook-secret: whsec_YourWebhookSecret
+  stripe:
+    api-key: sk_test_51PVCfoD7kDMB0EVHY3pGPb8X8oysHRvxDj8n4SpZ8A8wsgtsDjMtL93gFJHV66mMQybBP3bqHZKi8QQCa8KGpDcN00kSmMMyQL
+    webhook-secret: whsec_YourWebhookSecret
 
 
 

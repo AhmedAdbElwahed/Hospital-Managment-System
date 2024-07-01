@@ -45,15 +45,16 @@ public class DiagnosisService {
     Diagnosis diagnosis = findDiagnosisById(id);
 
     diagnosis.setDetails(diagnosisRequestDto.getDetails());
+    diagnosisRepository.save(diagnosis);
   }
 
   void deleteDiagnosisById(Long id) {
     diagnosisRepository.deleteById(id);
   }
 
-  public List<DiagnosisResponseDto> getAuctions(int pageSize) {
-    List<Diagnosis> auctions = diagnosisRepository.findAll(Pageable.ofSize(pageSize)).toList();
+  public List<DiagnosisResponseDto> getDiagnosis(int pageSize) {
+    List<Diagnosis> diagnoses = diagnosisRepository.findAll(Pageable.ofSize(pageSize)).toList();
 
-    return auctions.stream().map(diagnosisMapper::mapToResponseDto).collect(Collectors.toList());
+    return diagnoses.stream().map(diagnosisMapper::mapToResponseDto).collect(Collectors.toList());
   }
 }
