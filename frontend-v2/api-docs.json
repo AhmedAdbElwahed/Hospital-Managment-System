@@ -1,0 +1,4784 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Medica Hospital Management System",
+    "description": "Medica Hospital Management System offers a comprehensive solution tailored to optimize the efficiency of patient registration, data management, and billing processes",
+    "termsOfService": "Term Of Service",
+    "contact": {
+      "name": "Medica Team",
+      "url": "https://medica-solution.com",
+      "email": "medicateam68@gmail.com"
+    },
+    "version": "0.1"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Local Dev Env"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "paths": {
+    "/hms/v1/ward/update-ward/{id}": {
+      "put": {
+        "tags": [
+          "ward-controller"
+        ],
+        "operationId": "updateWard",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WardRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/test/doctor": {
+      "get": {
+        "tags": [
+          "test-api-doctor"
+        ],
+        "operationId": "get",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "test-api-doctor"
+        ],
+        "operationId": "update",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "test-api-doctor"
+        ],
+        "operationId": "post",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "test-api-doctor"
+        ],
+        "operationId": "delete",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/test/admin": {
+      "get": {
+        "tags": [
+          "test-api"
+        ],
+        "operationId": "get_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "test-api"
+        ],
+        "operationId": "update_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "test-api"
+        ],
+        "operationId": "post_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "test-api"
+        ],
+        "operationId": "delete_1",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/lab-reports/{id}": {
+      "get": {
+        "tags": [
+          "lab-report-controller"
+        ],
+        "operationId": "getLabReportById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "lab-report-controller"
+        ],
+        "operationId": "updateLabReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabReport"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "lab-report-controller"
+        ],
+        "operationId": "deleteLabReport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/bills/{id}": {
+      "get": {
+        "tags": [
+          "bill-controller"
+        ],
+        "operationId": "getBillById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bill"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "bill-controller"
+        ],
+        "operationId": "updateBill",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bill"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bill"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "bill-controller"
+        ],
+        "operationId": "deleteBill",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/bill-services/{id}": {
+      "get": {
+        "tags": [
+          "bill-service-controller"
+        ],
+        "operationId": "getBillServiceById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillService"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "bill-service-controller"
+        ],
+        "operationId": "updateBillService",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillService"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillService"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "bill-service-controller"
+        ],
+        "operationId": "deleteBillService",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vi/patient-history/update-patient-hist": {
+      "put": {
+        "tags": [
+          "patient-history-controller"
+        ],
+        "operationId": "updatePatientHistory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientHistoryDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/update-user": {
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "updateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/update-patient/{id}": {
+      "put": {
+        "tags": [
+          "patient-controller"
+        ],
+        "operationId": "updatePatient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doctor/update-by-id/{id}": {
+      "put": {
+        "tags": [
+          "doctor-controller"
+        ],
+        "operationId": "updateDoctorById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoctorDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DoctorResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/appointments/change-status": {
+      "put": {
+        "tags": [
+          "appointment-controller"
+        ],
+        "operationId": "changeAppointmentStatus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AppointmentStatusDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admissions/{admissionId}": {
+      "get": {
+        "tags": [
+          "admission-controller"
+        ],
+        "operationId": "getAdmissionById",
+        "parameters": [
+          {
+            "name": "admissionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AdmissionResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "admission-controller"
+        ],
+        "operationId": "updateAdmissionById",
+        "parameters": [
+          {
+            "name": "admissionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdmissionRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "admission-controller"
+        ],
+        "operationId": "deleteAdmissionById",
+        "parameters": [
+          {
+            "name": "admissionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/ward/add-ward": {
+      "post": {
+        "tags": [
+          "ward-controller"
+        ],
+        "operationId": "addWard",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WardRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/lab-tests/save": {
+      "post": {
+        "tags": [
+          "lab-test-controller"
+        ],
+        "operationId": "saveLabTest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabTest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabTest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/lab-reports/add": {
+      "post": {
+        "tags": [
+          "lab-report-controller"
+        ],
+        "operationId": "createLabReport",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LabReport"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabReport"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/examinations": {
+      "get": {
+        "tags": [
+          "examination-controller"
+        ],
+        "operationId": "getAllExaminations",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ExaminationResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "examination-controller"
+        ],
+        "operationId": "createExamination",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExaminationDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/bills/create": {
+      "post": {
+        "tags": [
+          "bill-controller"
+        ],
+        "operationId": "createBill",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Bill"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Bill"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/bill-services/create": {
+      "post": {
+        "tags": [
+          "bill-service-controller"
+        ],
+        "operationId": "createBillService",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BillService"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BillService"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/register-patient": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "registerPatient",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/refresh-token": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "refreshToken",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/password/reset/verify": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "verifyPasswordReset",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResetPassword"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/password/reset/request": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "requestPasswordReset",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/login": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthenticationResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/admin/password/reset": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "adminResetPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdminResetPassword"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vi/patient-history/add-patient-hist": {
+      "post": {
+        "tags": [
+          "patient-history-controller"
+        ],
+        "operationId": "addPatientHistory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientHistoryDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/add-patient": {
+      "post": {
+        "tags": [
+          "patient-controller"
+        ],
+        "operationId": "registerPatient_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doctor/register": {
+      "post": {
+        "tags": [
+          "doctor-controller"
+        ],
+        "operationId": "registerDoctor",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoctorDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/appointments": {
+      "get": {
+        "tags": [
+          "appointment-controller"
+        ],
+        "operationId": "fetchAllAppointments",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "startTime",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "reasonForVisit",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isVirtual",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "paid",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "appointmentStatus",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "COMPLETED",
+                "CANCELED",
+                "PENDING"
+              ]
+            }
+          },
+          {
+            "name": "patient",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "doctor",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "appointment-controller"
+        ],
+        "operationId": "scheduleAppointmentForCurrentUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientAppointmentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/appointments/patients/{patientId}": {
+      "post": {
+        "tags": [
+          "appointment-controller"
+        ],
+        "operationId": "scheduleAppointmentForPatient",
+        "parameters": [
+          {
+            "name": "patientId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PatientAppointmentDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admissions": {
+      "get": {
+        "tags": [
+          "admission-controller"
+        ],
+        "operationId": "getAdmissions",
+        "parameters": [
+          {
+            "name": "pageSize",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdmissionResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "admission-controller"
+        ],
+        "operationId": "admitPatient",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AdmissionRequestDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/ward": {
+      "get": {
+        "tags": [
+          "ward-controller"
+        ],
+        "operationId": "fetchAllWards",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WardResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/ward/get-by-id/{id}": {
+      "get": {
+        "tags": [
+          "ward-controller"
+        ],
+        "operationId": "fetchWardById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/WardResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/lab-tests": {
+      "get": {
+        "tags": [
+          "lab-test-controller"
+        ],
+        "operationId": "getAllLabTests",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabTest"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/lab-tests/{id}": {
+      "get": {
+        "tags": [
+          "lab-test-controller"
+        ],
+        "operationId": "getLabTestById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LabTest"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "lab-test-controller"
+        ],
+        "operationId": "deleteLabTestById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/lab-reports": {
+      "get": {
+        "tags": [
+          "lab-report-controller"
+        ],
+        "operationId": "getAllLabReports",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LabReport"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/examinations/{id}": {
+      "get": {
+        "tags": [
+          "examination-controller"
+        ],
+        "operationId": "getExaminationById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExaminationResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "examination-controller"
+        ],
+        "operationId": "deleteExamination",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/dashboard/today-appointments": {
+      "get": {
+        "tags": [
+          "dash-board-controller"
+        ],
+        "operationId": "getTodayAppointments",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AppointmentResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/dashboard/statistics": {
+      "get": {
+        "tags": [
+          "dash-board-controller"
+        ],
+        "operationId": "getDashBoardStatistics",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/dashboard/recent-patients": {
+      "get": {
+        "tags": [
+          "dash-board-controller"
+        ],
+        "operationId": "getRecentPatients",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PatientResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/bills": {
+      "get": {
+        "tags": [
+          "bill-controller"
+        ],
+        "operationId": "getAllBills",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Bill"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/bill-services": {
+      "get": {
+        "tags": [
+          "bill-service-controller"
+        ],
+        "operationId": "getAllBillServices",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BillService"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/verify-otp/{otp}": {
+      "get": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "verifyOtp",
+        "parameters": [
+          {
+            "name": "otp",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/users": {
+      "get": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "retrieveAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/activate/{otp}": {
+      "get": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "activateAccount",
+        "parameters": [
+          {
+            "name": "otp",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vi/patient-history": {
+      "get": {
+        "tags": [
+          "patient-history-controller"
+        ],
+        "operationId": "fetchAllPatientHistory",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PatientHistoryDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vi/patient-history/get_by-patient-id/{id}": {
+      "get": {
+        "tags": [
+          "patient-history-controller"
+        ],
+        "operationId": "fetchPatientHistoryByPatientId",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientHistoryDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vi/patient-history/get-by-id/{id}": {
+      "get": {
+        "tags": [
+          "patient-history-controller"
+        ],
+        "operationId": "fetchPatientHistoryById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientHistoryDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getUserInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients": {
+      "get": {
+        "tags": [
+          "patient-controller"
+        ],
+        "operationId": "fetchAllPatients",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "insurancePolicyNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bloodType",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "A_POSITIVE",
+                "A_NEGATIVE",
+                "B_POSITIVE",
+                "B_NEGATIVE",
+                "AB_POSITIVE",
+                "AB_NEGATIVE",
+                "O_POSITIVE",
+                "O_NEGATIVE"
+              ]
+            }
+          },
+          {
+            "name": "maritalStatus",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "SINGLE",
+                "MARRIED",
+                "DIVORCED",
+                "WIDOWED"
+              ]
+            }
+          },
+          {
+            "name": "nationality",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "patientHistory",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "medications",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "diagnoses",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "admissions",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "appointment",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ward",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PatientResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/search-full-name": {
+      "get": {
+        "tags": [
+          "patient-controller"
+        ],
+        "operationId": "searchPatientByFullName",
+        "parameters": [
+          {
+            "name": "fullName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PatientResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/get-by-id/{id}": {
+      "get": {
+        "tags": [
+          "patient-controller"
+        ],
+        "operationId": "fetchPatientById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PatientResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/appointments": {
+      "get": {
+        "tags": [
+          "patient-controller"
+        ],
+        "operationId": "getPatient",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doctor": {
+      "get": {
+        "tags": [
+          "doctor-controller"
+        ],
+        "operationId": "getAllDoctors",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          },
+          {
+            "name": "education",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "certifications",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "experience",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "activeStatus",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "specialty",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "licenseNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workStartTime",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workEndTime",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "appointment",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ward",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DoctorResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doctor/search": {
+      "get": {
+        "tags": [
+          "doctor-controller"
+        ],
+        "operationId": "searchDoctor",
+        "parameters": [
+          {
+            "name": "keyword",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DoctorResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doctor/search-full-name": {
+      "get": {
+        "tags": [
+          "doctor-controller"
+        ],
+        "operationId": "searchDoctorByFullName",
+        "parameters": [
+          {
+            "name": "fullName",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DoctorResponseDto"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doctor/get-by-id/{id}": {
+      "get": {
+        "tags": [
+          "doctor-controller"
+        ],
+        "operationId": "getDoctorById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/DoctorResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doctor/get-available-time/{id}": {
+      "get": {
+        "tags": [
+          "doctor-controller"
+        ],
+        "operationId": "getAvailableDoctorTimeSlots",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doctor/appointments": {
+      "get": {
+        "tags": [
+          "doctor-controller"
+        ],
+        "operationId": "getDoctorAppointments",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/ward/delete-by-id/{id}": {
+      "delete": {
+        "tags": [
+          "ward-controller"
+        ],
+        "operationId": "deleteWardById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/auth/user/delete/{id}": {
+      "delete": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/patients/delete-by-id/{id}": {
+      "delete": {
+        "tags": [
+          "patient-controller"
+        ],
+        "operationId": "deletePatientById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doctor/delete-by-id/{id}": {
+      "delete": {
+        "tags": [
+          "doctor-controller"
+        ],
+        "operationId": "deleteDoctorById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/appointments/delete-by-id/{id}": {
+      "delete": {
+        "tags": [
+          "appointment-controller"
+        ],
+        "operationId": "deleteAppointmentById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RestErrorMessage": {
+        "type": "object",
+        "properties": {
+          "timestamp": {
+            "type": "string"
+          },
+          "statusCode": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      },
+      "WardRequestDto": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "numOfBeds": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numOfNurses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isMale": {
+            "type": "boolean"
+          },
+          "isFemale": {
+            "type": "boolean"
+          },
+          "isLock": {
+            "type": "boolean"
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Admission": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "diagnosisOut": {
+            "type": "string"
+          },
+          "diagnosisIn": {
+            "type": "string"
+          },
+          "admissionType": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "URGENT"
+            ]
+          },
+          "admissionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "dischargeDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "numOfBedDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "patient": {
+            "required": [
+              "email",
+              "firstname",
+              "lastname",
+              "password"
+            ]
+          },
+          "doctor": {
+            "required": [
+              "email",
+              "firstname",
+              "lastname",
+              "password"
+            ]
+          },
+          "ward": {
+            "required": [
+              "name"
+            ]
+          }
+        }
+      },
+      "Appointment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "reasonForVisit": {
+            "type": "string"
+          },
+          "paid": {
+            "type": "boolean"
+          },
+          "appointmentStatus": {
+            "type": "string",
+            "enum": [
+              "COMPLETED",
+              "CANCELED",
+              "PENDING"
+            ]
+          },
+          "patient": {
+            "required": [
+              "email",
+              "firstname",
+              "lastname",
+              "password"
+            ]
+          },
+          "doctor": {
+            "required": [
+              "email",
+              "firstname",
+              "lastname",
+              "password"
+            ]
+          },
+          "virtual": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Diagnosis": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "details": {
+            "type": "string"
+          },
+          "patient": {
+            "required": [
+              "email",
+              "firstname",
+              "lastname",
+              "password"
+            ]
+          },
+          "doctor": {
+            "$ref": "#/components/schemas/Doctor"
+          }
+        }
+      },
+      "Doctor": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "firstname": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lastname": {
+            "type": "string",
+            "minLength": 1
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "dob": {
+            "type": "string",
+            "format": "date"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1
+          },
+          "is_enabled": {
+            "type": "boolean"
+          },
+          "education": {
+            "type": "string"
+          },
+          "certifications": {
+            "type": "string"
+          },
+          "experience": {
+            "type": "string"
+          },
+          "activeStatus": {
+            "type": "boolean"
+          },
+          "specialty": {
+            "type": "string"
+          },
+          "licenseNumber": {
+            "type": "string"
+          },
+          "workStartTime": {
+            "type": "string"
+          },
+          "workEndTime": {
+            "type": "string"
+          },
+          "appointment": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Appointment"
+            },
+            "uniqueItems": true
+          },
+          "ward": {
+            "$ref": "#/components/schemas/Ward"
+          }
+        },
+        "required": [
+          "email",
+          "firstname",
+          "lastname",
+          "password"
+        ]
+      },
+      "LabReport": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "report_comments": {
+            "type": "string"
+          },
+          "report_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "creared_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "modified_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "report_status": {
+            "type": "string"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/Patient"
+          },
+          "doctor": {
+            "$ref": "#/components/schemas/Doctor"
+          }
+        }
+      },
+      "Medication": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "dosage": {
+            "type": "string"
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Patient": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "firstname": {
+            "type": "string",
+            "minLength": 1
+          },
+          "lastname": {
+            "type": "string",
+            "minLength": 1
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "dob": {
+            "type": "string",
+            "format": "date"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "minLength": 1
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1
+          },
+          "is_enabled": {
+            "type": "boolean"
+          },
+          "insurancePolicyNumber": {
+            "type": "string"
+          },
+          "bloodType": {
+            "type": "string",
+            "enum": [
+              "A_POSITIVE",
+              "A_NEGATIVE",
+              "B_POSITIVE",
+              "B_NEGATIVE",
+              "AB_POSITIVE",
+              "AB_NEGATIVE",
+              "O_POSITIVE",
+              "O_NEGATIVE"
+            ]
+          },
+          "maritalStatus": {
+            "type": "string",
+            "enum": [
+              "SINGLE",
+              "MARRIED",
+              "DIVORCED",
+              "WIDOWED"
+            ]
+          },
+          "nationality": {
+            "type": "string"
+          },
+          "patientHistory": {
+            "$ref": "#/components/schemas/PatientHistory"
+          },
+          "medications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Medication"
+            },
+            "uniqueItems": true
+          },
+          "diagnoses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Diagnosis"
+            },
+            "uniqueItems": true
+          },
+          "admissions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Admission"
+            },
+            "uniqueItems": true
+          },
+          "appointment": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Appointment"
+            },
+            "uniqueItems": true
+          },
+          "ward": {
+            "$ref": "#/components/schemas/Ward"
+          }
+        },
+        "required": [
+          "email",
+          "firstname",
+          "lastname",
+          "password"
+        ]
+      },
+      "PatientHistory": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "hasPhysDiuresis": {
+            "type": "boolean"
+          },
+          "hasPhysDiet": {
+            "type": "boolean"
+          },
+          "hasPhysDrugs": {
+            "type": "boolean"
+          },
+          "hasPhysAlvo": {
+            "type": "boolean"
+          },
+          "hasPhysPregnancies": {
+            "type": "boolean"
+          },
+          "hasPhysAlcohol": {
+            "type": "boolean"
+          },
+          "hasPhysSmoke": {
+            "type": "boolean"
+          },
+          "hasPhysPeriod": {
+            "type": "boolean"
+          },
+          "hasPastCardio": {
+            "type": "boolean"
+          },
+          "hasPastCancer": {
+            "type": "boolean"
+          },
+          "hasPastHyp": {
+            "type": "boolean"
+          },
+          "hasPastNothing": {
+            "type": "boolean"
+          },
+          "hasPastInfect": {
+            "type": "boolean"
+          },
+          "hasPastOrto": {
+            "type": "boolean"
+          },
+          "hasPastDrugAdd": {
+            "type": "boolean"
+          },
+          "hasPastEndo": {
+            "type": "boolean"
+          },
+          "hasPastResp": {
+            "type": "boolean"
+          },
+          "pastNotes": {
+            "type": "string"
+          },
+          "hasFamCardio": {
+            "type": "boolean"
+          },
+          "hasFamCancer": {
+            "type": "boolean"
+          },
+          "hasFamHyp": {
+            "type": "boolean"
+          },
+          "hasFamNothing": {
+            "type": "boolean"
+          },
+          "hasFamInfect": {
+            "type": "boolean"
+          },
+          "hasFamOrto": {
+            "type": "boolean"
+          },
+          "hasFamDrugAdd": {
+            "type": "boolean"
+          },
+          "hasFamEndo": {
+            "type": "boolean"
+          },
+          "hasFamResp": {
+            "type": "boolean"
+          },
+          "familyNotes": {
+            "type": "string"
+          },
+          "allergies": {
+            "type": "string"
+          },
+          "usualMedic": {
+            "type": "string"
+          },
+          "surgeries": {
+            "type": "string"
+          },
+          "additionalNote": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/Patient"
+          }
+        }
+      },
+      "Ward": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "createdBy": {
+            "type": "string"
+          },
+          "createdDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "numOfBeds": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numOfNurses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "patients": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Patient"
+            },
+            "uniqueItems": true
+          },
+          "doctors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Doctor"
+            },
+            "uniqueItems": true
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "female": {
+            "type": "boolean"
+          },
+          "male": {
+            "type": "boolean"
+          },
+          "lock": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "name"
+        ]
+      },
+      "Bill": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "bill_date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "patient": {
+            "$ref": "#/components/schemas/Patient"
+          }
+        }
+      },
+      "BillService": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "cost": {
+            "type": "number",
+            "format": "double"
+          },
+          "bill": {
+            "$ref": "#/components/schemas/Bill"
+          }
+        }
+      },
+      "PatientHistoryDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "hasPhysDiuresis": {
+            "type": "boolean"
+          },
+          "hasPhysDiet": {
+            "type": "boolean"
+          },
+          "hasPhysDrugs": {
+            "type": "boolean"
+          },
+          "hasPhysAlvo": {
+            "type": "boolean"
+          },
+          "hasPhysPregnancies": {
+            "type": "boolean"
+          },
+          "hasPhysAlcohol": {
+            "type": "boolean"
+          },
+          "hasPhysSmoke": {
+            "type": "boolean"
+          },
+          "hasPhysPeriod": {
+            "type": "boolean"
+          },
+          "hasPastCardio": {
+            "type": "boolean"
+          },
+          "hasPastCancer": {
+            "type": "boolean"
+          },
+          "hasPastHyp": {
+            "type": "boolean"
+          },
+          "hasPastNothing": {
+            "type": "boolean"
+          },
+          "hasPastInfect": {
+            "type": "boolean"
+          },
+          "hasPastOrto": {
+            "type": "boolean"
+          },
+          "hasPastDrugAdd": {
+            "type": "boolean"
+          },
+          "hasPastEndo": {
+            "type": "boolean"
+          },
+          "hasPastResp": {
+            "type": "boolean"
+          },
+          "pastNotes": {
+            "type": "string"
+          },
+          "hasFamCardio": {
+            "type": "boolean"
+          },
+          "hasFamCancer": {
+            "type": "boolean"
+          },
+          "hasFamHyp": {
+            "type": "boolean"
+          },
+          "hasFamNothing": {
+            "type": "boolean"
+          },
+          "hasFamInfect": {
+            "type": "boolean"
+          },
+          "hasFamOrto": {
+            "type": "boolean"
+          },
+          "hasFamDrugAdd": {
+            "type": "boolean"
+          },
+          "hasFamEndo": {
+            "type": "boolean"
+          },
+          "hasFamResp": {
+            "type": "boolean"
+          },
+          "familyNotes": {
+            "type": "string"
+          },
+          "allergies": {
+            "type": "string"
+          },
+          "usualMedic": {
+            "type": "string"
+          },
+          "surgeries": {
+            "type": "string"
+          },
+          "additionalNote": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string"
+          },
+          "patientId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "UserRequestDto": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "dob": {
+            "type": "string",
+            "format": "date"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "AdditionalInfoDto": {
+        "type": "object",
+        "properties": {
+          "insurancePolicyNumber": {
+            "type": "string"
+          },
+          "bloodType": {
+            "type": "string",
+            "enum": [
+              "A_POSITIVE",
+              "A_NEGATIVE",
+              "B_POSITIVE",
+              "B_NEGATIVE",
+              "AB_POSITIVE",
+              "AB_NEGATIVE",
+              "O_POSITIVE",
+              "O_NEGATIVE"
+            ]
+          },
+          "maritalStatus": {
+            "type": "string",
+            "enum": [
+              "SINGLE",
+              "MARRIED",
+              "DIVORCED",
+              "WIDOWED"
+            ]
+          },
+          "nationality": {
+            "type": "string"
+          }
+        }
+      },
+      "PatientDto": {
+        "type": "object",
+        "properties": {
+          "requiredInfoDto": {
+            "$ref": "#/components/schemas/RequiredInfoDto"
+          },
+          "additionalInfoDto": {
+            "$ref": "#/components/schemas/AdditionalInfoDto"
+          }
+        }
+      },
+      "RequiredInfoDto": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "dob": {
+            "type": "string",
+            "format": "date"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "is_enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PatientResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requiredInfoDto": {
+            "$ref": "#/components/schemas/RequiredInfoDto"
+          },
+          "additionalInfoDto": {
+            "$ref": "#/components/schemas/AdditionalInfoDto"
+          },
+          "patientHistoryId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "DoctorDto": {
+        "type": "object",
+        "properties": {
+          "requiredInfoDto": {
+            "$ref": "#/components/schemas/RequiredInfoDto"
+          },
+          "additionalInfoDto": {
+            "$ref": "#/components/schemas/AdditionalInfoDto"
+          }
+        }
+      },
+      "DoctorResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requiredInfoDto": {
+            "$ref": "#/components/schemas/RequiredInfoDto"
+          },
+          "additionalInfoDto": {
+            "$ref": "#/components/schemas/AdditionalInfoDto"
+          }
+        }
+      },
+      "AppointmentStatusDto": {
+        "type": "object",
+        "properties": {
+          "appointmentId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "appointmentStatus": {
+            "type": "string",
+            "enum": [
+              "COMPLETED",
+              "CANCELED",
+              "PENDING"
+            ]
+          }
+        }
+      },
+      "AdmissionRequestDto": {
+        "type": "object",
+        "properties": {
+          "patientId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "admissionType": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "URGENT"
+            ]
+          },
+          "wardName": {
+            "type": "string"
+          },
+          "diagnosisIn": {
+            "type": "string"
+          },
+          "diagnosisOut": {
+            "type": "string"
+          },
+          "admissionDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "dischargeDate": {
+            "type": "string",
+            "format": "date"
+          },
+          "numOfBedDays": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "required": [
+          "admissionType",
+          "patientId",
+          "wardName"
+        ]
+      },
+      "LabTest": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "test_values": {
+            "type": "number",
+            "format": "double"
+          },
+          "normal_values": {
+            "type": "number",
+            "format": "double"
+          },
+          "labReport": {
+            "$ref": "#/components/schemas/LabReport"
+          }
+        }
+      },
+      "ExaminationDto": {
+        "type": "object",
+        "properties": {
+          "patientId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "oxygenSaturation": {
+            "type": "number",
+            "format": "double"
+          },
+          "urineOutput": {
+            "type": "number",
+            "format": "double"
+          },
+          "bowelMovement": {
+            "type": "string"
+          },
+          "auscultation": {
+            "type": "string"
+          },
+          "heartRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "weight": {
+            "type": "number",
+            "format": "double"
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double"
+          },
+          "height": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "ResetPassword": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthenticationRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "AuthenticationResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          },
+          "refresh_token": {
+            "type": "string"
+          }
+        }
+      },
+      "AdminResetPassword": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        }
+      },
+      "PatientAppointmentDto": {
+        "type": "object",
+        "properties": {
+          "startTime": {
+            "type": "string"
+          },
+          "reasonForVisit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "doctorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "virtual": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "doctorId",
+          "reasonForVisit",
+          "startTime",
+          "virtual"
+        ]
+      },
+      "WardResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "numOfBeds": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "numOfNurses": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isMale": {
+            "type": "boolean"
+          },
+          "isFemale": {
+            "type": "boolean"
+          },
+          "isLock": {
+            "type": "boolean"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "numberOfPatients": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ExaminationResponseDto": {
+        "type": "object",
+        "properties": {
+          "patientId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "oxygenSaturation": {
+            "type": "number",
+            "format": "double"
+          },
+          "urineOutput": {
+            "type": "number",
+            "format": "double"
+          },
+          "bowelMovement": {
+            "type": "string"
+          },
+          "auscultation": {
+            "type": "string"
+          },
+          "heartRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "weight": {
+            "type": "number",
+            "format": "double"
+          },
+          "temperature": {
+            "type": "number",
+            "format": "double"
+          },
+          "height": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "AppointmentResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "reasonForVisit": {
+            "type": "string",
+            "minLength": 1
+          },
+          "doctorName": {
+            "type": "string"
+          },
+          "patientName": {
+            "type": "string"
+          },
+          "appointmentStatus": {
+            "type": "string",
+            "enum": [
+              "COMPLETED",
+              "CANCELED",
+              "PENDING"
+            ]
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "virtual": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "doctorName",
+          "patientName",
+          "reasonForVisit",
+          "startTime"
+        ]
+      },
+      "DashboardResponse": {
+        "type": "object",
+        "properties": {
+          "totalPatient": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "todayPatient": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "todayAppointment": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "completedAppointment": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "newPatient": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "oldPatient": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "UserResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string",
+            "format": "date"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "roles": {
+            "type": "string"
+          },
+          "is_enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "AdmissionResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "diagnosisOut": {
+            "type": "string"
+          },
+          "diagnosisIn": {
+            "type": "string"
+          },
+          "admissionType": {
+            "type": "string",
+            "enum": [
+              "GENERAL",
+              "URGENT"
+            ]
+          },
+          "dischargeDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "numOfBedDays": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "patientName": {
+            "type": "string"
+          },
+          "doctorName": {
+            "type": "string"
+          },
+          "wardName": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "description": "JWT auth",
+        "in": "header",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
