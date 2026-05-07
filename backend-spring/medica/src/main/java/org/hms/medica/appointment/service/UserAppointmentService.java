@@ -7,6 +7,7 @@ import org.hms.medica.appointment.model.Appointment;
 import org.hms.medica.constants.AppointmentStatus;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.user.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,14 +21,14 @@ public interface UserAppointmentService {
 
   boolean IsAppointmentByStartTimePresent(LocalTime startTime, Doctor doctor);
 
-  List<AppointmentResponseDto> findAllAppointments(Predicate predicate, Pageable pageable);
+  Page<AppointmentResponseDto> findAllAppointments(Predicate predicate, Pageable pageable);
 
   @Transactional
   void changeAppointmentStatus(AppointmentStatusDto appointmentStatusDto);
 
-  List<Appointment> findTodayAppointments(LocalDateTime localDateTime);
+  Page<Appointment> findTodayAppointments(LocalDateTime localDateTime, Pageable pageable);
 
-  List<Appointment> findAppointmentsByStatus(AppointmentStatus status);
+  Page<Appointment> findAppointmentsByStatus(AppointmentStatus status, Pageable pageable);
 
   @Transactional
   void deleteAppointment(Long id);

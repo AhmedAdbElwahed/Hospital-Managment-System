@@ -18,6 +18,7 @@ import org.hms.medica.user.exception.UserNotFoundException;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.service.UserService;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -71,24 +72,22 @@ public class PatientService {
         .collect(Collectors.toList());
   }
 
-  public List<Patient> findAllPatients() {
-    return patientRepository.findAll();
+  public Page<Patient> findAllPatients(Pageable pageable) {
+    return patientRepository.findAll(pageable);
   }
 
-  public List<Patient> findAllTodayPatients(LocalDateTime localDateTime) {
-    return qPatientRepository.findTodayPatients(localDateTime);
+  public Page<Patient> findAllTodayPatients(LocalDateTime localDateTime, Pageable pageable) {
+    return qPatientRepository.findTodayPatients(localDateTime, pageable);
   }
 
-  public List<PatientResponseDto> findPatientByFullName(String fullName) {
-    return qPatientRepository.findPatientByFullName(fullName).stream()
-        .map(patientMapper::mapPatientToPatientResponseDto)
-        .toList();
+  public Page<PatientResponseDto> findPatientByFullName(String fullName, Pageable pageable) {
+    return qPatientRepository.findPatientByFullName(fullName, pageable)
+        .map(patientMapper::mapPatientToPatientResponseDto);
   }
 
-  public List<PatientResponseDto> getAllPatients(Predicate predicate, Pageable pageable) {
-    return patientRepository.findAll(predicate, pageable).stream()
-        .map(patientMapper::mapPatientToPatientResponseDto)
-        .toList();
+  public Page<PatientResponseDto> getAllPatients(Predicate predicate, Pageable pageable) {
+    return patientRepository.findAll(predicate, pageable)
+        .map(patientMapper::mapPatientToPatientResponseDto);
   }
 
   public Patient getPatientById(Long patientId) {
@@ -145,18 +144,17 @@ public class PatientService {
         .orElseThrow(() -> new UserNotFoundException("Patient Not found with id: " + patientId));
   }
 
-  public List<Patient> findNewPatients() {
-    return qPatientRepository.findNewPatients();
+  public Page<Patient> findNewPatients(Pageable pageable) {
+    return qPatientRepository.findNewPatients(pageable);
   }
 
-  public List<PatientResponseDto> findMostRecentPatients() {
-    return qPatientRepository.findRecentPatients().stream()
-        .map(patientMapper::mapPatientToPatientResponseDto)
-        .toList();
+  public Page<PatientResponseDto> findMostRecentPatients(Pageable pageable) {
+    return qPatientRepository.findRecentPatients(pageable)
+        .map(patientMapper::mapPatientToPatientResponseDto);
   }
 
-  public List<Patient> findOldPatients() {
-    return qPatientRepository.findOldPatient();
+  public Page<Patient> findOldPatients(Pageable pageable) {
+    return qPatientRepository.findOldPatient(pageable);
   }
 
   @Transactional

@@ -5,6 +5,8 @@ import org.hms.medica.search.model.DoctorIndex;
 import org.hms.medica.search.model.PatientIndex;
 import org.hms.medica.search.service.SearchService;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,13 +21,13 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping("/patients")
-    public ResponseEntity<List<PatientIndex>> searchPatients(@RequestParam String query) {
-        return ResponseEntity.ok(searchService.searchPatients(query));
+    public ResponseEntity<Page<PatientIndex>> searchPatients(@RequestParam String query, Pageable pageable) {
+        return ResponseEntity.ok(searchService.searchPatients(query, pageable));
     }
 
     @GetMapping("/doctors")
-    public ResponseEntity<List<DoctorIndex>> searchDoctors(@RequestParam String query) {
-        return ResponseEntity.ok(searchService.searchDoctors(query));
+    public ResponseEntity<Page<DoctorIndex>> searchDoctors(@RequestParam String query, Pageable pageable) {
+        return ResponseEntity.ok(searchService.searchDoctors(query, pageable));
     }
 
     @PostMapping("/sync")

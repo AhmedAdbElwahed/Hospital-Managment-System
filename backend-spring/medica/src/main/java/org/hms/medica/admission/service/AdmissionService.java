@@ -15,6 +15,7 @@ import org.hms.medica.user.model.User;
 import org.hms.medica.user.service.UserService;
 import org.hms.medica.ward.model.Ward;
 import org.hms.medica.ward.service.WardService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -55,10 +56,9 @@ public class AdmissionService {
         return admission.getId();
     }
 
-    public List<AdmissionResponseDto> getAdmissions(int pageSize) {
-        List<Admission> admissions = admissionRepository.findAll(Pageable.ofSize(pageSize)).toList();
-
-        return admissions.stream().map(admissionMapper::mapToResponseDto).collect(Collectors.toList());
+    public Page<AdmissionResponseDto> getAdmissions(Pageable pageable) {
+        return admissionRepository.findAll(pageable)
+                .map(admissionMapper::mapToResponseDto);
     }
 
     public AdmissionResponseDto findAdmissionById(Long id) {

@@ -13,6 +13,7 @@ import org.hms.medica.appointment.service.UserAppointmentService;
 import org.hms.medica.constants.AppointmentStatus;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.user.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -47,10 +48,9 @@ public class UserAppointmentServiceImpl implements UserAppointmentService {
     }
 
     @Override
-    public List<AppointmentResponseDto> findAllAppointments(Predicate predicate, Pageable pageable) {
-        return appointmentRepository.findAll(predicate, pageable).stream()
-                .map(adminAppointmentMapper::mapAppointmentToAppointmentResponseDto)
-                .toList();
+    public Page<AppointmentResponseDto> findAllAppointments(Predicate predicate, Pageable pageable) {
+        return appointmentRepository.findAll(predicate, pageable)
+                .map(adminAppointmentMapper::mapAppointmentToAppointmentResponseDto);
     }
 
     @Override
@@ -62,13 +62,13 @@ public class UserAppointmentServiceImpl implements UserAppointmentService {
     }
 
     @Override
-    public List<Appointment> findTodayAppointments(LocalDateTime localDateTime) {
-        return qAppointmentRepository.findTodayAppointments(localDateTime);
+    public Page<Appointment> findTodayAppointments(LocalDateTime localDateTime, Pageable pageable) {
+        return qAppointmentRepository.findTodayAppointments(localDateTime, pageable);
     }
 
     @Override
-    public List<Appointment> findAppointmentsByStatus(AppointmentStatus status) {
-        return qAppointmentRepository.findAppointmentsByStatus(status);
+    public Page<Appointment> findAppointmentsByStatus(AppointmentStatus status, Pageable pageable) {
+        return qAppointmentRepository.findAppointmentsByStatus(status, pageable);
     }
 
     @Override

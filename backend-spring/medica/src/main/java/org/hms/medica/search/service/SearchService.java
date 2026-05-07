@@ -11,6 +11,8 @@ import org.hms.medica.search.model.PatientIndex;
 import org.hms.medica.search.repository.DoctorSearchRepository;
 import org.hms.medica.search.repository.PatientSearchRepository;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,14 +30,14 @@ public class SearchService {
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
 
-    public List<PatientIndex> searchPatients(String query) {
+    public Page<PatientIndex> searchPatients(String query, Pageable pageable) {
         return patientSearchRepository.findByFirstnameContainingOrLastnameContainingOrEmailContainingOrPhoneContaining(
-                query, query, query, query);
+                query, query, query, query, pageable);
     }
 
-    public List<DoctorIndex> searchDoctors(String query) {
+    public Page<DoctorIndex> searchDoctors(String query, Pageable pageable) {
         return doctorSearchRepository.findByFirstnameContainingOrLastnameContainingOrSpecialtyContainingOrLicenseNumberContaining(
-                query, query, query, query);
+                query, query, query, query, pageable);
     }
 
     @Transactional(readOnly = true)

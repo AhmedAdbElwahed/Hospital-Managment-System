@@ -3,6 +3,8 @@ package org.hms.medica.labtest.controller;
 import org.hms.medica.labtest.model.LabTest;
 import org.hms.medica.labtest.service.LabTestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,8 @@ public class LabTestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LabTest>> getAllLabTests() {
-        List<LabTest> labTests = labTestService.getAllLabTests();
+    public ResponseEntity<Page<LabTest>> getAllLabTests(Pageable pageable) {
+        Page<LabTest> labTests = labTestService.getAllLabTests(pageable);
         return new ResponseEntity<>(labTests, HttpStatus.OK);
     }
 

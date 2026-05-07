@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.hms.medica.admission.dto.AdmissionRequestDto;
 import org.hms.medica.admission.dto.AdmissionResponseDto;
 import org.hms.medica.admission.service.AdmissionService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,10 +30,8 @@ public class AdmissionController {
   }
 
   @GetMapping
-  public ResponseEntity<List<AdmissionResponseDto>> getAdmissions(@RequestParam Integer pageSize) {
-
-    List<AdmissionResponseDto> admissionRequestDtos = admissionService.getAdmissions(pageSize);
-    return ResponseEntity.ok(admissionRequestDtos);
+  public ResponseEntity<Page<AdmissionResponseDto>> getAdmissions(Pageable pageable) {
+    return ResponseEntity.ok(admissionService.getAdmissions(pageable));
   }
 
   @DeleteMapping("/{admissionId}")

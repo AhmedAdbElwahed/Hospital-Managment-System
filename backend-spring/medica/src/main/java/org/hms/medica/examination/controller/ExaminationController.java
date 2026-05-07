@@ -1,16 +1,15 @@
 package org.hms.medica.examination.controller;
 
-
 import lombok.RequiredArgsConstructor;
 import org.hms.medica.examination.dto.ExaminationDto;
 import org.hms.medica.examination.dto.ExaminationResponseDto;
 import org.hms.medica.examination.service.ExaminationService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/hms/v1/examinations")
@@ -26,8 +25,8 @@ public class ExaminationController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ExaminationResponseDto>> getAllExaminations() {
-        return ResponseEntity.status(HttpStatus.OK).body(examinationService.getAllExaminations());
+    public ResponseEntity<Page<ExaminationResponseDto>> getAllExaminations(Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK).body(examinationService.getAllExaminations(pageable));
     }
 
     @GetMapping("/{id}")
@@ -36,16 +35,17 @@ public class ExaminationController {
                 .body(examinationService.getExaminationById(id));
     }
 
-//  @PutMapping("/{id}")
-//  public ResponseEntity<Examination> updateExamination(
-//      @PathVariable Long id, @RequestBody Examination examination) {
-//    if (!examinationService.getExaminationById(id).isPresent()) {
-//      return ResponseEntity.notFound().build();
-//    }
-//    examination.setId(id);
-//    Examination updatedExamination = examinationService.saveExamination(examination);
-//    return ResponseEntity.ok(updatedExamination);
-//  }
+    // @PutMapping("/{id}")
+    // public ResponseEntity<Examination> updateExamination(
+    // @PathVariable Long id, @RequestBody Examination examination) {
+    // if (!examinationService.getExaminationById(id).isPresent()) {
+    // return ResponseEntity.notFound().build();
+    // }
+    // examination.setId(id);
+    // Examination updatedExamination =
+    // examinationService.saveExamination(examination);
+    // return ResponseEntity.ok(updatedExamination);
+    // }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteExamination(@PathVariable Long id) {

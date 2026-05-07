@@ -10,6 +10,7 @@ import org.hms.medica.patient.dto.PatientResponseDto;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.repo.PatientRepository;
 import org.hms.medica.patient.service.PatientService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
@@ -33,7 +34,7 @@ public class PatientController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PatientResponseDto>> fetchAllPatients(
+    public ResponseEntity<Page<PatientResponseDto>> fetchAllPatients(
             @QuerydslPredicate(root = Patient.class, bindings = PatientRepository.class)
             Predicate predicate,
             Pageable pageable
@@ -42,11 +43,12 @@ public class PatientController {
     }
 
     @GetMapping("/search-full-name")
-    public ResponseEntity<List<PatientResponseDto>> searchPatientByFullName(
-            @RequestParam String fullName
+    public ResponseEntity<Page<PatientResponseDto>> searchPatientByFullName(
+            @RequestParam String fullName,
+            Pageable pageable
     )  {
         log.info("full name: {}", fullName);
-        return ResponseEntity.status(HttpStatus.OK).body(patientService.findPatientByFullName(fullName));
+        return ResponseEntity.status(HttpStatus.OK).body(patientService.findPatientByFullName(fullName, pageable));
     }
 
 

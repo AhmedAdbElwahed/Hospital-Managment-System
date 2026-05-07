@@ -3,6 +3,8 @@ package org.hms.medica.bill.service;
 import org.hms.medica.bill.model.Bill;
 import org.hms.medica.bill.repo.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +24,8 @@ public class BillService {
         return billRepository.save(bill);
     }
 
-    public List<Bill> getAllBills() {
-        return billRepository.findAll();
+    public Page<Bill> getAllBills(Pageable pageable) {
+        return billRepository.findAll(pageable);
     }
 
     public Optional<Bill> getBillById(Long id) {

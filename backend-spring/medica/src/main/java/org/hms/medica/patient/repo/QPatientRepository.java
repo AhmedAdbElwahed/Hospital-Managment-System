@@ -6,9 +6,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.model.QPatient;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,49 +19,121 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QPatientRepository {
 
-    private final EntityManager entityManager;
+        private final EntityManager entityManager;
 
-    public List<Patient> findPatientByFullName(String fullName) {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        QPatient patient = QPatient.patient;
-        log.info("full name: {}", patient.firstname.concat(" " + patient.lastname));
-        return queryFactory.selectFrom(patient)
-                .where(patient.firstname.concat(" ").concat(patient.lastname).likeIgnoreCase("%" + fullName + "%"))
-                .fetch();
-    }
+        public Page<Patient> findPatientByFullName(String fullName, Pageable pageable) {
+                JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+                QPatient patient = QPatient.patient;
+                log.info("full name: {}", patient.firstname.concat(" " + patient.lastname));
 
-    public List<Patient> findTodayPatients(LocalDateTime localDateTime) {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        QPatient patient = QPatient.patient;
-        return queryFactory.selectFrom(patient)
-                .where(patient.createdDate.between(localDateTime.minusDays(1L), localDateTime.plusDays(1L)))
-                .fetch();
-    }
+                Long total = queryFactory.select(patient.count())
+                                .from(patient)
+                                .where(patient.firstname.concat(" ").concat(patient.lastname)
+                                                .likeIgnoreCase("%" + fullName + "%"))
+                                .fetchOne();
 
-    public List<Patient> findNewPatients() {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        QPatient patient = QPatient.patient;
-        var now = LocalDateTime.now();
-        return queryFactory.selectFrom(patient)
-                .where(patient.createdDate.after(now.minusDays(5L)))
-                .fetch();
-    }
+                var query = queryFactory.selectFrom(patient)
+                                .where(patient.firstname.concat(" ").concat(patient.lastname)
+                                                .likeIgnoreCase("%" + fullName + "%"));
 
-    public List<Patient> findOldPatient() {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        QPatient patient = QPatient.patient;
-        var oldDate = LocalDateTime.now().minusDays(5L);
-        return queryFactory.selectFrom(patient)
-                .where(patient.createdDate.before(oldDate))
-                .fetch();
-    }
+                if (pageable.isPaged()) {
+                        query.offset(pageable.getOffset())
+                                        .limit(pageable.getPageSize());
+                }
 
-    public List<Patient> findRecentPatients() {
-        JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
-        QPatient patient = QPatient.patient;
-        return queryFactory.selectFrom(patient)
-                .stream().limit(5)
-                .toList();
-    }
+                List<Patient> content = query.fetch();
+
+                return new PageImpl<>(content, pageable, total != null ? total : 0L);
+        }
+
+        public Page<Patient> findTodayPatients(LocalDateTime localDateTime, Pageable pageable) {
+                JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+                QPatient patient = QPatient.patient;
+
+                Long total = queryFactory.select(patient.count())
+                                .from(patient)
+                                .where(patient.createdDate.between(localDateTime.minusDays(1L),
+                                                localDateTime.plusDays(1L)))
+                                .fetchOne();
+
+                var query = queryFactory.selectFrom(patient)
+                                .where(patient.createdDate.between(localDateTime.minusDays(1L),
+                                                localDateTime.plusDays(1L)));
+
+                if (pageable.isPaged()) {
+                        query.offset(pageable.getOffset())
+                                        .limit(pageable.getPageSize());
+                }
+
+                List<Patient> content = query.fetch();
+
+                return new PageImpl<>(content, pageable, total != null ? total : 0L);
+        }
+
+        public Page<Patient> findNewPatients(Pageable pageable) {
+                JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+                QPatient patient = QPatient.patient;
+                var now = LocalDateTime.now();
+
+                Long total = queryFactory.select(patient.count())
+                                .from(patient)
+                                .where(patient.createdDate.after(now.minusDays(5L)))
+                                .fetchOne();
+
+                var query = queryFactory.selectFrom(patient)
+                                .where(patient.createdDate.after(now.minusDays(5L)));
+
+                if (pageable.isPaged()) {
+                        query.offset(pageable.getOffset())
+                                        .limit(pageable.getPageSize());
+                }
+
+                List<Patient> content = query.fetch();
+
+                return new PageImpl<>(content, pageable, total != null ? total : 0L);
+        }
+
+        public Page<Patient> findOldPatient(Pageable pageable) {
+                JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+                QPatient patient = QPatient.patient;
+                var oldDate = LocalDateTime.now().minusDays(5L);
+
+                Long total = queryFactory.select(patient.count())
+                                .from(patient)
+                                .where(patient.createdDate.before(oldDate))
+                                .fetchOne();
+
+                var query = queryFactory.selectFrom(patient)
+                                .where(patient.createdDate.before(oldDate));
+
+                if (pageable.isPaged()) {
+                        query.offset(pageable.getOffset())
+                                        .limit(pageable.getPageSize());
+                }
+
+                List<Patient> content = query.fetch();
+
+                return new PageImpl<>(content, pageable, total != null ? total : 0L);
+        }
+
+        public Page<Patient> findRecentPatients(Pageable pageable) {
+                JPAQueryFactory queryFactory = new JPAQueryFactory(entityManager);
+                QPatient patient = QPatient.patient;
+
+                Long total = queryFactory.select(patient.count())
+                                .from(patient)
+                                .fetchOne();
+
+                var query = queryFactory.selectFrom(patient);
+
+                if (pageable.isPaged()) {
+                        query.offset(pageable.getOffset())
+                                        .limit(pageable.getPageSize());
+                }
+
+                List<Patient> content = query.fetch();
+
+                return new PageImpl<>(content, pageable, total != null ? total : 0L);
+        }
 
 }

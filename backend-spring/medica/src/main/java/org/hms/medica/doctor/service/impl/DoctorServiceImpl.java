@@ -26,6 +26,7 @@ import org.hms.medica.user.model.User;
 import org.hms.medica.user.repo.UserRepository;
 import org.hms.medica.user.service.UserService;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -94,30 +95,28 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorResponseDto> searchDoctors(String keyword) {
+    public Page<DoctorResponseDto> searchDoctors(String keyword, Pageable pageable) {
         if (searchService != null) {
             try {
-                return searchService.searchDoctors(keyword).stream()
-                        .map(doctorIndex -> {
-                            DoctorResponseDto dto = new DoctorResponseDto();
-                            dto.setId(Long.valueOf(doctorIndex.getId()));
+                return searchService.searchDoctors(keyword, pageable).map(doctorIndex -> {
+                    DoctorResponseDto dto = new DoctorResponseDto();
+                    dto.setId(Long.valueOf(doctorIndex.getId()));
 
-                            org.hms.medica.doctor.dto.RequiredInfoDto required = new org.hms.medica.doctor.dto.RequiredInfoDto();
-                            required.setFirstname(doctorIndex.getFirstname());
-                            required.setLastname(doctorIndex.getLastname());
-                            required.setEmail(doctorIndex.getEmail());
-                            required.setPhone(doctorIndex.getPhone());
-                            dto.setRequiredInfoDto(required);
+                    org.hms.medica.doctor.dto.RequiredInfoDto required = new org.hms.medica.doctor.dto.RequiredInfoDto();
+                    required.setFirstname(doctorIndex.getFirstname());
+                    required.setLastname(doctorIndex.getLastname());
+                    required.setEmail(doctorIndex.getEmail());
+                    required.setPhone(doctorIndex.getPhone());
+                    dto.setRequiredInfoDto(required);
 
-                            org.hms.medica.doctor.dto.AdditionalInfoDto additional = new org.hms.medica.doctor.dto.AdditionalInfoDto();
-                            additional.setSpecialty(doctorIndex.getSpecialty());
-                            additional.setLicenseNumber(doctorIndex.getLicenseNumber());
-                            additional.setEducation(doctorIndex.getEducation());
-                            dto.setAdditionalInfoDto(additional);
+                    org.hms.medica.doctor.dto.AdditionalInfoDto additional = new org.hms.medica.doctor.dto.AdditionalInfoDto();
+                    additional.setSpecialty(doctorIndex.getSpecialty());
+                    additional.setLicenseNumber(doctorIndex.getLicenseNumber());
+                    additional.setEducation(doctorIndex.getEducation());
+                    dto.setAdditionalInfoDto(additional);
 
-                            return dto;
-                        })
-                        .toList();
+                    return dto;
+                });
             } catch (Exception e) {
                 log.warn("Elasticsearch search failed, falling back to database: {}", e.getMessage());
             }
@@ -127,10 +126,9 @@ public class DoctorServiceImpl implements DoctorService {
                 .findByFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrSpecialtyContainingIgnoreCase(
                         keyword,
                         keyword,
-                        keyword)
-                .stream()
-                .map(doctorMapper::mapDoctorToDoctorResponseDto)
-                .toList();
+                        keyword,
+                        pageable)
+                .map(doctorMapper::mapDoctorToDoctorResponseDto);
     }
 
     @Override
@@ -209,11 +207,9 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
-    public List<DoctorResponseDto> findDoctorByFullName(String fullName) {
-        return qDoctorRepository.findDoctorByFullName(fullName)
-                .stream()
-                .map(doctorMapper::mapDoctorToDoctorResponseDto)
-                .toList();
+    public Page<DoctorResponseDto> findDoctorByFullName(String fullName, Pageable pageable) {
+        return qDoctorRepository.findDoctorByFullName(fullName, pageable)
+                .map(doctorMapper::mapDoctorToDoctorResponseDto);
     }
 
     public Doctor getDoctorByEmail(String email) {
@@ -235,11 +231,9 @@ public class DoctorServiceImpl implements DoctorService {
                 .collect(Collectors.toList());
     }
 
-    public List<DoctorResponseDto> getAllDoctors(Predicate predicate, Pageable pageable) {
+    public Page<DoctorResponseDto> getAllDoctors(Predicate predicate, Pageable pageable) {
         return doctorRepository.findAll(predicate, pageable)
-                .stream()
-                .map(doctorMapper::mapDoctorToDoctorResponseDto)
-                .toList();
+                .map(doctorMapper::mapDoctorToDoctorResponseDto);
     }
 
     @Override

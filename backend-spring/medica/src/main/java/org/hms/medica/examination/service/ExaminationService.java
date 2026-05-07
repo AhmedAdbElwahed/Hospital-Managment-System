@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -43,10 +45,9 @@ public class ExaminationService {
         examinationRepository.save(examination);
     }
 
-    public List<ExaminationResponseDto> getAllExaminations() {
-        return examinationRepository.findAll()
-                .stream()
-                .map(examinationMapper::mapToDto).toList();
+    public Page<ExaminationResponseDto> getAllExaminations(Pageable pageable) {
+        return examinationRepository.findAll(pageable)
+                .map(examinationMapper::mapToDto);
     }
 
     public ExaminationResponseDto getExaminationById(Long id) {

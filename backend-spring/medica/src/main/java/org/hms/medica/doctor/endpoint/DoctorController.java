@@ -7,7 +7,7 @@ import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.doctor.repo.DoctorRepository;
 import org.hms.medica.doctor.service.DoctorService;
 import com.querydsl.core.types.Predicate;
-import org.hms.medica.patient.dto.PatientResponseDto;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
@@ -29,7 +29,7 @@ public class DoctorController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<DoctorResponseDto>> getAllDoctors(
+    public ResponseEntity<Page<DoctorResponseDto>> getAllDoctors(
             @QuerydslPredicate(root = Doctor.class, bindings = DoctorRepository.class)
             Predicate predicate,
             Pageable pageable
@@ -38,10 +38,11 @@ public class DoctorController {
     }
 
     @GetMapping("/search-full-name")
-    public ResponseEntity<List<DoctorResponseDto>> searchDoctorByFullName(
-            @RequestParam String fullName
+    public ResponseEntity<Page<DoctorResponseDto>> searchDoctorByFullName(
+            @RequestParam String fullName,
+            Pageable pageable
     )  {
-        return ResponseEntity.status(HttpStatus.OK).body(doctorService.findDoctorByFullName(fullName));
+        return ResponseEntity.status(HttpStatus.OK).body(doctorService.findDoctorByFullName(fullName, pageable));
     }
 
     @GetMapping("/get-available-time/{id}")
@@ -59,10 +60,11 @@ public class DoctorController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<DoctorResponseDto>> searchDoctor(
-            @RequestParam String keyword
+    public ResponseEntity<Page<DoctorResponseDto>> searchDoctor(
+            @RequestParam String keyword,
+            Pageable pageable
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(doctorService.searchDoctors(keyword));
+        return ResponseEntity.status(HttpStatus.OK).body(doctorService.searchDoctors(keyword, pageable));
     }
 
     @GetMapping("/get-by-id/{id}")

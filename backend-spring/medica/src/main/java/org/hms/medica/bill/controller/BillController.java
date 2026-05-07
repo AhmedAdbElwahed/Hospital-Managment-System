@@ -3,6 +3,8 @@ package org.hms.medica.bill.controller;
 import org.hms.medica.bill.model.Bill;
 import org.hms.medica.bill.service.BillService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +30,8 @@ public class BillController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Bill>> getAllBills() {
-        List<Bill> bills = billService.getAllBills();
-        return ResponseEntity.ok(bills);
+    public ResponseEntity<Page<Bill>> getAllBills(Pageable pageable) {
+        return ResponseEntity.ok(billService.getAllBills(pageable));
     }
 
     @GetMapping("/{id}")

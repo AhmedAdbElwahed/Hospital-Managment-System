@@ -12,6 +12,7 @@ import org.hms.medica.appointment.service.AppointmentSchedulingService;
 import org.hms.medica.appointment.service.UserAppointmentService;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.repo.PatientRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class AppointmentController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<AppointmentResponseDto>> fetchAllAppointments(
+    public ResponseEntity<Page<AppointmentResponseDto>> fetchAllAppointments(
             @QuerydslPredicate(root = Appointment.class, bindings = AppointmentRepository.class)
             Predicate predicate,
             Pageable pageable

@@ -3,6 +3,8 @@ package org.hms.medica.labreport.controller;
 import org.hms.medica.labreport.model.LabReport;
 import org.hms.medica.labreport.service.LabReportService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +30,8 @@ public class LabReportController {
     }
 
     @GetMapping
-    public ResponseEntity<List<LabReport>> getAllLabReports() {
-        List<LabReport> labReports = labReportService.getAllLabReports();
-        return ResponseEntity.ok(labReports);
+    public ResponseEntity<Page<LabReport>> getAllLabReports(Pageable pageable) {
+        return ResponseEntity.ok(labReportService.getAllLabReports(pageable));
     }
 
     @GetMapping("/{id}")

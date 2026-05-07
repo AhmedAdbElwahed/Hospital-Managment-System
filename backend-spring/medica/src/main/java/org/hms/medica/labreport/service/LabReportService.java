@@ -3,6 +3,8 @@ package org.hms.medica.labreport.service;
 import org.hms.medica.labreport.model.LabReport;
 import org.hms.medica.labreport.repo.LabReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,8 +24,8 @@ public class LabReportService {
         return labReportRepository.save(labReport);
     }
 
-    public List<LabReport> getAllLabReports() {
-        return labReportRepository.findAll();
+    public Page<LabReport> getAllLabReports(Pageable pageable) {
+        return labReportRepository.findAll(pageable);
     }
 
     public Optional<LabReport> getLabReportById(Long id) {

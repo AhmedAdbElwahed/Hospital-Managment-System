@@ -8,6 +8,8 @@ import com.querydsl.core.types.dsl.StringPath;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.doctor.model.QDoctor;
 import org.hms.medica.user.model.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
@@ -28,9 +30,9 @@ public interface DoctorRepository
 
   Optional<Doctor> getDoctorByEmail(String email);
 
-  List<Doctor>
+  Page<Doctor>
       findByFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrSpecialtyContainingIgnoreCase(
-          String firstName, String lastName, String specialty);
+          String firstName, String lastName, String specialty, Pageable pageable);
 
   @Override
   default void customize(QuerydslBindings bindings, QDoctor doctor) {

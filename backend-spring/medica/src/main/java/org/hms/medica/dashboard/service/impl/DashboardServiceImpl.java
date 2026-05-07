@@ -16,6 +16,7 @@ import org.hms.medica.patient.service.PatientService;
 import org.hms.medica.ward.model.Ward;
 import org.hms.medica.ward.repository.WardRepository;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -43,19 +44,20 @@ public class DashboardServiceImpl implements DashboardService {
         public DashboardResponse getDashboardStatistics() {
                 return DashboardResponse.builder()
                                 .totalPatient(patientRepository.count())
-                                .todayPatient((long) patientService.findAllTodayPatients(LocalDateTime.now()).size())
-                                .newPatient((long) patientService.findNewPatients().size())
-                                .oldPatient((long) patientService.findOldPatients().size())
-                                .todayAppointment((long) userAppointmentService
-                                                .findTodayAppointments(LocalDateTime.now()).size())
-                                .completedAppointment((long) userAppointmentService
-                                                .findAppointmentsByStatus(AppointmentStatus.COMPLETED).size())
+                                .todayPatient(patientService.findAllTodayPatients(LocalDateTime.now(), Pageable.unpaged()).getTotalElements())
+                                .newPatient(patientService.findNewPatients(Pageable.unpaged()).getTotalElements())
+                                .oldPatient(patientService.findOldPatients(Pageable.unpaged()).getTotalElements())
+                                .todayAppointment(userAppointmentService
+                                                .findTodayAppointments(LocalDateTime.now(), Pageable.unpaged()).getTotalElements())
+                                .completedAppointment(userAppointmentService
+                                                .findAppointmentsByStatus(AppointmentStatus.COMPLETED, Pageable.unpaged()).getTotalElements())
                                 .build();
         }
 
         @Override
         public List<AppointmentResponseDto> getTodayAppointments() {
-                return userAppointmentService.findTodayAppointments(LocalDateTime.now())
+                return userAppointmentService.findTodayAppointments(LocalDateTime.now(), PageRequest.of(0, 10))
+                                .getContent()
                                 .stream()
                                 .map(adminAppointmentMapper::mapAppointmentToAppointmentResponseDto)
                                 .toList();
@@ -63,13 +65,13 @@ public class DashboardServiceImpl implements DashboardService {
 
         @Override
         public List<PatientResponseDto> getRecentPatient() {
-                return patientService.findMostRecentPatients();
+                return patientService.findMostRecentPatients(PageRequest.of(0, 5)).getContent();
         }
 
         @Override
         public SummaryResponse getSummary() {
                 long totalPatients = patientRepository.count();
-                long todayAppointments = userAppointmentService.findTodayAppointments(LocalDateTime.now()).size();
+                long todayAppointments = userAppointmentService.findTodayAppointments(LocalDateTime.now(), Pageable.unpaged()).getTotalElements();
 
                 List<Ward> wards = wardRepository.findAll();
                 long activeAdmissions = wards.stream().mapToLong(w -> w.getPatients().size()).sum();

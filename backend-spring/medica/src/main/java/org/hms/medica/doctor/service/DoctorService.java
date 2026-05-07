@@ -6,6 +6,7 @@ import org.hms.medica.doctor.dto.DoctorDto;
 import org.hms.medica.doctor.dto.DoctorResponseDto;
 import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.user.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,19 +21,19 @@ public interface DoctorService {
   DoctorResponseDto getDoctorDtoById(Long id);
   Doctor getDoctorById(Long id);
 
-  List<DoctorResponseDto> findDoctorByFullName(String fullName);
+  Page<DoctorResponseDto> findDoctorByFullName(String fullName, Pageable pageable);
 
 
   Doctor getDoctorByEmail(String email);
 
   List<DoctorAppointmentDto> getAppointments();
 
-  List<DoctorResponseDto> getAllDoctors(Predicate predicate, Pageable pageable);
+  Page<DoctorResponseDto> getAllDoctors(Predicate predicate, Pageable pageable);
 
   @Transactional
   void registerDoctor(DoctorDto doctorDto);
 
-  List<DoctorResponseDto> searchDoctors(String keyword);
+  Page<DoctorResponseDto> searchDoctors(String keyword, Pageable pageable);
 
   @Transactional
   void deleteDoctorById (Long id);
