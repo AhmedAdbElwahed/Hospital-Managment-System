@@ -19,10 +19,6 @@ import java.util.Set;
 @AllArgsConstructor
 public class Doctor extends User {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-
   private String education;
   private String certifications;
   private String experience;

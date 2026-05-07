@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-import lombok.AllArgsConstructor;
 import com.querydsl.core.types.Predicate;
 import lombok.extern.slf4j.Slf4j;
 import org.hms.medica.appointment.dto.DoctorAppointmentDto;
@@ -22,9 +21,11 @@ import org.hms.medica.doctor.model.Doctor;
 import org.hms.medica.doctor.repo.DoctorRepository;
 import org.hms.medica.doctor.repo.QDoctorRepository;
 import org.hms.medica.doctor.service.DoctorService;
+import org.hms.medica.search.service.SearchService;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.repo.UserRepository;
 import org.hms.medica.user.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,19 +35,43 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 public class DoctorServiceImpl implements DoctorService {
 
-    private DoctorRepository doctorRepository;
-    private QDoctorRepository qDoctorRepository;
-    private RoleRepository roleRepository;
-    private UserRepository userRepository;
-    private UserAppointmentService userAppointmentService;
-    private UserService userService;
-    private DoctorAppointmentMapper doctorAppointmentMapper;
-    private PasswordEncoder passwordEncoder;
-    private DoctorMapper doctorMapper;
-    private AppointmentRepository appointmentRepository;
+    private final DoctorRepository doctorRepository;
+    private final QDoctorRepository qDoctorRepository;
+    private final RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final UserAppointmentService userAppointmentService;
+    private final UserService userService;
+    private final DoctorAppointmentMapper doctorAppointmentMapper;
+    private final PasswordEncoder passwordEncoder;
+    private final DoctorMapper doctorMapper;
+    private final AppointmentRepository appointmentRepository;
+    private final SearchService searchService;
+
+    public DoctorServiceImpl(DoctorRepository doctorRepository,
+                             QDoctorRepository qDoctorRepository,
+                             RoleRepository roleRepository,
+                             UserRepository userRepository,
+                             UserAppointmentService userAppointmentService,
+                             UserService userService,
+                             DoctorAppointmentMapper doctorAppointmentMapper,
+                             PasswordEncoder passwordEncoder,
+                             DoctorMapper doctorMapper,
+                             AppointmentRepository appointmentRepository,
+                             @Lazy SearchService searchService) {
+        this.doctorRepository = doctorRepository;
+        this.qDoctorRepository = qDoctorRepository;
+        this.roleRepository = roleRepository;
+        this.userRepository = userRepository;
+        this.userAppointmentService = userAppointmentService;
+        this.userService = userService;
+        this.doctorAppointmentMapper = doctorAppointmentMapper;
+        this.passwordEncoder = passwordEncoder;
+        this.doctorMapper = doctorMapper;
+        this.appointmentRepository = appointmentRepository;
+        this.searchService = searchService;
+    }
 
     public void registerDoctor(DoctorDto doctorDto) {
         var role = roleRepository.getRoleByName("ROLE_DOCTOR").orElseThrow(
@@ -58,11 +83,46 @@ public class DoctorServiceImpl implements DoctorService {
         user.setPassword(passwordEncoder.encode(doctorDto.getRequiredInfoDto().getPassword()));
         user.setRoles(Set.of(role));
         createDoctorObj(doctorDto, user);
-        userRepository.save(user);
+        user = userRepository.save(user);
+        if (searchService != null) {
+            try {
+                searchService.syncDoctor(user);
+            } catch (Exception e) {
+                log.warn("Elasticsearch sync failed for doctor {}: {}", user.getId(), e.getMessage());
+            }
+        }
     }
 
     @Override
     public List<DoctorResponseDto> searchDoctors(String keyword) {
+        if (searchService != null) {
+            try {
+                return searchService.searchDoctors(keyword).stream()
+                        .map(doctorIndex -> {
+                            DoctorResponseDto dto = new DoctorResponseDto();
+                            dto.setId(Long.valueOf(doctorIndex.getId()));
+
+                            org.hms.medica.doctor.dto.RequiredInfoDto required = new org.hms.medica.doctor.dto.RequiredInfoDto();
+                            required.setFirstname(doctorIndex.getFirstname());
+                            required.setLastname(doctorIndex.getLastname());
+                            required.setEmail(doctorIndex.getEmail());
+                            required.setPhone(doctorIndex.getPhone());
+                            dto.setRequiredInfoDto(required);
+
+                            org.hms.medica.doctor.dto.AdditionalInfoDto additional = new org.hms.medica.doctor.dto.AdditionalInfoDto();
+                            additional.setSpecialty(doctorIndex.getSpecialty());
+                            additional.setLicenseNumber(doctorIndex.getLicenseNumber());
+                            additional.setEducation(doctorIndex.getEducation());
+                            dto.setAdditionalInfoDto(additional);
+
+                            return dto;
+                        })
+                        .toList();
+            } catch (Exception e) {
+                log.warn("Elasticsearch search failed, falling back to database: {}", e.getMessage());
+            }
+        }
+        
         return doctorRepository
                 .findByFirstnameContainingIgnoreCaseOrLastnameContainingIgnoreCaseOrSpecialtyContainingIgnoreCase(
                         keyword,
@@ -78,6 +138,13 @@ public class DoctorServiceImpl implements DoctorService {
         var doctor = doctorRepository.findById(id).orElseThrow(() ->
                 new UsernameNotFoundException("Doctor Not Found With Id + " + id));
         doctorRepository.delete(doctor);
+        if (searchService != null) {
+            try {
+                searchService.deleteDoctorIndex(id);
+            } catch (Exception e) {
+                log.warn("Elasticsearch delete failed for doctor {}: {}", id, e.getMessage());
+            }
+        }
     }
 
     @Transactional
@@ -89,7 +156,14 @@ public class DoctorServiceImpl implements DoctorService {
         if (!(doctorPassword.isEmpty() || doctorPassword.isBlank()))
             doctor.setPassword(passwordEncoder.encode(doctorDto.getRequiredInfoDto().getPassword()));
         createDoctorObj(doctorDto, doctor);
-        doctorRepository.save(doctor);
+        doctor = doctorRepository.save(doctor);
+        if (searchService != null) {
+            try {
+                searchService.syncDoctor(doctor);
+            } catch (Exception e) {
+                log.warn("Elasticsearch sync failed for doctor {}: {}", doctor.getId(), e.getMessage());
+            }
+        }
         return doctorMapper.mapDoctorToDoctorResponseDto(doctor);
     }
 

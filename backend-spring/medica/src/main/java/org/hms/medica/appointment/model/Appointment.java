@@ -2,7 +2,6 @@ package org.hms.medica.appointment.model;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import lombok.*;

@@ -23,8 +23,7 @@ public class PatientAppointmentResponseDto {
   private Long AppointmentId;
   private LocalTime startTime;
   private String reasonForVisit;
-  private boolean isVirtual;
-  private boolean paid;
+  private boolean virtual;  private boolean paid;
 
   private AppointmentStatus appointmentStatus;
 

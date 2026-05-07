@@ -2,12 +2,13 @@ package org.hms.medica.appointment.mapper;
 
 import org.hms.medica.appointment.dto.PatientAppointmentDto;
 import org.hms.medica.appointment.model.Appointment;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
 @Component
-@Mapper
+@Mapper(builder = @Builder(disableBuilder = true))
 public interface PatientAppointmentMapper {
 
 
@@ -19,7 +20,6 @@ public interface PatientAppointmentMapper {
   Appointment toEntity(PatientAppointmentDto patientAppointmentDto);
 
   @Mapping(target = "doctorId", expression = "java(appointment.getDoctor().getId())")
-  @Mapping(target = "isVirtual", source = "virtual")
   PatientAppointmentDto toDto(Appointment appointment);
 
 }

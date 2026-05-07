@@ -1,7 +1,7 @@
 package org.hms.medica.dashboard.service;
 
 import org.hms.medica.appointment.dto.AppointmentResponseDto;
-import org.hms.medica.dashboard.dto.DashboardResponse;
+import org.hms.medica.dashboard.dto.*;
 import org.hms.medica.patient.dto.PatientResponseDto;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +15,12 @@ public interface DashboardService {
     List<AppointmentResponseDto> getTodayAppointments();
 
     List<PatientResponseDto> getRecentPatient();
+
+    SummaryResponse getSummary();
+
+    List<AdmissionTrend> getAdmissionTrends();
+
+    List<RecentActivity> getRecentActivity();
+
+    List<DepartmentDistribution> getDepartmentDistribution();
 }

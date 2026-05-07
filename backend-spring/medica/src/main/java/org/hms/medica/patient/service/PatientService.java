@@ -1,7 +1,6 @@
 package org.hms.medica.patient.service;
 
 import com.querydsl.core.types.Predicate;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hms.medica.appointment.dto.PatientAppointmentDto;
 import org.hms.medica.appointment.mapper.PatientAppointmentMapper;
@@ -14,9 +13,11 @@ import org.hms.medica.patient.mapper.PatientMapper;
 import org.hms.medica.patient.model.Patient;
 import org.hms.medica.patient.repo.PatientRepository;
 import org.hms.medica.patient.repo.QPatientRepository;
+import org.hms.medica.search.service.SearchService;
 import org.hms.medica.user.exception.UserNotFoundException;
 import org.hms.medica.user.model.User;
 import org.hms.medica.user.service.UserService;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,7 +30,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
 public class PatientService {
 
@@ -41,6 +41,27 @@ public class PatientService {
   private final PatientAppointmentResponseMapper patientAppointmentResponseMapper;
   private final PasswordEncoder passwordEncoder;
   private final QPatientRepository qPatientRepository;
+  private final SearchService searchService;
+
+  public PatientService(UserAppointmentService userAppointmentService,
+                        UserService userService,
+                        PatientAppointmentMapper patientAppointmentMapper,
+                        PatientRepository patientRepository,
+                        PatientMapper patientMapper,
+                        PatientAppointmentResponseMapper patientAppointmentResponseMapper,
+                        PasswordEncoder passwordEncoder,
+                        QPatientRepository qPatientRepository,
+                        @Lazy SearchService searchService) {
+    this.userAppointmentService = userAppointmentService;
+    this.userService = userService;
+    this.patientAppointmentMapper = patientAppointmentMapper;
+    this.patientRepository = patientRepository;
+    this.patientMapper = patientMapper;
+    this.patientAppointmentResponseMapper = patientAppointmentResponseMapper;
+    this.passwordEncoder = passwordEncoder;
+    this.qPatientRepository = qPatientRepository;
+    this.searchService = searchService;
+  }
 
   public List<PatientAppointmentResponseDto> getAppointments() {
     User user = userService.getCurrentUser();
@@ -86,7 +107,14 @@ public class PatientService {
   public void registerPatient(PatientDto patientDto) {
     var patient = new Patient();
     patient = patientMapper.mapPatientDtoToPatient(patientDto);
-    patientRepository.save(patient);
+    patient = patientRepository.save(patient);
+    if (searchService != null) {
+        try {
+            searchService.syncPatient(patient);
+        } catch (Exception e) {
+            log.warn("Elasticsearch sync failed for patient {}: {}", patient.getId(), e.getMessage());
+        }
+    }
   }
 
   @Transactional
@@ -100,7 +128,14 @@ public class PatientService {
     if (!(patientPassword.isEmpty() || patientPassword.isBlank()))
       patient.setPassword(passwordEncoder.encode(patientDto.getRequiredInfoDto().getPassword()));
     createPatientObj(patientDto, patient);
-    patientRepository.save(patient);
+    patient = patientRepository.save(patient);
+    if (searchService != null) {
+        try {
+            searchService.syncPatient(patient);
+        } catch (Exception e) {
+            log.warn("Elasticsearch sync failed for patient {}: {}", patient.getId(), e.getMessage());
+        }
+    }
     return patientMapper.mapPatientToPatientResponseDto(patient);
   }
 
@@ -124,8 +159,16 @@ public class PatientService {
     return qPatientRepository.findOldPatient();
   }
 
+  @Transactional
   public void deleteById(Long patientId) {
     patientRepository.deleteById(patientId);
+    if (searchService != null) {
+        try {
+            searchService.deletePatientIndex(patientId);
+        } catch (Exception e) {
+            log.warn("Elasticsearch delete failed for patient {}: {}", patientId, e.getMessage());
+        }
+    }
   }
 
   private void createPatientObj(PatientDto patientDto, Patient patient) {

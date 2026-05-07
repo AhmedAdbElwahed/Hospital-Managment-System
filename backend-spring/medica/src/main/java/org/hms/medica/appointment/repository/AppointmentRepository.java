@@ -21,25 +21,21 @@ import java.util.Optional;
 
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long>,
-        QuerydslPredicateExecutor<Appointment>, QuerydslBinderCustomizer<QAppointment> {
-  Optional<Appointment> findByPatientIdAndStartTime(
-      Long patientId, LocalTime startTime);
+                QuerydslPredicateExecutor<Appointment>, QuerydslBinderCustomizer<QAppointment> {
+        Optional<Appointment> findByPatientIdAndStartTime(
+                        Long patientId, LocalTime startTime);
 
-  @Query(
-      nativeQuery = true,
-      value =
-          "SELECT * FROM appointment where doctor_id = :userId OR patient_id= :userId ORDER BY start_time")
-  List<Appointment> findAppointmentsByUserId(Long userId);
+        @Query(nativeQuery = true, value = "SELECT * FROM appointment where doctor_id = :userId OR patient_id= :userId ORDER BY start_time")
+        List<Appointment> findAppointmentsByUserId(Long userId);
 
-  Optional<Appointment> findAppointmentByStartTimeAndDoctorAndCreatedDate(
-          LocalTime startTime,
-          Doctor doctor,
-          LocalDateTime todayDate
-  );
+        Optional<Appointment> findAppointmentByStartTimeAndDoctorAndCreatedDate(
+                        LocalTime startTime,
+                        Doctor doctor,
+                        LocalDateTime todayDate);
 
-  @Override
-  default void customize(QuerydslBindings bindings, @NonNull QAppointment appointment) {
-    bindings.bind(String.class)
-            .first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
-  }
+        @Override
+        default void customize(QuerydslBindings bindings, @NonNull QAppointment appointment) {
+                bindings.bind(String.class)
+                                .first((SingleValueBinding<StringPath, String>) StringExpression::containsIgnoreCase);
+        }
 }

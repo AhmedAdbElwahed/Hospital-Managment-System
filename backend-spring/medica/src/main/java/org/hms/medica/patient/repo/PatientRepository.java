@@ -12,10 +12,14 @@ import org.springframework.data.querydsl.binding.SingleValueBinding;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 
 @Repository
 public interface PatientRepository extends JpaRepository<Patient, Long>,
         QuerydslPredicateExecutor<Patient>, QuerydslBinderCustomizer<QPatient> {
+
+    Optional<Patient> findByEmail(String email);
 
     @Override
     default void customize(QuerydslBindings bindings,@NonNull QPatient patient) {

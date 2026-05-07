@@ -23,10 +23,6 @@ import org.hms.medica.constants.Gender;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User extends AuditedEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private Long id;
-
   @NotEmpty(message = "Lastname cannot be Empty")
   @NotNull(message = "Lastname cannot be Null")
   private String firstname;

@@ -5,11 +5,12 @@ import org.hms.medica.patient.dto.PatientDto;
 import org.hms.medica.patient.dto.PatientResponseDto;
 import org.hms.medica.patient.dto.RequiredInfoDto;
 import org.hms.medica.patient.model.Patient;
+import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
-@Mapper
+@Mapper(builder = @Builder(disableBuilder = true))
 public interface PatientMapper {
 
     @Mapping(target = "requiredInfoDto", expression = "java(mapPatientToRequiredInfoDto(patient))")

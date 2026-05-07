@@ -22,5 +22,5 @@ public class DoctorAppointmentDto {
     @NotNull
     private Long patientId;
     @NotNull
-    private boolean isVirtual;
+    private boolean virtual;
 }

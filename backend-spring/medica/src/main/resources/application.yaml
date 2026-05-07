@@ -1,4 +1,11 @@
+elasticsearch:
+  enabled: false
+
 spring:
+  data:
+    elasticsearch:
+      repositories:
+        enabled: false
   datasource:
     username: postgres
     password: Ahmed@2252300
@@ -7,11 +14,15 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
     show-sql: true
+
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.xml
 
   mail:
     host: sandbox.smtp.mailtrap.io #smtp.gmail.com
@@ -26,6 +37,11 @@ spring:
             enable: true
   elasticsearch:
     uris: http://localhost:9200
+    restclient:
+      ssl:
+        enabled: false
+    rest:
+      compatibility-mode: true
 
 
   mvc:

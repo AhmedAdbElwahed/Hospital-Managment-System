@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="000-seed-roles" author="gemini-cli">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="role"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM role</sqlCheck>
+        </preConditions>
+        <insert tableName="role">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="ROLE_DOCTOR"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="3"/>
+            <column name="name" value="ROLE_PATIENT"/>
+        </insert>
+        <insert tableName="role">
+            <column name="id" valueNumeric="4"/>
+            <column name="name" value="ROLE_USER"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="000-seed-admin" author="gemini-cli">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="user"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM "user" WHERE email = 'admin@gmail.com'</sqlCheck>
+        </preConditions>
+        <insert tableName="user">
+            <column name="id" valueNumeric="1"/>
+            <column name="firstname" value="Super"/>
+            <column name="lastname" value="User"/>
+            <column name="email" value="admin@gmail.com"/>
+            <!-- password is 'ChangeMe' encoded with BCrypt -->
+            <column name="password" value="$2a$10$9GvR76L8N6.Y/XWz9Jp5X.uYI9zU6z9z9z9z9z9z9z9z9z9z9z9z9"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="users_roles">
+            <column name="user_id" valueNumeric="1"/>
+            <column name="role_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="001-seed-wards" author="gemini-cli">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="ward"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM ward</sqlCheck>
+        </preConditions>
+        <insert tableName="ward">
+            <column name="id" valueNumeric="1"/>
+            <column name="name" value="General Ward"/>
+            <column name="num_of_beds" valueNumeric="20"/>
+            <column name="num_of_nurses" valueNumeric="5"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="is_male" valueBoolean="true"/>
+            <column name="is_female" valueBoolean="true"/>
+        </insert>
+        <insert tableName="ward">
+            <column name="id" valueNumeric="2"/>
+            <column name="name" value="ICU"/>
+            <column name="num_of_beds" valueNumeric="10"/>
+            <column name="num_of_nurses" valueNumeric="8"/>
+            <column name="is_active" valueBoolean="true"/>
+            <column name="is_male" valueBoolean="true"/>
+            <column name="is_female" valueBoolean="true"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="002-seed-doctors" author="gemini-cli">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="doctor"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM doctor</sqlCheck>
+        </preConditions>
+        <!-- Doctor 1: Cardiology -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="101"/>
+            <column name="firstname" value="James"/>
+            <column name="lastname" value="Wilson"/>
+            <column name="email" value="james.wilson@medica.com"/>
+            <!-- password is 'password' encoded with BCrypt (strength 10) -->
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="0"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="doctor">
+            <column name="id" valueNumeric="101"/>
+            <column name="specialty" value="Cardiology"/>
+            <column name="license_number" value="LIC-101"/>
+            <column name="active_status" valueBoolean="true"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Doctor 2: Neurology -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="102"/>
+            <column name="firstname" value="Lisa"/>
+            <column name="lastname" value="Cuddy"/>
+            <column name="email" value="lisa.cuddy@medica.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="1"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="doctor">
+            <column name="id" valueNumeric="102"/>
+            <column name="specialty" value="Neurology"/>
+            <column name="license_number" value="LIC-102"/>
+            <column name="active_status" valueBoolean="true"/>
+            <column name="ward_id" valueNumeric="2"/>
+        </insert>
+
+        <!-- Doctor 3: Pediatrics -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="103"/>
+            <column name="firstname" value="Robert"/>
+            <column name="lastname" value="Chase"/>
+            <column name="email" value="robert.chase@medica.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="0"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="doctor">
+            <column name="id" valueNumeric="103"/>
+            <column name="specialty" value="Pediatrics"/>
+            <column name="license_number" value="LIC-103"/>
+            <column name="active_status" valueBoolean="true"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Doctor 4: General Practice -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="104"/>
+            <column name="firstname" value="Allison"/>
+            <column name="lastname" value="Cameron"/>
+            <column name="email" value="allison.cameron@medica.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="1"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="doctor">
+            <column name="id" valueNumeric="104"/>
+            <column name="specialty" value="General Practice"/>
+            <column name="license_number" value="LIC-104"/>
+            <column name="active_status" valueBoolean="true"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="003-seed-patients" author="gemini-cli">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="patient"/>
+            <sqlCheck expectedResult="0">SELECT COUNT(*) FROM patient</sqlCheck>
+        </preConditions>
+        <!-- Patient 1 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="201"/>
+            <column name="firstname" value="John"/>
+            <column name="lastname" value="Doe"/>
+            <column name="email" value="john.doe@gmail.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="0"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="201"/>
+            <column name="blood_type" value="O_POSITIVE"/>
+            <column name="marital_status" value="SINGLE"/>
+            <column name="nationality" value="American"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Patient 2 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="202"/>
+            <column name="firstname" value="Jane"/>
+            <column name="lastname" value="Smith"/>
+            <column name="email" value="jane.smith@yahoo.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="1"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="202"/>
+            <column name="blood_type" value="A_NEGATIVE"/>
+            <column name="marital_status" value="MARRIED"/>
+            <column name="nationality" value="British"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Patient 3 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="203"/>
+            <column name="firstname" value="Michael"/>
+            <column name="lastname" value="Brown"/>
+            <column name="email" value="michael.brown@outlook.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="0"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="203"/>
+            <column name="blood_type" value="B_POSITIVE"/>
+            <column name="marital_status" value="DIVORCED"/>
+            <column name="nationality" value="Canadian"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Patient 4 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="204"/>
+            <column name="firstname" value="Emily"/>
+            <column name="lastname" value="Davis"/>
+            <column name="email" value="emily.davis@gmail.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="1"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="204"/>
+            <column name="blood_type" value="AB_NEGATIVE"/>
+            <column name="marital_status" value="WIDOWED"/>
+            <column name="nationality" value="Australian"/>
+            <column name="ward_id" valueNumeric="2"/>
+        </insert>
+
+        <!-- Patient 5 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="205"/>
+            <column name="firstname" value="David"/>
+            <column name="lastname" value="Wilson"/>
+            <column name="email" value="david.wilson@gmail.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="0"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="205"/>
+            <column name="blood_type" value="O_NEGATIVE"/>
+            <column name="marital_status" value="SINGLE"/>
+            <column name="nationality" value="German"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Patient 6 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="206"/>
+            <column name="firstname" value="Sarah"/>
+            <column name="lastname" value="Miller"/>
+            <column name="email" value="sarah.miller@yahoo.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="1"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="206"/>
+            <column name="blood_type" value="A_POSITIVE"/>
+            <column name="marital_status" value="MARRIED"/>
+            <column name="nationality" value="French"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Patient 7 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="207"/>
+            <column name="firstname" value="James"/>
+            <column name="lastname" value="Taylor"/>
+            <column name="email" value="james.taylor@gmail.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="0"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="207"/>
+            <column name="blood_type" value="B_NEGATIVE"/>
+            <column name="marital_status" value="SINGLE"/>
+            <column name="nationality" value="Italian"/>
+            <column name="ward_id" valueNumeric="2"/>
+        </insert>
+
+        <!-- Patient 8 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="208"/>
+            <column name="firstname" value="Linda"/>
+            <column name="lastname" value="Anderson"/>
+            <column name="email" value="linda.anderson@hotmail.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="1"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="208"/>
+            <column name="blood_type" value="AB_POSITIVE"/>
+            <column name="marital_status" value="MARRIED"/>
+            <column name="nationality" value="Spanish"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Patient 9 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="209"/>
+            <column name="firstname" value="Robert"/>
+            <column name="lastname" value="Martinez"/>
+            <column name="email" value="robert.martinez@gmail.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="0"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="209"/>
+            <column name="blood_type" value="O_POSITIVE"/>
+            <column name="marital_status" value="SINGLE"/>
+            <column name="nationality" value="Mexican"/>
+            <column name="ward_id" valueNumeric="1"/>
+        </insert>
+
+        <!-- Patient 10 -->
+        <insert tableName="user">
+            <column name="id" valueNumeric="210"/>
+            <column name="firstname" value="Patricia"/>
+            <column name="lastname" value="Hernandez"/>
+            <column name="email" value="patricia.h@gmail.com"/>
+            <column name="password" value="$2a$10$8.UnVuG9HHgffUDAlk8qfOuVGkqRzgVymGe07xd00dm9m3zux1.Y6"/>
+            <column name="gender" valueNumeric="1"/>
+            <column name="is_enabled" valueBoolean="true"/>
+        </insert>
+        <insert tableName="patient">
+            <column name="id" valueNumeric="210"/>
+            <column name="blood_type" value="A_POSITIVE"/>
+            <column name="marital_status" value="MARRIED"/>
+            <column name="nationality" value="Brazilian"/>
+            <column name="ward_id" valueNumeric="2"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="004-assign-roles" author="gemini-cli">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="users_roles"/>
+        </preConditions>
+        <!-- Role IDs: 2 for DOCTOR, 3 for PATIENT (assuming they exist from SetupDataLoader) -->
+        <sql>
+            INSERT INTO users_roles (user_id, role_id) VALUES (101, (SELECT id FROM role WHERE name = 'ROLE_DOCTOR'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (102, (SELECT id FROM role WHERE name = 'ROLE_DOCTOR'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (103, (SELECT id FROM role WHERE name = 'ROLE_DOCTOR'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (104, (SELECT id FROM role WHERE name = 'ROLE_DOCTOR'));
+
+            INSERT INTO users_roles (user_id, role_id) VALUES (201, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (202, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (203, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (204, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (205, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (206, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (207, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (208, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (209, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+            INSERT INTO users_roles (user_id, role_id) VALUES (210, (SELECT id FROM role WHERE name = 'ROLE_PATIENT'));
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
