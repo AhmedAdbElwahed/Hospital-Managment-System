@@ -50,8 +50,10 @@ export function Header() {
                 <User className="h-5 w-5 text-white" />
               </div>
               <div className="hidden sm:block text-left">
-                <p className="text-sm font-semibold text-gray-900">{user?.name || "Dr. Ahmed Abd-Elwahed"}</p>
-                <p className="text-[11px] font-medium text-gray-400 uppercase tracking-tight">{(user as any)?.role || "Chief Medical Officer"}</p>
+                <p className="text-sm font-semibold text-gray-900">{user?.name || "Loading..."}</p>
+                <p className="text-[11px] font-medium text-gray-400 uppercase tracking-tight">
+                  {user?.role?.replace("ROLE_", "") || "Medical Staff"}
+                </p>
               </div>
             </div>
           </DropdownMenuTrigger>

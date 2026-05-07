@@ -120,4 +120,23 @@ Refer to `#/components/schemas` in `api-docs.json` for:
 - **Theme:** Follow the Indigo/Blue medical theme.
 - **Interactivity:** Use Framer Motion for page transitions and card hover effects.
 - **Feedback:** Use `sonner` for toast notifications and `loading.tsx` for skeleton loaders.
-- **Accessibility:** Ensure all Shadcn components maintain high ARIA standards.
+---
+
+## 🚀 Suggestions for Backend Enhancements
+
+To optimize the dashboard and enable advanced visualizations, I recommend implementing (or utilizing existing) "Analytics" endpoints. These are currently available under the `/hms/v1/dashboard/` prefix in the API:
+
+1.  **GET /hms/v1/dashboard/summary**
+    *   **Purpose:** Returns a pre-aggregated object for the main KPIs.
+    *   **Response:** `{ totalPatients: 2450, todayAppointments: 42, activeAdmissions: 128, efficiencyRate: 0.94 }`
+    *   **Benefit:** Reduces frontend logic and saves multiple API calls on every dashboard load.
+2.  **GET /hms/v1/dashboard/trends/admissions**
+    *   **Purpose:** Returns daily/weekly admission counts for the last 30 days.
+    *   **Response:** `[{ date: '2026-05-01', count: 12 }, ...]`
+    *   **Benefit:** Enables the implementation of the "Patient Admissions" chart.
+3.  **GET /hms/v1/dashboard/recent-activity**
+    *   **Purpose:** Returns a feed of the last 10-20 actions across the system.
+    *   **Response:** `[{ id: 1, type: 'PATIENT_REGISTERED', message: 'New patient John Doe added', timestamp: '...' }, ...]`
+4.  **GET /hms/v1/dashboard/distribution/department**
+    *   **Purpose:** Returns the percentage of patients currently in each department (Cardiology, Pediatrics, etc.).
+    *   **Benefit:** Perfect for a "Department Distribution" donut chart.

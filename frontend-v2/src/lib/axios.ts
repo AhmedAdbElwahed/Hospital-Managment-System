@@ -13,12 +13,18 @@ const axiosInstance = axios.create({
 // Request interceptor for API calls
 axiosInstance.interceptors.request.use(
   async (config) => {
-    const session = await getSession();
-    const token = (session as any)?.accessToken;
-    
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Only use getSession on the client side
+    if (typeof window !== "undefined") {
+      const session = await getSession();
+      const token = (session as { accessToken?: string })?.accessToken;
+      
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
+    // Note: For server-side requests, the token should be passed explicitly 
+    // or handled by a different mechanism since auth() is preferred there.
+    
     return config;
   },
   (error) => {

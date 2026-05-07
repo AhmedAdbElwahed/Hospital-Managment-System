@@ -1,6 +1,15 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import axiosInstance from "./axios";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
+
+interface DecodedToken {
+  role: string;
+  username: string;
+  sub: string;
+  iat: number;
+  exp: number;
+}
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [
@@ -14,28 +23,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!credentials?.email || !credentials?.password) return null;
 
         try {
-          console.log("Attempting login for:", credentials.email);
-          const response = await axiosInstance.post("/hms/v1/auth/login", {
+          console.log("--- Authorize Step ---");
+          const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
+          const response = await axios.post(`${baseURL}/hms/v1/auth/login`, {
             email: credentials.email,
             password: credentials.password,
           });
 
           const user = response.data;
-          console.log("Login response data:", user);
 
           if (user && user.access_token) {
+            const decoded = jwtDecode<DecodedToken>(user.access_token);
+            console.log("Decoded Username:", decoded.username);
+            
             return {
-              id: user.id || credentials.email, // Fallback if id is missing
-              name: user.name || "User",
-              email: user.email || (credentials.email as string),
+              id: decoded.sub,
+              name: decoded.username,
+              email: decoded.sub,
               accessToken: user.access_token,
-              role: user.role || "USER",
+              role: decoded.role,
             };
           }
-          console.warn("Login failed: access_token not found in response");
           return null;
         } catch (error: any) {
-          console.error("Login error details:", error.response?.data || error.message);
+          console.error("Login error details:", error.message);
           return null;
         }
       },
@@ -44,15 +55,22 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.accessToken = (user as any).accessToken;
-        token.role = (user as any).role;
+        console.log("--- JWT Callback (New Login) ---");
+        const u = user as any;
+        console.log("User Name from Authorize:", u.name);
+        token.accessToken = u.accessToken;
+        token.role = u.role;
+        token.name = u.name;
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        (session as any).accessToken = token.accessToken;
-        (session as any).user.role = token.role;
+        console.log("--- Session Callback ---");
+        console.log("Token Name:", token.name);
+        session.accessToken = token.accessToken as string;
+        session.user.role = token.role as string;
+        session.user.name = token.name as string;
       }
       return session;
     },

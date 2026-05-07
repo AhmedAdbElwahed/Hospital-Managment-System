@@ -1131,16 +1131,23 @@
           "examination-controller"
         ],
         "operationId": "getAllExaminations",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ExaminationResponseDto"
-                  }
+                  "$ref": "#/components/schemas/PageExaminationResponseDto"
                 }
               }
             }
@@ -1688,10 +1695,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AppointmentResponseDto"
-                  }
+                  "$ref": "#/components/schemas/PageAppointmentResponseDto"
                 }
               }
             }
@@ -1806,12 +1810,11 @@
         "operationId": "getAdmissions",
         "parameters": [
           {
-            "name": "pageSize",
+            "name": "pageable",
             "in": "query",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int32"
+              "$ref": "#/components/schemas/Pageable"
             }
           }
         ],
@@ -1821,10 +1824,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/AdmissionResponseDto"
-                  }
+                  "$ref": "#/components/schemas/PageAdmissionResponseDto"
                 }
               }
             }
@@ -1960,16 +1960,23 @@
           "lab-test-controller"
         ],
         "operationId": "getAllLabTests",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LabTest"
-                  }
+                  "$ref": "#/components/schemas/PageLabTest"
                 }
               }
             }
@@ -2066,16 +2073,23 @@
           "lab-report-controller"
         ],
         "operationId": "getAllLabReports",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/LabReport"
-                  }
+                  "$ref": "#/components/schemas/PageLabReport"
                 }
               }
             }
@@ -2166,6 +2180,39 @@
         }
       }
     },
+    "/hms/v1/dashboard/trends/admissions": {
+      "get": {
+        "tags": [
+          "dash-board-controller"
+        ],
+        "operationId": "getAdmissionTrends",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AdmissionTrend"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/hms/v1/dashboard/today-appointments": {
       "get": {
         "tags": [
@@ -2182,6 +2229,36 @@
                   "items": {
                     "$ref": "#/components/schemas/AppointmentResponseDto"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/dashboard/summary": {
+      "get": {
+        "tags": [
+          "dash-board-controller"
+        ],
+        "operationId": "getSummary",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/SummaryResponse"
                 }
               }
             }
@@ -2262,12 +2339,12 @@
         }
       }
     },
-    "/hms/v1/bills": {
+    "/hms/v1/dashboard/recent-activity": {
       "get": {
         "tags": [
-          "bill-controller"
+          "dash-board-controller"
         ],
-        "operationId": "getAllBills",
+        "operationId": "getRecentActivity",
         "responses": {
           "200": {
             "description": "OK",
@@ -2276,8 +2353,81 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Bill"
+                    "$ref": "#/components/schemas/RecentActivity"
                   }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/dashboard/distribution/department": {
+      "get": {
+        "tags": [
+          "dash-board-controller"
+        ],
+        "operationId": "getDepartmentDistribution",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepartmentDistribution"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestErrorMessage"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/hms/v1/bills": {
+      "get": {
+        "tags": [
+          "bill-controller"
+        ],
+        "operationId": "getAllBills",
+        "parameters": [
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageBill"
                 }
               }
             }
@@ -2694,10 +2844,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PatientResponseDto"
-                  }
+                  "$ref": "#/components/schemas/PagePatientResponseDto"
                 }
               }
             }
@@ -2729,6 +2876,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
           }
         ],
         "responses": {
@@ -2737,10 +2892,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/PatientResponseDto"
-                  }
+                  "$ref": "#/components/schemas/PagePatientResponseDto"
                 }
               }
             }
@@ -2921,10 +3073,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DoctorResponseDto"
-                  }
+                  "$ref": "#/components/schemas/PageDoctorResponseDto"
                 }
               }
             }
@@ -2956,6 +3105,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
           }
         ],
         "responses": {
@@ -2964,10 +3121,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DoctorResponseDto"
-                  }
+                  "$ref": "#/components/schemas/PageDoctorResponseDto"
                 }
               }
             }
@@ -2999,6 +3153,14 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
           }
         ],
         "responses": {
@@ -3007,10 +3169,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/DoctorResponseDto"
-                  }
+                  "$ref": "#/components/schemas/PageDoctorResponseDto"
                 }
               }
             }
@@ -3984,13 +4143,13 @@
           "active": {
             "type": "boolean"
           },
+          "lock": {
+            "type": "boolean"
+          },
           "female": {
             "type": "boolean"
           },
           "male": {
-            "type": "boolean"
-          },
-          "lock": {
             "type": "boolean"
           }
         },
@@ -4558,6 +4717,159 @@
           }
         }
       },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 0
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32",
+            "minimum": 1
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "PageLabTest": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LabTest"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageableObject": {
+        "type": "object",
+        "properties": {
+          "offset": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "paged": {
+            "type": "boolean"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "unpaged": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SortObject": {
+        "type": "object",
+        "properties": {
+          "empty": {
+            "type": "boolean"
+          },
+          "sorted": {
+            "type": "boolean"
+          },
+          "unsorted": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageLabReport": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LabReport"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
       "ExaminationResponseDto": {
         "type": "object",
         "properties": {
@@ -4598,6 +4910,65 @@
           "height": {
             "type": "number",
             "format": "double"
+          }
+        }
+      },
+      "PageExaminationResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExaminationResponseDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "AdmissionTrend": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int64"
           }
         }
       },
@@ -4644,6 +5015,27 @@
           "startTime"
         ]
       },
+      "SummaryResponse": {
+        "type": "object",
+        "properties": {
+          "totalPatients": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "todayAppointments": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "activeAdmissions": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "efficiencyRate": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
       "DashboardResponse": {
         "type": "object",
         "properties": {
@@ -4670,6 +5062,87 @@
           "oldPatient": {
             "type": "integer",
             "format": "int64"
+          }
+        }
+      },
+      "RecentActivity": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DepartmentDistribution": {
+        "type": "object",
+        "properties": {
+          "departmentName": {
+            "type": "string"
+          },
+          "patientCount": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "percentage": {
+            "type": "number",
+            "format": "double"
+          }
+        }
+      },
+      "PageBill": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Bill"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "empty": {
+            "type": "boolean"
           }
         }
       },
@@ -4710,24 +5183,141 @@
           }
         }
       },
-      "Pageable": {
+      "PagePatientResponseDto": {
         "type": "object",
         "properties": {
-          "page": {
+          "totalElements": {
             "type": "integer",
-            "format": "int32",
-            "minimum": 0
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
           },
           "size": {
             "type": "integer",
-            "format": "int32",
-            "minimum": 1
+            "format": "int32"
           },
-          "sort": {
+          "content": {
             "type": "array",
             "items": {
-              "type": "string"
+              "$ref": "#/components/schemas/PatientResponseDto"
             }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageDoctorResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DoctorResponseDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "empty": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageAppointmentResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AppointmentResponseDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "empty": {
+            "type": "boolean"
           }
         }
       },
@@ -4767,6 +5357,52 @@
           },
           "wardName": {
             "type": "string"
+          }
+        }
+      },
+      "PageAdmissionResponseDto": {
+        "type": "object",
+        "properties": {
+          "totalElements": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "content": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AdmissionResponseDto"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "first": {
+            "type": "boolean"
+          },
+          "last": {
+            "type": "boolean"
+          },
+          "numberOfElements": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/SortObject"
+          },
+          "pageable": {
+            "$ref": "#/components/schemas/PageableObject"
+          },
+          "empty": {
+            "type": "boolean"
           }
         }
       }
