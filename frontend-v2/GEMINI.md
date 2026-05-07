@@ -117,6 +117,10 @@ Refer to `#/components/schemas` in `api-docs.json` for:
 
 ## 🎨 UI/UX Guidelines
 
+- **Component Composition:** This project uses **Base UI** (`@base-ui/react`) for low-level primitives.
+  - **NEVER** use the `asChild` prop (it is Radix-specific).
+  - **ALWAYS** use the `render` prop for component composition (e.g., in `DropdownMenuTrigger`, `DialogClose`, etc.) to prevent hydration errors and invalid HTML nesting (like buttons inside buttons).
+  - **Example:** `<DropdownMenuTrigger render={<Button ... />} />`
 - **Theme:** Follow the Indigo/Blue medical theme.
 - **Interactivity:** Use Framer Motion for page transitions and card hover effects.
 - **Feedback:** Use `sonner` for toast notifications and `loading.tsx` for skeleton loaders.
